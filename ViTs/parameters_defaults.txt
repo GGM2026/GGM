@@ -1,0 +1,39 @@
+# Original Hardcoded Parameters Overview
+
+These are the original mathematical and model arguments hardcoded in the primary files before they were parameterized for command-line tweaks.
+
+### Original `train_cifar.py` Parameters:
+- **Testing Run Defaults:**
+  - `num_runs`: 1
+  - `master_seed`: 100
+  - `test_name`: 'base_testing_F0'
+
+- **Image Information (`ImageParams`):**
+  - `width`: 32
+  - `height`: 32
+  - `in_channel`: 3
+
+- **Model Capabilities (`ModelParameters`):**
+  - `patch_size`: 4
+  - `inner_dim`: 192
+  - `transformer_layers`: 12
+  - `num_head`: 3
+  - `embed_dropout`: 0.0
+  - `attn_dropout`: 0.0
+  - `mlp_dropout`: 0.0
+
+- **Dataset & Training (`Hyperparameters`):**
+  - `batch_size`: 512
+  - `out_classes`: 10
+  - `epochs`: 450
+  - `learning_rate`: 0.0005 (computed originally as `5e-4 * (512 / 512)`)
+  - `weight_decay`: 0.00
+
+### Original `vit_ggd.py` Parameters (Quantization):
+- **GGDLinear Default Initialization:**
+  - `k_bits_x`: 2
+  - `k_bits_w`: 1
+  - `N_factor`: 2
+  - `rho_cap`: 0.99
+
+*All GGDLinear layers (query, key, value, output, and MLP) originally hard-coded these exact values.*

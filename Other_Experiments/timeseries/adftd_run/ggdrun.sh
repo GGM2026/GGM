@@ -1,0 +1,21 @@
+python \
+  -u run.py \
+  --task_name classification \
+  --is_training 1 \
+  --root_path ../ADFTD/ \
+  --model_id ADFTD-Indep-ggd \
+  --model Medformer \
+  --data ADFTD \
+  --e_layers 6 \
+  --batch_size 128 \
+  --d_model 128 \
+  --d_ff 256 \
+  --patch_len_list 2,4,8,8,16,16,16,16,32,32,32,32,32,32,32,32 \
+  --augmentations drop0.5 \
+  --swa \
+  --des 'Exp' \
+  --itr 5 \
+  --learning_rate 0.0001 \
+  --train_epochs 100 \
+  --patience 10 \
+  --use_ggd 1
