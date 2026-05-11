@@ -1,0 +1,16 @@
+torch>=2.0.0
+torchvision>=0.15.0
+numpy
+pandas
+tqdm
+scikit-learn
+seaborn
+matplotlib
+einops
+boto3
+patoolib
+sktime
+timm
+wfdb
+pyyaml
+scipy

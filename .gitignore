@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+data/
+results/
+*.pth
+*.pt
+.DS_Store
+.vscode/
+git_token.txt
