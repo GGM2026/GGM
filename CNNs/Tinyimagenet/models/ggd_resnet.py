@@ -1,25 +1,17 @@
-# models/ggd_resnet.py
 from __future__ import annotations
 
 from typing import Optional, Union
 
+import math
 import torch
 import torch.nn as nn
 import timm
 
-try:
-    from .linearggd import LinearGGD
-    from .conv2dggd import Conv2dGGD
-    from .custom_resnet import create_resnet20
-except ImportError:
-    from linearggd import LinearGGD
-    from conv2dggd import Conv2dGGD
-    from custom_resnet import create_resnet20
+from .linearggd import LinearGGD
+from .conv2dggd import Conv2dGGD
+from .custom_resnet import create_resnet20
 
 
-# -------------------------
-# Replace layers with GGD
-# -------------------------
 def customize_model(
     model: nn.Module,
     N_scale: float,
@@ -50,13 +42,13 @@ def replace_layers_recursive(
     chunk_N: int = 0,
 ) -> None:
     for name, module in parent_module.named_children():
-        full_name = f"{current_path}.{name}"  # kept for debugging/logging if needed
+        full_name = f"{current_path}.{name}"
 
         if isinstance(module, nn.Conv2d):
             k = module.kernel_size[0] if isinstance(module.kernel_size, tuple) else int(module.kernel_size)
             s = module.stride[0] if isinstance(module.stride, tuple) else int(module.stride)
             p = module.padding[0] if isinstance(module.padding, tuple) else int(module.padding)
-
+            
             new_conv = Conv2dGGD(
                 in_channels=module.in_channels,
                 out_channels=module.out_channels,
@@ -104,35 +96,7 @@ def disable_inplace_activations(model: nn.Module) -> None:
             m.inplace = False
 
 
-# -------------------------
-# PReLU swapping (timm ResNet)
-# -------------------------
-def set_resnet_prelu(model: nn.Module, init: float = 0.25) -> None:
-    """
-    Replace timm ResNet activations (stem act1 + block act{1,2,3})
-    with channel-wise PReLU using the corresponding BatchNorm num_features.
-
-    Works for BasicBlock (bn1->act1, bn2->act2) and Bottleneck (bn3->act3).
-    """
-    # Stem: bn1 -> act1
-    if hasattr(model, "bn1") and hasattr(model, "act1"):
-        if isinstance(model.bn1, nn.BatchNorm2d) and isinstance(model.act1, nn.Module):
-            model.act1 = nn.PReLU(num_parameters=model.bn1.num_features, init=init)
-
-    # Blocks: bn1->act1, bn2->act2, (bn3->act3 for bottleneck)
-    for m in model.modules():
-        if hasattr(m, "bn1") and hasattr(m, "act1") and isinstance(m.bn1, nn.BatchNorm2d):
-            m.act1 = nn.PReLU(num_parameters=m.bn1.num_features, init=init)
-        if hasattr(m, "bn2") and hasattr(m, "act2") and isinstance(m.bn2, nn.BatchNorm2d):
-            m.act2 = nn.PReLU(num_parameters=m.bn2.num_features, init=init)
-        if hasattr(m, "bn3") and hasattr(m, "act3") and isinstance(m.bn3, nn.BatchNorm2d):
-            m.act3 = nn.PReLU(num_parameters=m.bn3.num_features, init=init)
-
-
-# -------------------------
-# Dataset stem patching
-# -------------------------
-SMALL_IMAGE_DATASETS = {"cifar10", "cifar100", "fashionmnist"}
+SMALL_IMAGE_DATASETS = {"cifar10", "cifar100", "fashionmnist","tinyimagenet"}
 
 
 def patch_resnet_stem_for_dataset(model: nn.Module, dataset_name: str, in_chans: int) -> None:
@@ -163,38 +127,18 @@ def patch_resnet_stem_for_dataset(model: nn.Module, dataset_name: str, in_chans:
         model.maxpool = nn.Identity()
 
 
-def _patch_classifier_dropout(model: nn.Module, drop_rate: float) -> None:
-    """
-    Ensure we have a dropout right before the final classifier, even if the
-    backbone doesn't expose a built-in drop layer.
-    Works for typical timm ResNet-style models that have model.fc.
-    """
-    if drop_rate <= 0:
-        return
-
-    # If timm already has a classifier drop module, prefer using it.
-    # Many timm models have `drop_rate` and create `model.drop` internally.
-    if hasattr(model, "drop") and isinstance(model.drop, nn.Module) and not isinstance(model.drop, nn.Identity):
-        return
-
-    model.drop = nn.Dropout(p=drop_rate)
-
-
-# -------------------------
-# Build
-# -------------------------
 def build_model(
     model_name: str = "resnet18",
     num_classes: int = 1000,
     N_scale: float = 1.0,
     requires_grad: bool = True,
     device: Optional[Union[str, torch.device]] = None,
-    img_size: Optional[int] = None,  # accepted for compatibility; unused for ResNet
+    img_size: Optional[int] = None,
     in_chans: int = 3,
     dataset_name: Optional[str] = None,
     chunk_N: int = 0,
-    use_prelu: bool = False,      # NEW: swap all activations to PReLU
-    prelu_init: float = 0.25,     # NEW: PReLU init value
+    drop_path_rate: float = 0.0,
+    full_precision: bool = False,
 ) -> nn.Module:
     """
     Factory to build and customize ResNet with Conv/Linear swapped to GGD.
@@ -202,34 +146,24 @@ def build_model(
     model_name:
       - "resnet18", "resnet34", "resnet50", -----> timm.create_model
       - "resnet20" ------------------------------> custom CIFAR-style ResNet-20
-
-    use_prelu:
-      - False: keep timm defaults (ReLU)
-      - True: replace stem + block activations with channel-wise PReLU
     """
     mn = model_name.lower().strip()
 
-    # Backbone construction
     if mn == "resnet20":
-        model = create_resnet20(num_classes=num_classes, in_chans=in_chans)
+        model = create_resnet20(num_classes=num_classes, in_chans=in_chans, width_mult=1)
     else:
         model = timm.create_model(
             model_name,
-            pretrained=False,  # hard-disabled
+            pretrained=False,
             num_classes=num_classes,
             in_chans=in_chans,
         )
 
     disable_inplace_activations(model)
 
-    if use_prelu:
-        set_resnet_prelu(model, init=prelu_init)
-
-    if dataset_name is not None:
-        patch_resnet_stem_for_dataset(model, dataset_name, in_chans=in_chans)
-
-    customize_model(model, N_scale=N_scale, chunk_N=chunk_N)
-
+    if not full_precision:
+        customize_model(model, N_scale=N_scale, chunk_N=chunk_N)
+        
     for p in model.parameters():
         p.requires_grad = requires_grad
 

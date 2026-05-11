@@ -1,7 +1,5 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 
-# Subject-Dependent
-# ADFTD Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -21,8 +19,6 @@ python \
   --patience 10
 
 
-# Subject-Independent
-# APAVA Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -41,7 +37,6 @@ python \
   --train_epochs 100 \
   --patience 10
 
-# TDBRAIN Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -60,7 +55,6 @@ python \
   --train_epochs 100 \
   --patience 10
 
-# ADFTD Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -79,7 +73,6 @@ python \
   --train_epochs 100 \
   --patience 10
 
-# PTB Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -98,7 +91,6 @@ python \
   --train_epochs 100 \
   --patience 10
 
-# PTB-XL Dataset
 python \
   -u run.py \
   --task_name classification \

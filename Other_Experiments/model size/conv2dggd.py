@@ -46,9 +46,6 @@ class Conv2dGGD(nn.Module):
         cout_g = self.out_channels // g
         N = self.N
 
-        # ----------------------------
-        # binary forward
-        # ----------------------------
         Gx = self.G.to(device=x.device, dtype=x.dtype)
         G_conv = Gx.reshape(g * N, cin_g, k, k)
 
@@ -63,7 +60,7 @@ class Conv2dGGD(nn.Module):
 
         W_flat = self.weight.reshape(g, cout_g, cin_g * k * k)
         Gw = self.G.to(device=x.device, dtype=W_flat.dtype)
-        W_proj = torch.bmm(Gw, W_flat.transpose(1, 2))   # (g, N, cout_g)
+        W_proj = torch.bmm(Gw, W_flat.transpose(1, 2))
         W_b = torch.where(
             W_proj >= 0,
             torch.ones((), device=W_proj.device, dtype=W_proj.dtype),
@@ -73,9 +70,6 @@ class Conv2dGGD(nn.Module):
 
         y_bin = F.conv2d(z_b, W_b.to(z_b.dtype), groups=g) / float(N)
 
-        # ----------------------------
-        # smooth surrogate forward
-        # ----------------------------
         x32 = x.float()
         W32 = self.weight.float()
 
@@ -96,10 +90,10 @@ class Conv2dGGD(nn.Module):
             stride=self.stride,
             padding=self.padding,
             groups=g,
-        )  # (B, g, outH, outW)
+        )
 
-        inv_pn = torch.rsqrt(p2 + self.eps) # (B, g, outH, outW)
-        inv_pn = inv_pn.repeat_interleave(cout_g, dim=1) # (B, Cout, outH, outW)
+        inv_pn = torch.rsqrt(p2 + self.eps)
+        inv_pn = inv_pn.repeat_interleave(cout_g, dim=1)
 
         inv_wn = torch.rsqrt(
             W32.square().sum(dim=(1, 2, 3)) + self.eps
@@ -110,7 +104,6 @@ class Conv2dGGD(nn.Module):
         y_surr = (2.0 / torch.pi) * torch.asin(corr)
         y_surr = y_surr.to(dtype=y_bin.dtype)
 
-        # forward = binary, backward = surrogate
         y = y_bin.detach() + (y_surr - y_surr.detach())
 
         y = y * self.scale.view(1, -1, 1, 1)

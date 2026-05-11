@@ -46,11 +46,9 @@ def generate_continuous_mask(B, T, C=None, n=5, l=0.1):
         for _ in range(n):
             t = np.random.randint(T - l + 1)
             if C:
-                # For a continuous timestamps, mask random half channels
                 index = np.random.choice(C, int(C / 2), replace=False)
                 res[i, t : t + l, index] = False
             else:
-                # For a continuous timestamps, mask all channels
                 res[i, t : t + l] = False
     return res
 

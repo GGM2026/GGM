@@ -81,7 +81,6 @@ class CIFARBasicBlock(nn.Module):
             N_scale=N_scale,
         )
         self.bn1 = nn.BatchNorm2d(planes)
-        # self.act1 = nn.PReLU(num_parameters=planes, init=prelu_init)
         self.act1 = nn.ReLU()
 
         self.conv2 = _swap_conv(
@@ -95,7 +94,6 @@ class CIFARBasicBlock(nn.Module):
             N_scale=N_scale,
         )
         self.bn2 = nn.BatchNorm2d(planes)
-        # self.act2 = nn.PReLU(num_parameters=planes, init=prelu_init)
         self.act2 = nn.ReLU()
 
         self.downsample = nn.Identity()
@@ -144,7 +142,6 @@ class ResNetCIFAR(nn.Module):
             bias=False,
         )
         self.bn1 = nn.BatchNorm2d(self.in_planes)
-        # self.act1 = nn.PReLU(num_parameters=self.in_planes, init=config.prelu_init)
         self.act1 = nn.ReLU()
         self.maxpool = nn.Identity()
 

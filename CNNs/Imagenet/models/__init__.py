@@ -1,14 +1,12 @@
 # models/__init__.py
 import sys
 
-from .ggd_resnet import build_model as build_ggd_resnet
-from .ggd_vgg import build_model as build_ggd_vgg
-from .GGM_resnet import build_model as build_GGM_resnet
+from .ggm_resnet import build_model as build_ggm_resnet
+from .ggm_vgg import build_model as build_ggm_vgg
 
 _BUILDERS = {
-    "ggd_resnet": build_ggd_resnet,
-    "ggd_vgg": build_ggd_vgg,
-    "GGM_resnet": build_GGM_resnet,
+    "ggm_resnet": build_ggm_resnet,
+    "ggm_vgg": build_ggm_vgg,
 }
 
 
@@ -36,5 +34,5 @@ def build_model(name: str, **kwargs):
             if original_customize is not None:
                 module.customize_model = original_customize
 
-    # 3) Normal GGD path
+    # 3) Normal GGM path
     return builder_func(**kwargs)

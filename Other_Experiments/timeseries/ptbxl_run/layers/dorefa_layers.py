@@ -3,9 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-# ---------------------------------------------------------------------------
-# Straight-Through Estimator helpers
-# ---------------------------------------------------------------------------
 
 class RoundSTE(torch.autograd.Function):
     @staticmethod
@@ -25,7 +22,6 @@ class SignSTE(torch.autograd.Function):
     """
     @staticmethod
     def forward(ctx, x):
-        # zeros → +1, negatives → -1, positives → +1
         return torch.where(x == 0, torch.ones_like(x), torch.sign(x))
 
     @staticmethod
@@ -41,9 +37,6 @@ def sign_ste(x: torch.Tensor) -> torch.Tensor:
     return SignSTE.apply(x)
 
 
-# ---------------------------------------------------------------------------
-# Core quantization functions  (fw, fa from DoReFa-Net)
-# ---------------------------------------------------------------------------
 
 def quantize_kbit(x: torch.Tensor, k: int) -> torch.Tensor:
     """Uniform k-bit quantization on [0, 1]."""
@@ -65,15 +58,12 @@ def dorefa_quantize_weight(w: torch.Tensor, k: int) -> torch.Tensor:
         return w
 
     if k == 1:
-        # E is a stop-gradient scale, matching tf.stop_gradient(reduce_mean(abs(x)))
         E = w.abs().mean().detach()
         return sign_ste(w) * E
 
     w_tanh = torch.tanh(w)
-    # Official: x / reduce_max(abs(x)) * 0.5 + 0.5
-    # i.e. divide by max_abs first, then scale by 0.5 — NOT divide by (2*max_abs)
     max_abs = w_tanh.abs().max().detach()
-    w_norm = w_tanh / (max_abs + 1e-8) * 0.5 + 0.5   # ← fixed
+    w_norm = w_tanh / (max_abs + 1e-8) * 0.5 + 0.5
     return 2.0 * quantize_kbit(w_norm, k) - 1.0
 
 
@@ -93,9 +83,6 @@ def dorefa_quantize_activation(x: torch.Tensor, k: int) -> torch.Tensor:
     return quantize_kbit(x, k)
 
 
-# ---------------------------------------------------------------------------
-# Drop-in quantized layers
-# ---------------------------------------------------------------------------
 
 class LinearDoReFa(nn.Linear):
     """
@@ -123,7 +110,6 @@ class LinearDoReFa(nn.Linear):
         self.quantize_input = quantize_input
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # Caller must have already clamped x to [0,1] if quantize_input=True
         x_q = dorefa_quantize_activation(x, self.act_bits) if self.quantize_input else x
         w_q = dorefa_quantize_weight(self.weight, self.weight_bits)
         return F.linear(x_q, w_q, self.bias)

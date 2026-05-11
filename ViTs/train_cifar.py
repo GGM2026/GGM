@@ -13,7 +13,6 @@ from src.models.vit_ggd import ViT
 from src.training.trainer import Trainer
 from src.training.evaluator import Evaluator
 
-# --- Define Paths ---
 PROJECT_ROOT = Path(".").resolve()
 DATA_DIR = PROJECT_ROOT / "data"
 RESULTS_ROOT = "results"
@@ -28,9 +27,6 @@ def main(num_runs, master_seed, test_name, image_information, model_parameters, 
         Trainer.set_seed(seed=run_seed)
         print(f"\n--- Starting Run {i+1}/{NUM_RUNS} (Seed: {run_seed}) ---")
 
-        # -------------------------------------------------
-        # Run directory with timestamp (NO overwrite)
-        # -------------------------------------------------
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         run_name = f"{test_name}_run{i+1}_{timestamp}"
         run_output_dir = os.path.join(RESULTS_ROOT, dataset_name, run_name)
@@ -45,9 +41,6 @@ def main(num_runs, master_seed, test_name, image_information, model_parameters, 
         mparams = model_parameters
         hparams = hyperparameters
 
-        # -------------------------------------------------
-        # Data
-        # -------------------------------------------------
         data_handler = DataHandler(
             image_information=img_info,
             batch_size=hparams.batch_size,
@@ -56,9 +49,6 @@ def main(num_runs, master_seed, test_name, image_information, model_parameters, 
         )
         train_loader, val_loader, test_loader = data_handler.get_dataloaders()
 
-        # -------------------------------------------------
-        # Model / Optim / Scheduler
-        # -------------------------------------------------
         base_model = ViT(mparams=mparams, hparams=hparams, img_info=img_info)
 
         base_optimizer = optim.AdamW(
@@ -91,9 +81,6 @@ def main(num_runs, master_seed, test_name, image_information, model_parameters, 
             ema_decay=0.99,
         )
 
-        # -------------------------------------------------
-        # 🔹 SAVE RUN CONFIG **BEFORE TRAINING**
-        # -------------------------------------------------
 
         save_run_config(
             path=os.path.join(run_output_dir, "run_config.json"),
@@ -107,9 +94,6 @@ def main(num_runs, master_seed, test_name, image_information, model_parameters, 
         )
 
 
-        # -------------------------------------------------
-        # Train
-        # -------------------------------------------------
         training_history = trainer._run_trainer(model_path=local_model_path)
         pd.DataFrame(training_history).to_csv(history_path, index=False)
 
@@ -133,18 +117,15 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Train GGD-ViT model")
     
-    # Run parameters
     parser.add_argument("--num_runs", type=int, default=1, help="Number of runs")
     parser.add_argument("--master_seed", type=int, default=100, help="Master seed")
     parser.add_argument("--test_name", type=str, default="base_testing_F0", help="Test name prefix")
     parser.add_argument("--dataset", type=str, default="cifar10", choices=["cifar10", "cifar100", "imagenet", "mnist"], help="Dataset to use")
     
-    # Image parameters
     parser.add_argument("--width", type=int, default=32, help="Image width")
     parser.add_argument("--height", type=int, default=32, help="Image height")
     parser.add_argument("--in_channel", type=int, default=3, help="Image input channels")
     
-    # Model parameters
     parser.add_argument("--patch_size", type=int, default=4, help="Patch size")
     parser.add_argument("--inner_dim", type=int, default=192, help="Inner dimension")
     parser.add_argument("--transformer_layers", type=int, default=12, help="Number of transformer layers")
@@ -153,13 +134,11 @@ if __name__ == "__main__":
     parser.add_argument("--attn_dropout", type=float, default=0.0, help="Attention dropout")
     parser.add_argument("--mlp_dropout", type=float, default=0.0, help="MLP dropout")
     
-    # Quantization parameters
     parser.add_argument("--k_bits_x", type=int, default=2, help="Activation quantization bits")
     parser.add_argument("--k_bits_w", type=int, default=1, help="Weight quantization bits")
     parser.add_argument("--n_factor", type=int, default=2, help="N_factor for quantization")
     parser.add_argument("--rho_cap", type=float, default=0.99, help="rho_cap for quantization")
     
-    # Hyperparameters
     parser.add_argument("--batch_size", type=int, default=512, help="Batch size")
     parser.add_argument("--out_classes", type=int, default=10, help="Number of output classes")
     parser.add_argument("--epochs", type=int, default=450, help="Training epochs")
@@ -168,7 +147,6 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
 
-    # --- base testing ---
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
     

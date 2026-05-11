@@ -1,4 +1,4 @@
-# models/ggd_vgg.py
+# models/ggm_vgg.py
 '''VGG family (small/medium/large) for CIFAR10. FC layers are removed (ImageNet-style FC stack removed; CIFAR head kept).
 (c) YANG, Wei (adapted)
 '''
@@ -10,7 +10,7 @@ import math
 import torch
 import torch.nn as nn
 
-from .conv2dggd import Conv2dGGD
+from .conv2dggm import Conv2dGGM
 
 class PReLU_plus(nn.Module):
     def __init__(self, num_parameters=1, init_pos=1.0, init_neg=0.25):
@@ -32,7 +32,7 @@ class VGGSmall(nn.Module):
     - 6 conv layers total (conv0..conv5)
     - 3 max-pools so spatial goes 32->16->8->4
     - Head is Linear(512*4*4 -> num_classes)
-    - BN + Hardtanh layout as in your original ggd_vgg_small.py
+    - BN + Hardtanh layout as in your original ggm_vgg_small.py
     """
     def __init__(self, num_classes: int = 10, in_chans: int = 3):
         super().__init__()
@@ -167,14 +167,14 @@ class VGG16(VGG):
 
 
 # -------------------------
-# Replace layers with GGD
+# Replace layers with GGM
 # -------------------------
-def _swap_conv_to_ggd(conv: nn.Conv2d, N_scale: float,) -> Conv2dGGD:
+def _swap_conv_to_ggm(conv: nn.Conv2d, N_scale: float,) -> Conv2dGGM:
     k = conv.kernel_size[0] if isinstance(conv.kernel_size, tuple) else int(conv.kernel_size)
     s = conv.stride[0] if isinstance(conv.stride, tuple) else int(conv.stride)
     p = conv.padding[0] if isinstance(conv.padding, tuple) else int(conv.padding)
 
-    new_conv = Conv2dGGD(
+    new_conv = Conv2dGGM(
         in_channels=conv.in_channels,
         out_channels=conv.out_channels,
         kernel_size=k,
@@ -197,7 +197,7 @@ def _swap_conv_to_ggd(conv: nn.Conv2d, N_scale: float,) -> Conv2dGGD:
 
 def customize_model(model: nn.Module, N_scale: float,) -> None:
     """
-    Replace all conv layers except the stem conv with Conv2dGGD.
+    Replace all conv layers except the stem conv with Conv2dGGM.
     Supports:
       - VGGSmall with explicit conv0/conv1/...
       - VGG{11,16} with model.features = nn.Sequential(...)
@@ -226,7 +226,7 @@ def customize_model(model: nn.Module, N_scale: float,) -> None:
         else:
             child_name = module_name
 
-        setattr(parent, child_name, _swap_conv_to_ggd(module, N_scale=N_scale,))
+        setattr(parent, child_name, _swap_conv_to_ggm(module, N_scale=N_scale,))
 
 
 def disable_inplace_activations(model: nn.Module) -> None:
@@ -262,7 +262,7 @@ def build_model(
     dataset_name: Optional[str] = None,  # unused; kept for API compatibility
 ) -> nn.Module:
     """
-    Factory to build and customize VGG family for CIFAR10 with Conv2d swapped to Conv2dGGD.
+    Factory to build and customize VGG family for CIFAR10 with Conv2d swapped to Conv2dGGM.
     
     model_name:
       - "vgg_small", "vgg11", "vgg16"

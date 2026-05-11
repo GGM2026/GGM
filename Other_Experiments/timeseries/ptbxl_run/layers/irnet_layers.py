@@ -4,9 +4,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-# -----------------------------------------------------------------------------
-# IRNet binary quantizer
-# -----------------------------------------------------------------------------
 
 class BinaryQuantize(torch.autograd.Function):
     @staticmethod
@@ -38,9 +35,6 @@ def _irnet_pow2_scale(mean_abs: torch.Tensor) -> torch.Tensor:
     )
 
 
-# -----------------------------------------------------------------------------
-# Linear IRNet
-# -----------------------------------------------------------------------------
 
 class LinearIRNet(nn.Linear):
     def __init__(
@@ -64,11 +58,9 @@ class LinearIRNet(nn.Linear):
         w = self.weight
 
         if self.binary_weight:
-            # Normalize per output neuron
             bw = w - w.mean(dim=1, keepdim=True)
             bw = bw / _safe_std(bw, dim=1, keepdim=True)
 
-            # sw shape: [out_features, 1]
             mean_abs = bw.abs().mean(dim=1, keepdim=True)
             sw = _irnet_pow2_scale(mean_abs).detach()
 
@@ -85,9 +77,6 @@ class LinearIRNet(nn.Linear):
         return F.linear(ba, bw, self.bias)
 
 
-# -----------------------------------------------------------------------------
-# Conv1d IRNet
-# -----------------------------------------------------------------------------
 
 class Conv1dIRNet(nn.Conv1d):
     def __init__(
@@ -125,11 +114,9 @@ class Conv1dIRNet(nn.Conv1d):
         w = self.weight
 
         if self.binary_weight:
-            # Normalize per output channel over [Cin/groups, K]
             bw = w - w.mean(dim=(1, 2), keepdim=True)
             bw = bw / _safe_std(bw, dim=(1, 2), keepdim=True)
 
-            # sw shape: [out_channels, 1, 1]
             mean_abs = bw.abs().mean(dim=(1, 2), keepdim=True)
             sw = _irnet_pow2_scale(mean_abs).detach()
 

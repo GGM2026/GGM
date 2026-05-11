@@ -27,25 +27,24 @@ def collate_fn(data, max_len=None):
     batch_size = len(data)
     features, labels = zip(*data)
 
-    # Stack and pad features and masks (convert 2D to 3D tensors, i.e. add batch dimension)
     lengths = [
         X.shape[0] for X in features
-    ]  # original sequence length for each time series
+    ]
     if max_len is None:
         max_len = max(lengths)
 
     X = torch.zeros(
         batch_size, max_len, features[0].shape[-1]
-    )  # (batch_size, padded_length, feat_dim)
+    )
     for i in range(batch_size):
         end = min(lengths[i], max_len)
         X[i, :end, :] = features[i][:end, :]
 
-    targets = torch.stack(labels, dim=0)  # (batch_size, num_labels)
+    targets = torch.stack(labels, dim=0)
 
     padding_masks = padding_mask(
         torch.tensor(lengths, dtype=torch.int16), max_len=max_len
-    )  # (batch_size, padded_length) boolean tensor, "1" means keep
+    )
 
     return X, targets, padding_masks
 
@@ -58,11 +57,11 @@ def padding_mask(lengths, max_len=None):
     batch_size = lengths.numel()
     max_len = (
         max_len or lengths.max_val()
-    )  # trick works because of overloading of 'or' operator for non-boolean types
+    )
     return (
         torch.arange(0, max_len, device=lengths.device)
-        .type_as(lengths)  # convert to same type as lengths tensor
-        .repeat(batch_size, 1)  # (batch_size, max_len)
+        .type_as(lengths)
+        .repeat(batch_size, 1)
         .lt(lengths.unsqueeze(1))
     )
 
@@ -149,19 +148,12 @@ def subsample(y, limit=256, factor=2):
 
 
 def bandpass_filter_func(signal, fs, lowcut, highcut):
-    # length of signal
     fft_len = signal.shape[1]
-    # FFT
     fft_spectrum = np.fft.rfft(signal, n=fft_len, axis=1)
-    # get frequency bins
     freqs = np.fft.rfftfreq(fft_len, d=1/fs)
-    # create mask for freqs
     mask = (freqs >= lowcut) & (freqs <= highcut)
-    # expand mask to match fft_spectrum dimensions
-    mask = mask[:, np.newaxis]  # Adjust mask shape if necessary
-    # apply mask
+    mask = mask[:, np.newaxis]
     fft_spectrum = fft_spectrum * mask
-    # IFFT
     filtered_signal = np.fft.irfft(fft_spectrum, n=fft_len, axis=1)
 
     return filtered_signal

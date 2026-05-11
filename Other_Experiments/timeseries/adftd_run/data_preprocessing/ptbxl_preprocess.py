@@ -55,17 +55,14 @@ def resample_to_250hz(x: np.ndarray, orig_freq=500) -> np.ndarray:
 
 
 def normalize_trial(trial_2d: np.ndarray) -> np.ndarray:
-    # trial_2d shape: (time, channels)
     scaler = StandardScaler()
     return scaler.fit_transform(trial_2d)
 
 
-# Load metadata
 info = pd.read_csv(os.path.join(ROOT, "ptbxl_database.csv"), index_col=None)
 info = info[["ecg_id", "scp_codes", "patient_id"]]
 info["scp_codes"] = info["scp_codes"].apply(final_scp)
 
-# Keep only patients with one consistent diagnosis across trials, excluding "others"
 id_dict = {}
 order = 1
 grouped = info.groupby("patient_id", sort=True)
@@ -79,7 +76,6 @@ for _, df in grouped:
 
 print("Kept patients:", len(id_dict))
 
-# Build features
 for pid, (ecg_ids, scps) in id_dict.items():
     subject_trials = []
 
@@ -96,29 +92,25 @@ for pid, (ecg_ids, scps) in id_dict.items():
             if ecg_id not in ecg_ids:
                 continue
 
-            rec_path = os.path.join(folder_path, fname[:-4])  # strip .hea
-            ecg_data, fields = wfdb.rdsamp(rec_path)  # shape (5000, 12) at 500 Hz
+            rec_path = os.path.join(folder_path, fname[:-4])
+            ecg_data, fields = wfdb.rdsamp(rec_path)
 
-            # resample each channel to 250 Hz -> shape (2500, 12)
             channels = []
             for ch in range(ecg_data.shape[1]):
                 ch_data = resample_to_250hz(ecg_data[:, ch], orig_freq=500)
                 channels.append(ch_data)
             trial = np.array(channels).T
 
-            # standardize per trial
             trial = normalize_trial(trial)
 
             subject_trials.append(trial)
 
-    subject_trials = np.array(subject_trials)  # (num_trials, 2500, 12)
+    subject_trials = np.array(subject_trials)
 
-    # split each 10-second trial into ten 1-second windows: (num_trials*10, 250, 12)
     subject_windows = subject_trials.reshape(-1, 250, subject_trials.shape[-1])
 
     np.save(os.path.join(FEATURE_DIR, f"feature_{pid}.npy"), subject_windows)
 
-# Build labels
 labels = []
 for pid, (_, scps) in id_dict.items():
     scp = list(set(scps))[0]
@@ -131,7 +123,7 @@ for pid, (_, scps) in id_dict.items():
     elif scp == "CD":
         diag = 3
     else:
-        diag = 4  # HYP
+        diag = 4
     labels.append([diag, int(pid)])
 
 labels = np.array(labels, dtype=np.int64)

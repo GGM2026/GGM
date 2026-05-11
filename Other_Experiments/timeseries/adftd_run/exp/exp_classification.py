@@ -1,4 +1,3 @@
-# exp/exp_classification.py
 from copy import deepcopy
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
@@ -29,19 +28,14 @@ class Exp_Classification(Exp_Basic):
         self.swa = args.swa
 
     def _build_model(self):
-        # model input depends on data
-        # train_data, train_loader = self._get_data(flag='TRAIN')
         test_data, test_loader = self._get_data(flag="TEST")
-        self.args.seq_len = test_data.max_seq_len  # redefine seq_len
+        self.args.seq_len = test_data.max_seq_len
         self.args.pred_len = 0
-        # self.args.enc_in = train_data.feature_df.shape[1]
-        # self.args.num_class = len(train_data.class_names)
-        self.args.enc_in = test_data.X.shape[2]  # redefine enc_in
+        self.args.enc_in = test_data.X.shape[2]
         self.args.num_class = len(np.unique(test_data.y))
-        # model init
         model = (
             self.model_dict[self.args.model].Model(self.args).float()
-        )  # pass args to model
+        )
         if self.args.use_multi_gpu and self.args.use_gpu:
             model = nn.DataParallel(model, device_ids=self.args.device_ids)
         return model
@@ -91,7 +85,7 @@ class Exp_Classification(Exp_Basic):
         trues = torch.cat(trues, 0)
         probs = torch.nn.functional.softmax(
             preds
-        )  # (total_samples, num_classes) est. prob. for each class and sample
+        )
         trues_onehot = (
             torch.nn.functional.one_hot(
                 trues.reshape(
@@ -103,13 +97,11 @@ class Exp_Classification(Exp_Basic):
             .cpu()
             .numpy()
         )
-        # print(trues_onehot.shape)
         predictions = (
             torch.argmax(probs, dim=1).cpu().numpy()
-        )  # (total_samples,) int class index for each sample
+        )
         probs = probs.cpu().numpy()
         trues = trues.flatten().cpu().numpy()
-        # accuracy = cal_accuracy(predictions, trues)
         metrics_dict = {
             "Accuracy": accuracy_score(trues, predictions),
             "Precision": precision_score(trues, predictions, average="macro"),
@@ -272,7 +264,6 @@ class Exp_Classification(Exp_Basic):
         vali_loss, val_metrics_dict = self.vali(vali_data, vali_loader, criterion)
         test_loss, test_metrics_dict = self.vali(test_data, test_loader, criterion)
 
-        # result save
         folder_path = (
             "./results/"
             + self.args.task_name

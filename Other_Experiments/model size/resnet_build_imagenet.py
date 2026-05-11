@@ -195,7 +195,6 @@ class ResNetImageNet(nn.Module):
 
         self.in_planes = 64
 
-        # Standard ImageNet stem
         self.conv1 = nn.Conv2d(
             config.in_chans,
             64,

@@ -37,7 +37,6 @@ def fit_svm(features, y, MAX_SAMPLES=10000):
             cv=5,
             n_jobs=5,
         )
-        # If the training set is too large, subsample MAX_SAMPLES examples
         if train_size > MAX_SAMPLES:
             split = train_test_split(
                 features, y, train_size=MAX_SAMPLES, random_state=0, stratify=y
@@ -50,7 +49,6 @@ def fit_svm(features, y, MAX_SAMPLES=10000):
 
 
 def fit_lr(features, y, MAX_SAMPLES=100000):
-    # If the training set is too large, subsample MAX_SAMPLES examples
     if features.shape[0] > MAX_SAMPLES:
         split = train_test_split(
             features, y, train_size=MAX_SAMPLES, random_state=0, stratify=y
@@ -73,7 +71,6 @@ def fit_knn(features, y):
 
 
 def fit_ridge(train_features, train_y, valid_features, valid_y, MAX_SAMPLES=100000):
-    # If the training set is too large, subsample MAX_SAMPLES examples
     if train_features.shape[0] > MAX_SAMPLES:
         split = train_test_split(
             train_features, train_y, train_size=MAX_SAMPLES, random_state=0

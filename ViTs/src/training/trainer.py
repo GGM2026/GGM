@@ -104,7 +104,7 @@ class Trainer:
     def _train_one_epoch(self):
 
         use_amp = torch.cuda.is_available()
-        amp_dtype = torch.float16   # fastest on 4090; keep GGD math FP32 via Patch A
+        amp_dtype = torch.float16
 
         model = self.model
         model.train()
@@ -137,18 +137,18 @@ class Trainer:
                     logits = model(img)
                     loss = lam * self.criterion(logits, y_a) + (1 - lam) * self.criterion(logits, y_b)
             
-                    reg = ggd_reg_loss(model)           # <<< NEW
+                    reg = ggd_reg_loss(model)
                     if reg is not None:
-                        loss = loss + reg               # <<< NEW
+                        loss = loss + reg
             
             else:
                 with torch.cuda.amp.autocast(enabled=use_amp, dtype=amp_dtype):
                     logits = model(img)
                     loss = self.criterion(logits, label)
             
-                    reg = ggd_reg_loss(model)           # <<< NEW
+                    reg = ggd_reg_loss(model)
                     if reg is not None:
-                        loss = loss + reg               # <<< NEW
+                        loss = loss + reg
     
             self.optim.zero_grad(set_to_none=True)
             self.scaler.scale(loss).backward()
@@ -225,18 +225,9 @@ class Trainer:
             }
             history.append(row)
     
-            # 🔹 WRITE CSV EVERY EPOCH (SAFE IF INTERRUPTED)
             pd.DataFrame(history).to_csv(history_path, index=False)
     
-            # 🔹 SAVE LATEST CHECKPOINT EVERY EPOCH
-            # torch.save({
-            #     "epoch": epoch + 1,
-            #     "model": eval_model.state_dict(),
-            #     "optimizer": self.optim.state_dict(),
-            #     "best_val_acc": best_val_accuracy,
-            # }, latest_ckpt)
     
-            # 🔹 SAVE BEST MODEL
             if val_acc > best_val_accuracy:
                 best_val_accuracy = val_acc
                 torch.save(eval_model.state_dict(), model_path)
@@ -269,7 +260,7 @@ class Trainer:
 
       if torch.cuda.is_available():
           torch.cuda.manual_seed(seed)
-          torch.cuda.manual_seed_all(seed) # if you are using multi-GPU.
+          torch.cuda.manual_seed_all(seed)
 
       torch.backends.cudnn.deterministic = False
-      torch.backends.cudnn.benchmark = True # Set to True for speed
+      torch.backends.cudnn.benchmark = True

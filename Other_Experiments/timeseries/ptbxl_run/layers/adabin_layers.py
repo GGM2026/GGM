@@ -84,12 +84,10 @@ class Conv1dAdaBin(nn.Conv1d):
         self.filter_size = ksize * (in_channels // groups)
 
     def forward(self, inputs: torch.Tensor) -> torch.Tensor:
-        # 1-bit activation
         inputs = self.binary_a(inputs)
 
-        # 1-bit weight
         w = self.weight
-        beta_w = w.mean(dim=(1, 2), keepdim=True)  # [out_channels, 1, 1]
+        beta_w = w.mean(dim=(1, 2), keepdim=True)
         alpha_w = torch.sqrt(
             ((w - beta_w) ** 2).sum(dim=(1, 2), keepdim=True) / self.filter_size
         ).clamp_min(1e-8)
@@ -129,12 +127,10 @@ class LinearAdaBin(nn.Linear):
         self.filter_size = in_features
 
     def forward(self, inputs: torch.Tensor) -> torch.Tensor:
-        # 1-bit activation
         inputs = self.binary_a(inputs)
 
-        # 1-bit weight
         w = self.weight
-        beta_w = w.mean(dim=1, keepdim=True)  # [out_features, 1]
+        beta_w = w.mean(dim=1, keepdim=True)
         alpha_w = torch.sqrt(
             ((w - beta_w) ** 2).sum(dim=1, keepdim=True) / self.filter_size
         ).clamp_min(1e-8)

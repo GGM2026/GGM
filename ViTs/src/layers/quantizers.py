@@ -4,9 +4,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-# ============================================================
-# 1) Single source of truth: quantizer spec
-# ============================================================
 def quantizer_spec(
     k_bits: int,
     s0: float,
@@ -52,14 +49,10 @@ def quantizer_spec(
     return edges, levels
 
 
-# backward-compatible name for your table builder
 def clipped_bins_and_levels(k_bits, s0=1.0, device="cpu", dtype=torch.float64):
     return quantizer_spec(k_bits=k_bits, s0=s0, device=device, dtype=dtype)
 
 
-# ============================================================
-# 2) Core forward quantizer from a given scale
-# ============================================================
 def quantize_core(x: torch.Tensor, k_bits: int, s0: torch.Tensor) -> torch.Tensor:
     """
     Exact same quantizer rule for both GGD and STE.
@@ -82,9 +75,6 @@ def quantize_core(x: torch.Tensor, k_bits: int, s0: torch.Tensor) -> torch.Tenso
     return torch.round(x_scaled * Q) / Q * s0_t
 
 
-# ============================================================
-# 3) Same quantizer + STE wrapper
-# ============================================================
 def quantize_core_ste(
     x: torch.Tensor,
     k_bits: int,
@@ -101,9 +91,6 @@ def quantize_core_ste(
     return x_q.detach() + (x - x.detach()) * pass_through
 
 
-# ============================================================
-# 4) Scale policies
-# ============================================================
 def fixed_scale(s0: float):
     """
     For GGD: use a fixed scalar chosen/tuned for the projected Gaussian signals.
@@ -125,9 +112,6 @@ def absmean_scale(x: torch.Tensor, dim=-1, keepdim=True, eps=1e-6):
     return x.abs().mean(dim=dim, keepdim=keepdim).clamp_min(eps)
 
 
-# ============================================================
-# 5) GGD-side helpers
-# ============================================================
 def ggd_quantize(x: torch.Tensor, k_bits: int, s0: float) -> torch.Tensor:
     """
     GGD forward quantization.
@@ -143,9 +127,6 @@ def ggd_table_bins_and_levels(k_bits: int, s0: float, device="cpu", dtype=torch.
     return quantizer_spec(k_bits=k_bits, s0=s0, device=device, dtype=dtype)
 
 
-# ============================================================
-# 6) STE-side helpers
-# ============================================================
 def ste_quantize_activation(
     x: torch.Tensor,
     k_bits: int,
@@ -163,7 +144,6 @@ def ste_quantize_weight(
     scale_fn=amax_scale,
     clipped_ste: bool = True,
 ):
-    # per-output-channel scale for Linear weights [out_features, in_features]
     s0 = scale_fn(w, dim=-1, keepdim=True)
     w_q = quantize_core_ste(w, k_bits, s0, clipped_ste=clipped_ste)
     return w_q, s0
@@ -173,9 +153,6 @@ def ste_quantize_weight(
 
 
 
-# ============================================================
-# 8) Optional debug checks
-# ============================================================
 def quantize_from_spec(x: torch.Tensor, edges: torch.Tensor, levels: torch.Tensor) -> torch.Tensor:
     idx = torch.bucketize(x, edges[1:-1])
     return levels[idx]

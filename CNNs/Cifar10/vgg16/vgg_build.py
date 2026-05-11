@@ -163,7 +163,7 @@ class VGGSmall(nn.Module):
         return x
 
 
-class VGGGM(nn.Module):
+class VGGGM (nn.Module):
     def __init__(self, config: VGGConfig):
         super().__init__()
 
@@ -278,7 +278,7 @@ def build_vgg_cifar(
 
     if key == "small":
         return VGGSmall(config)
-    return VGGGM(config)
+    return VGGGM (config)
 
 
 def build_model(
