@@ -8,11 +8,11 @@ class RMSNorm(nn.Module):
         self.eps = eps
 
     def forward(self, x):
-        orig_dtype = x.dtype          # remember incoming dtype (fp16 / fp32)
+        orig_dtype = x.dtype
 
-        x_fp32 = x.float()            # force FP32 for norm math
+        x_fp32 = x.float()
         rms = x_fp32.pow(2).mean(dim=-1, keepdim=True).add(self.eps).sqrt()
         y = x_fp32 / rms * self.weight
 
-        return y.to(orig_dtype)       # return to original dtype for AMP
+        return y.to(orig_dtype)
 

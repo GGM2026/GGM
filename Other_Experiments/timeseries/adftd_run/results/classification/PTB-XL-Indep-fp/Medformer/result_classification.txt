@@ -1,0 +1,55 @@
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed41  
+Validation results --- Loss: 0.83881, Accuracy: 0.74015, Precision: 0.65892, Recall: 0.61714, F1: 0.63342, AUROC: 0.90351, AUPRC: 0.68477
+Test results --- Loss: 0.87953, Accuracy: 0.72875, Precision: 0.64057, Recall: 0.59727, F1: 0.61352, AUROC: 0.89675, AUPRC: 0.66293
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed41  
+Validation results --- Loss: 0.81637, Accuracy: 0.75066, Precision: 0.68138, Recall: 0.62735, F1: 0.64599, AUROC: 0.91014, AUPRC: 0.70202
+Test results --- Loss: 0.86844, Accuracy: 0.73616, Precision: 0.65627, Recall: 0.60727, F1: 0.62468, AUROC: 0.90228, AUPRC: 0.67361
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed41  
+Validation results --- Loss: 0.81637, Accuracy: 0.75066, Precision: 0.68138, Recall: 0.62735, F1: 0.64599, AUROC: 0.91014, AUPRC: 0.70202
+Test results --- Loss: 0.86844, Accuracy: 0.73616, Precision: 0.65627, Recall: 0.60727, F1: 0.62468, AUROC: 0.90228, AUPRC: 0.67361
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed41  
+Validation results --- Loss: 0.81637, Accuracy: 0.75066, Precision: 0.68138, Recall: 0.62735, F1: 0.64599, AUROC: 0.91014, AUPRC: 0.70202
+Test results --- Loss: 0.86844, Accuracy: 0.73616, Precision: 0.65627, Recall: 0.60727, F1: 0.62468, AUROC: 0.90228, AUPRC: 0.67361
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed42  
+Validation results --- Loss: 1.03387, Accuracy: 0.74618, Precision: 0.66740, Recall: 0.62990, F1: 0.64447, AUROC: 0.90627, AUPRC: 0.69033
+Test results --- Loss: 1.11646, Accuracy: 0.72814, Precision: 0.64227, Recall: 0.60512, F1: 0.61929, AUROC: 0.89639, AUPRC: 0.66407
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed43  
+Validation results --- Loss: 0.88890, Accuracy: 0.75028, Precision: 0.68607, Recall: 0.62540, F1: 0.64594, AUROC: 0.90969, AUPRC: 0.70361
+Test results --- Loss: 0.95103, Accuracy: 0.73869, Precision: 0.66494, Recall: 0.60543, F1: 0.62421, AUROC: 0.90277, AUPRC: 0.67429
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed44  
+Validation results --- Loss: 0.82398, Accuracy: 0.75059, Precision: 0.68421, Recall: 0.62729, F1: 0.64532, AUROC: 0.91032, AUPRC: 0.70519
+Test results --- Loss: 0.87655, Accuracy: 0.73820, Precision: 0.66296, Recall: 0.60625, F1: 0.62271, AUROC: 0.90342, AUPRC: 0.67830
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed45  
+Validation results --- Loss: 0.79735, Accuracy: 0.75227, Precision: 0.68328, Recall: 0.62910, F1: 0.64929, AUROC: 0.91091, AUPRC: 0.70501
+Test results --- Loss: 0.85222, Accuracy: 0.73917, Precision: 0.66546, Recall: 0.60827, F1: 0.62843, AUROC: 0.90308, AUPRC: 0.67624
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed46  
+Validation results --- Loss: 0.94131, Accuracy: 0.74779, Precision: 0.67319, Recall: 0.62742, F1: 0.64314, AUROC: 0.90778, AUPRC: 0.69564
+Test results --- Loss: 1.01907, Accuracy: 0.73358, Precision: 0.65047, Recall: 0.60460, F1: 0.61915, AUROC: 0.89869, AUPRC: 0.66760
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed42  
+Validation results --- Loss: 1.03387, Accuracy: 0.74618, Precision: 0.66740, Recall: 0.62990, F1: 0.64447, AUROC: 0.90627, AUPRC: 0.69033
+Test results --- Loss: 1.11646, Accuracy: 0.72814, Precision: 0.64227, Recall: 0.60512, F1: 0.61929, AUROC: 0.89639, AUPRC: 0.66407
+
+
+classification_PTB-XL-Indep-fp_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed43  
+Validation results --- Loss: 0.88890, Accuracy: 0.75028, Precision: 0.68607, Recall: 0.62540, F1: 0.64594, AUROC: 0.90969, AUPRC: 0.70361
+Test results --- Loss: 0.95103, Accuracy: 0.73869, Precision: 0.66494, Recall: 0.60543, F1: 0.62421, AUROC: 0.90277, AUPRC: 0.67429
+
+

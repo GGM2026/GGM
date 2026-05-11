@@ -81,7 +81,7 @@ class PTBXLLoader(Dataset):
             print("PTB-XL all ids:", sorted(ids))
 
         for j, filename in enumerate(filenames):
-            trial_label = subject_label[j]  # [label, pid]
+            trial_label = subject_label[j]
             pid = int(trial_label[1])
 
             if pid not in ids:
@@ -175,7 +175,7 @@ class ADFTDLoader(Dataset):
             print("ADFTD all ids:", sorted(ids))
 
         for j, filename in enumerate(filenames):
-            trial_label = subject_label[j]  # [label, pid]
+            trial_label = subject_label[j]
             pid = int(trial_label[1])
 
             if pid not in ids:

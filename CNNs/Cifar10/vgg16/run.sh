@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 set -euo pipefail
 
 DATA_ROOT="../../data/cifar10_download"
@@ -15,8 +14,6 @@ N_SCALE=2.5
 
 RESULTS_FILE="${RESULTS_DIR}/nscale_${N_SCALE}.csv"
 
-# Uncomment this if you want to start fresh each time for this N_scale
-# rm -f "$RESULTS_FILE"
 
 SEED=$((BASE_SEED))
 RUN_NAME="${BASE_RUN}_N${N_SCALE}_seed${SEED}"

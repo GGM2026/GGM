@@ -1,4 +1,4 @@
-# GGM_train.py
+# train.py
 from __future__ import annotations
 
 import gc
@@ -14,6 +14,7 @@ os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 import torch
 import torch.nn as nn
 from torch.amp import GradScaler
+import torch._dynamo
 
 from data import build_loaders
 from models import build_model as build_any_model
@@ -38,17 +39,20 @@ from utils import (
 )
 
 from utils.torch_perf import configure_torch_perf
-from utils.train_eval import count_params, train_one_epoch, validate, resample_all_G
+from utils.train_eval import count_params, train_one_epoch, validate
 from utils.ckpt_eval import single_process_eval_checkpoints
 from utils.experiment import resolve_arch_and_kwargs, get_run_dir, become_single_process_for_eval
+
+import sys
+import tqdm
 
 
 def make_test_log_file(args) -> Path:
     """
-    logs/<model>_<size>_<run_name>_<dataset>_ggd/test_accs.txt
+    logs/<model>_<size>_<run_name>_<dataset>_ggm/test_accs.txt
     """
     logs_root = Path("logs")
-    subdir = f"{args.model}_{args.size}_{args.run_name}_{args.dataset}_ggd"
+    subdir = f"{args.model}_{args.size}_{args.run_name}_{args.dataset}_ggm"
     out_dir = logs_root / subdir
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir / "test_accs.txt"
@@ -124,6 +128,9 @@ def main():
 
     configure_torch_perf()
 
+    torch._dynamo.config.optimize_ddp = False
+    torch.set_float32_matmul_precision(args.matmul_precision)
+
     # ---- CUDA performance tuning ----
     if device.type == "cuda":
         # Enable cuDNN auto-tuner for static input shapes (typical for
@@ -172,9 +179,26 @@ def main():
                 args, num_classes=num_classes, in_chans=in_chans, device=device
             )
 
-            model = build_any_model(arch, **model_kwargs).to(device=device, memory_format=torch.channels_last)
+            model = build_any_model(arch, **model_kwargs).to(device=device)
+
+            if device.type == "cuda":
+                for p in model.parameters():
+                    if p.ndim == 4:
+                        p.data = p.data.to(memory_format=torch.channels_last)
+            
             if not getattr(args, "no_compile", False) and hasattr(torch, "compile"):
-                model = torch.compile(model, mode="reduce-overhead")
+                compile_kwargs = {
+                    "fullgraph": bool(args.compile_fullgraph),
+                    "dynamic": False,
+                }
+            
+                if args.compile_mode != "none":
+                    compile_kwargs["mode"] = args.compile_mode
+            
+                if is_main_process(env.is_distributed):
+                    print(f"[COMPILE] torch.compile enabled with {compile_kwargs}", flush=True)
+            
+                model = torch.compile(model, **compile_kwargs)
 
             if is_main_process(env.is_distributed):
                 print(model)
@@ -270,13 +294,6 @@ def main():
 
                 if is_main_process(env.is_distributed):
                     print(f"\nEpoch {epoch+1}/{args.epochs} (world_size={env.world_size})", flush=True)
-
-                # keep original resampling policy
-                if args.dataset.lower() != "tinyimagenet":
-                    if (args.epochs > 150) and (epoch < 150):
-                        resample_all_G(model, epoch, every=5, is_distributed=env.is_distributed, rank=env.rank)
-                    if (args.epochs < 100) and (epoch < 60):
-                        resample_all_G(model, epoch, every=5, is_distributed=env.is_distributed, rank=env.rank)
 
                 epoch_start = time.time()
 
@@ -381,11 +398,16 @@ def main():
             # -------------------------
             become_single_process_for_eval(env, device)
 
-            candidates = []
-            if best_loss_path is not None:
-                candidates.append(best_loss_path)
-            if best_acc_path is not None:
-                candidates.append(best_acc_path)
+            if args.dataset == "imagenet":
+                candidates = []
+                if best_acc_path is not None:
+                    candidates.append(best_acc_path)
+            else:
+                candidates = []
+                if best_loss_path is not None:
+                    candidates.append(best_loss_path)
+                if best_acc_path is not None:
+                    candidates.append(best_acc_path)
 
             if not candidates:
                 print("\n[WARN] No best checkpoints found to evaluate.", flush=True)

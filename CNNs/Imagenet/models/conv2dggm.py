@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class Conv2dGGD(nn.Module):
+class Conv2dGGM(nn.Module):
     """Conv2d replacement using Generalized Gaussian Distribution binary projection."""
 
     def __init__(
@@ -10,13 +10,12 @@ class Conv2dGGD(nn.Module):
         in_channels: int,
         out_channels: int,
         kernel_size: int,
-        N_scale: float = 2.5,
+        N_factor: float = 2.5,
         stride: int = 1,
         padding: int = 0,
         groups: int = 1,
         bias: bool = False,
         eps: float = 1e-6,
-        chunk_N: int = 0,
     ):
         super().__init__()
         self.in_channels = in_channels
@@ -26,13 +25,14 @@ class Conv2dGGD(nn.Module):
         self.padding = padding
         self.groups = groups
         self.eps = eps
+        self.N_factor = N_factor
 
         assert in_channels % groups == 0
         assert out_channels % groups == 0
 
         cin_g = in_channels // groups
         K = cin_g * kernel_size * kernel_size
-        self.N = max(500, int(K * N_scale))
+        self.N = max(500, int(K * N_factor))
 
         self.weight = nn.Parameter(torch.randn(out_channels, cin_g, kernel_size, kernel_size) * 0.05)
         self.bias = nn.Parameter(torch.zeros(out_channels)) if bias else None
@@ -94,3 +94,17 @@ class Conv2dGGD(nn.Module):
         if self.bias is not None:
             y = y + self.bias.view(1, -1, 1, 1)
         return y
+
+    def extra_repr(self) -> str:
+        return (
+            f"in_channels={self.in_channels}, "
+            f"out_channels={self.out_channels}, "
+            f"kernel_size=({self.kernel_size}), "
+            f"N={self.N}, "
+            f"nu={self.N_factor}, "
+            f"stride={self.stride}, "
+            f"padding={self.padding}, "
+            f"groups={self.groups}, "
+            f"bias={self.bias is not None}, "
+            f"G_shape={tuple(self.G.shape)}"
+        )

@@ -110,47 +110,28 @@ def build_optim_sched(
         )
         return OptimSched(opt, sched, step_scheduler_per_update=True)
 
-    # ImageNet/TinyImageNet: Warmup + Cosine (step per update)
+    # ImageNet/TinyImageNet: OneCycleLR, step per optimizer update
     if d in ("imagenet", "tinyimagenet"):
-        # ---- LR scaling by global batch ----
-        # Interpret args.base_lr as the LR for global batch 256.
         global_batch = args.batch_size * world_size
         lr = args.base_lr * (global_batch / 256.0)
-
+    
         opt = build_optimizer(args, model, lr=lr)
-
+    
         updates_per_epoch = _num_optimizer_updates_per_epoch(
             len(train_loader), args.accumulation_steps
         )
         total_updates = updates_per_epoch * args.epochs
-
-        # ---- warmup ----
-        warmup_epochs = getattr(args, "warmup_epochs", 10)
-        warmup_epochs = min(int(warmup_epochs), int(args.epochs))
-        warmup_updates = warmup_epochs * updates_per_epoch
-
-        warmup = torch.optim.lr_scheduler.LinearLR(
+    
+        sched = torch.optim.lr_scheduler.OneCycleLR(
             opt,
-            start_factor=1e-3, 
-            end_factor=1.0,
-            total_iters=warmup_updates,
+            max_lr=lr,
+            total_steps=total_updates,
+            pct_start=0.3,
+            anneal_strategy="cos",
+            div_factor=10.0,
+            final_div_factor=1000.0,
         )
-
-        # ---- cosine over remaining updates ----
-        cosine_updates = max(1, total_updates - warmup_updates)
-        cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
-            opt,
-            T_max=cosine_updates,
-            eta_min=1e-6,  # safe floor
-        )
-
-        sched = torch.optim.lr_scheduler.SequentialLR(
-            opt,
-            schedulers=[warmup, cosine],
-            milestones=[warmup_updates],
-        )
-
-        # per-update stepping
+    
         return OptimSched(opt, sched, step_scheduler_per_update=True)
 
     raise ValueError(f"No optimizer/scheduler setup defined for dataset={dataset}")

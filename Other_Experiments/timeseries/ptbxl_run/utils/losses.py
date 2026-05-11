@@ -1,16 +1,3 @@
-# This source code is provided for the purposes of scientific reproducibility
-# under the following limited license from Element AI Inc. The code is an
-# implementation of the N-BEATS model (Oreshkin et al., N-BEATS: Neural basis
-# expansion analysis for interpretable time series forecasting,
-# https://arxiv.org/abs/1905.10437). The copyright to the source code is
-# licensed under the Creative Commons - Attribution-NonCommercial 4.0
-# International license (CC BY-NC 4.0):
-# https://creativecommons.org/licenses/by-nc/4.0/.  Any commercial use (whether
-# for the benefit of third parties or internally in production) requires an
-# explicit license. The subject-matter of the N-BEATS model and associated
-# materials are the property of Element AI Inc. and may be subject to patent
-# protection. No license to patents is granted hereunder (whether express or
-# implied). Copyright © 2020 Element AI Inc. All rights reserved.
 
 """
 Loss functions for PyTorch.
@@ -119,22 +106,21 @@ def id_contrastive_loss(z1, z2, id):
     pid_matrix = pid1 + "-" + pid2
     pids_of_interest = np.unique(
         str_pid + "-" + str_pid
-    )  # unique combinations of pids of interest i.e. matching
+    )
     bool_matrix_of_interest = np.zeros((len(str_pid), len(str_pid)))
     for pid in pids_of_interest:
         bool_matrix_of_interest += pid_matrix == pid
     rows1, cols1 = np.where(
         np.triu(bool_matrix_of_interest, 1)
-    )  # upper triangle same patient combs
+    )
     rows2, cols2 = np.where(
         np.tril(bool_matrix_of_interest, -1)
-    )  # down triangle same patient combs
+    )
 
     B, H = z1.size(0), z1.size(1)
     loss = 0
     z1 = t.nn.functional.normalize(z1, dim=1)
     z2 = t.nn.functional.normalize(z2, dim=1)
-    # B x H
     view1_array = z1
     view2_array = z2
     norm1_vector = view1_array.norm(dim=1).unsqueeze(0)
@@ -145,34 +131,27 @@ def id_contrastive_loss(z1, z2, id):
     argument = sim_matrix / (norm_matrix * temperature)
     sim_matrix_exp = t.exp(argument)
 
-    # diag_elements = t.diag(sim_matrix_exp)
 
-    triu_sum = t.sum(sim_matrix_exp, 1)  # add column
-    tril_sum = t.sum(sim_matrix_exp, 0)  # add row
+    triu_sum = t.sum(sim_matrix_exp, 1)
+    tril_sum = t.sum(sim_matrix_exp, 0)
 
-    # loss_diag1 = -t.mean(t.log(diag_elements/triu_sum))
-    # loss_diag2 = -t.mean(t.log(diag_elements/tril_sum))
 
-    # loss = loss_diag1 + loss_diag2
-    # loss_terms = 2
     loss_terms = 0
 
-    # upper triangle same patient combs exist
     if len(rows1) > 0:
         triu_elements = sim_matrix_exp[
             rows1, cols1
-        ]  # row and column for upper triangle same patient combinations
+        ]
         loss_triu = -t.mean(t.log(triu_elements / triu_sum[rows1]))
-        loss += loss_triu  # technically need to add 1 more term for symmetry
+        loss += loss_triu
         loss_terms += 1
 
-    # down triangle same patient combs exist
     if len(rows2) > 0:
         tril_elements = sim_matrix_exp[
             rows2, cols2
-        ]  # row and column for down triangle same patient combinations
+        ]
         loss_tril = -t.mean(t.log(tril_elements / tril_sum[cols2]))
-        loss += loss_tril  # technically need to add 1 more term for symmetry
+        loss += loss_tril
         loss_terms += 1
 
     if loss_terms == 0:

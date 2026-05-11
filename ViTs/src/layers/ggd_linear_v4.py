@@ -1,26 +1,3 @@
-# ============================================================
-# Unified "Expectation-Parity" implementation for
-#   - GGDLinear (stochastic RF + quantized estimator)
-#   - GGMExpectationLinear (deterministic expectation kernel)
-#
-# Goal:
-#   GGMExpectationLinear(x) == E[GGDLinear(x)]   (up to finite-N variance)
-#
-# Notes:
-# - We do NOT hardcode arcsin inside GGD. For 1-bit, the kernel expectation is arcsin.
-# - For 2..5 bits we use an exact BVN-based K'(rho) table and *integrate once* to get K(rho).
-# - For >5 bits (or when table is disabled) we default to the continuous Gaussian limit kernel:
-#       K(rho) = rho   (and K'(rho)=1)
-#   which is the natural expectation target as quantization becomes fine / identity.
-#
-# Dependencies assumed to exist in your codebase:
-#   layers.quantizers:
-#       - quantize_kbit_affine
-#       - clipped_bins_and_levels
-#   layers.ggd_kernels_bvn (can be replaced by the ExactKTable below)
-#   utils.seed.make_G_from_seed
-#   utils.bitpack.pack_kbit
-# ============================================================
 
 import math
 import torch
@@ -38,9 +15,6 @@ from ..utils.seed import make_G_from_seed
 from ..utils.bitpack import pack_kbit
 
 
-# ============================================================
-# Global G registry
-# ============================================================
 
 class GlobalGRegistry:
     _registry = {}
@@ -49,15 +23,12 @@ class GlobalGRegistry:
     def get_G(cls, d, N, device):
         key = (d, N)
         if key not in cls._registry:
-            seed = 123456  # fixed global seed
+            seed = 123456
             G = make_G_from_seed(seed=seed, N=N, d=d, device=device)
             cls._registry[key] = G
         return cls._registry[key]
 
 
-# ============================================================
-# SAFE BVN PDF (handles ±inf exactly)
-# ============================================================
 def bvn_pdf_safe(x, y, rho):
     """
     "PDF corner trick" used in your original K' construction.
@@ -76,15 +47,10 @@ def bvn_pdf_safe(x, y, rho):
     return out
 
 def l3_spread_regularizer(W, eps=1e-6):
-    # row normalize
     W_hat = W / (W.norm(dim=-1, keepdim=True) + eps)
     return (W_hat.abs() ** 3).sum(dim=-1).mean()
-    # return W_hat.abs().amax(dim=-1).mean()
 
 
-# ============================================================
-# EXACT K TABLE (build K'(rho) exactly, then integrate -> K(rho))
-# ============================================================
 class ExactKTable(nn.Module):
     """
     Builds:
@@ -110,29 +76,23 @@ class ExactKTable(nn.Module):
         self.grid_size = int(grid_size)
         self.register_buffer("band_f", torch.tensor(float(band), dtype=torch.float32), persistent=False)
 
-        # ---- quantizer geometry (clipped bins and representative levels) ----
 
         ex, vx = ggd_table_bins_and_levels(k_bits_x, s0=1.5, device=build_device, dtype=torch.float64)
         ew, vw = ggd_table_bins_and_levels(k_bits_w, s0=1.4, device=build_device, dtype=torch.float64)
 
 
 
-        # bin edges (intervals)
         lx, ux = ex[:-1], ex[1:]
         ly, uy = ew[:-1], ew[1:]
 
-        # grids
         LX, LY = torch.meshgrid(lx, ly, indexing="ij")
         UX, UY = torch.meshgrid(ux, uy, indexing="ij")
         VX, VW = torch.meshgrid(vx, vw, indexing="ij")
         Vprod = VX * VW
 
-        # ---- rho grid ----
         rho_grid = torch.linspace(-band, band, self.grid_size, device=build_device, dtype=build_dtype)
         r = rho_grid.view(-1, 1, 1)
 
-        # ---- EXACT K'(rho) grid construction (your original method) ----
-        # dP here is a *boundary* combination of pdf values (not probability mass).
         dP = (
             bvn_pdf_safe(UX, UY, r)
             - bvn_pdf_safe(LX, UY, r)
@@ -140,32 +100,23 @@ class ExactKTable(nn.Module):
             + bvn_pdf_safe(LX, LY, r)
         )
 
-        Kp_grid = (dP * Vprod).sum(dim=(1, 2))  # shape: (grid_size,)
+        Kp_grid = (dP * Vprod).sum(dim=(1, 2))
 
-        # ---- Integrate K'(rho) -> K(rho) on the grid via cumulative trapezoid ----
-        # We set K(0)=0 (by symmetry for odd-symmetric quantizers; good default).
-        # Then integrate outward along the grid.
-        # This makes K(rho) deterministic and consistent with K'(rho) used in backward.
         Kp_f32 = Kp_grid.to(torch.float32)
         rho_f32 = rho_grid.to(torch.float32)
 
-        # trapezoid increments
-        dr = (rho_f32[1:] - rho_f32[:-1])  # (grid_size-1,)
+        dr = (rho_f32[1:] - rho_f32[:-1])
         avg = 0.5 * (Kp_f32[1:] + Kp_f32[:-1])
-        inc = avg * dr  # (grid_size-1,)
+        inc = avg * dr
 
-        # cumulative from left
         K_grid = torch.empty_like(rho_f32)
         K_grid[0] = 0.0
         K_grid[1:] = torch.cumsum(inc, dim=0)
 
-        # shift so that K(0)=0 exactly (optional but recommended)
         if force_K0_zero:
-            # find nearest index to rho=0
             i0 = int((self.grid_size - 1) * (0.0 + band) / (2.0 * band))
             K_grid = K_grid - K_grid[i0]
 
-        # store buffers (float32)
         self.register_buffer("rho_grid", rho_f32, persistent=False)
         self.register_buffer("Kp_grid", Kp_f32, persistent=False)
         self.register_buffer("K_grid", K_grid, persistent=False)
@@ -192,9 +143,6 @@ class ExactKTable(nn.Module):
         return self._interp(self.Kp_grid, rho)
 
 
-# ============================================================
-# Shared kernel logic (rho shaping + kernel selection + scaling)
-# ============================================================
 class GGDSharedKernel(nn.Module):
     """
     Encapsulates everything that must match between:
@@ -231,7 +179,6 @@ class GGDSharedKernel(nn.Module):
 
         self.table = table
 
-        # choose base kernel type depending on bits
         self.max_bits = max(self.k_bits_x, self.k_bits_w)
 
         self.mixed_fp_x = (self.k_bits_x >= 16 and self.k_bits_w < 16)
@@ -328,13 +275,9 @@ class _GGDLinearFn(torch.autograd.Function):
             raise ValueError("use_std_norm=True requires use_centering=True")
 
 
-        # --- center + std-normalize per row ---
-        # -------------------------
-        # preprocessing
-        # -------------------------
         if use_centering:
-            x_c = x - x.mean(dim=-1, keepdim=True)                 # (B,d)
-            W_c = W - W.mean(dim=-1, keepdim=True)                 # (O,d)
+            x_c = x - x.mean(dim=-1, keepdim=True)
+            W_c = W - W.mean(dim=-1, keepdim=True)
         else:
             x_c = x
             W_c = W
@@ -350,7 +293,6 @@ class _GGDLinearFn(torch.autograd.Function):
             x_s = x_c
             W_s = W_c
 
-        # --- then your usual norm-normalize ---
 
         mixed_fp1 = (k_bits_x >= 16 and k_bits_w == 1)
 
@@ -405,8 +347,6 @@ class _GGDLinearFn(torch.autograd.Function):
         
         rho_exact = x_hat @ W_hat.t()
 
-        # save standardized tensors and downstream norms
-        # ctx.save_for_backward(x_s, W_s, x_std, W_std, x_hat, W_hat, rho_exact, x_norm, W_norm)
         ctx.save_for_backward(x_s, W_s, x_norm, W_norm, x_std, W_std)
         ctx.mixed_fp1 = mixed_fp1
 
@@ -425,13 +365,11 @@ class _GGDLinearFn(torch.autograd.Function):
 
         rho_eps = kernel.rho_eps
 
-        # standardized tensors
         x32 = x_s.float()
         W32 = W_s.float()
         x_std32 = x_std.float()
         W_std32 = W_std.float()
 
-        # norm-normalization stage
         w_sq = (W32 * W32).sum(dim=-1, keepdim=True)
         W_norm32 = torch.sqrt(w_sq + rho_eps + 1e-12)
         W_hat = W32 / W_norm32
@@ -452,9 +390,7 @@ class _GGDLinearFn(torch.autograd.Function):
         U = dy.float() * g
 
 
-        # grad wrt x_s, W_s
         if mixed_fp1:
-            # x is raw FP, no cosine normalization on x
             dx_pre = U @ W_hat
         else:
             dx_pre = (U @ W_hat) - (U * rho).sum(dim=1, keepdim=True) * x_hat
@@ -465,9 +401,7 @@ class _GGDLinearFn(torch.autograd.Function):
         dW_pre = (U.t() @ x_hat) - (U * rho).sum(dim=0, keepdim=True).t() * W_hat
         dW_pre = dW_pre / W_norm32
 
-        # back through std normalization if enabled
         if use_std_norm:
-            # if not mixed_fp1:
             dx_pre = (
                 dx_pre
                 - dx_pre.mean(dim=-1, keepdim=True)
@@ -480,9 +414,7 @@ class _GGDLinearFn(torch.autograd.Function):
                 - W32 * (dW_pre * W32).mean(dim=-1, keepdim=True)
             ) / W_std32
 
-        # back through centering if enabled
         if use_centering:
-            # if not mixed_fp1:
             dx_pre = dx_pre - dx_pre.mean(dim=-1, keepdim=True)
             dW_pre = dW_pre - dW_pre.mean(dim=-1, keepdim=True)
 
@@ -501,11 +433,6 @@ class _GGDLinearFn(torch.autograd.Function):
         return dx, dW, None, None, None, None, None, None, None, None, None, None
 
 
-# ============================================================
-# Deterministic expectation-parity layer (proxy)
-#   - exact cosine rho
-#   - apply *the same* shared kernel as GGD uses
-# ============================================================
 class GGMLinear(nn.Module):
     """
     Deterministic "expectation" counterpart of GGDLinear.
@@ -525,11 +452,9 @@ class GGMLinear(nn.Module):
         bias: bool = False,
         rho_cap: float = 0.995,
         soft_rho: bool = False,
-        # NEW: match GGD interface
-        mode: str = "cosine",      # "cosine" | "dot-detached"
-        smooth_eps: float = 0.0,   # accepted for parity (unused)
-        N_factor: float = 1.0,     # accepted for parity (unused)
-        # table policy
+        mode: str = "cosine",
+        smooth_eps: float = 0.0,
+        N_factor: float = 1.0,
         table_band: float | None = None,
         table_grid_size: int = 2048,
         table_bits_min: int = 2,
@@ -558,7 +483,6 @@ class GGMLinear(nn.Module):
         max_bits = max(self.k_bits_x, self.k_bits_w)
 
 
-        # build table only in desired bit range
 
         mixed_fp_x = (self.k_bits_x >= 16 and self.k_bits_w < 16)
 
@@ -611,8 +535,8 @@ class GGMLinear(nn.Module):
             )
 
         self.mode = str(mode)
-        self.smooth_eps = float(smooth_eps)  # unused, parity only
-        self.base_N_factor = float(N_factor) # unused, parity only
+        self.smooth_eps = float(smooth_eps)
+        self.base_N_factor = float(N_factor)
 
         self.register_buffer("_rho_exceed_sum", torch.tensor(0.0), persistent=False)
         self.register_buffer("_rho_total_sum", torch.tensor(0.0), persistent=False)
@@ -620,12 +544,11 @@ class GGMLinear(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         rho_eps = self.kernel.rho_eps
-        std_eps = 1e-5   # MUST match _GGDLinearFn.forward
+        std_eps = 1e-5
     
         orig_shape = x.shape
         x2 = x.reshape(-1, orig_shape[-1])
     
-        # --- match _GGDLinearFn preprocessing exactly ---
         if self.use_centering:
             x_c = x2 - x2.mean(dim=-1, keepdim=True)
             W_c = self.weight - self.weight.mean(dim=-1, keepdim=True)
@@ -650,26 +573,8 @@ class GGMLinear(nn.Module):
     
         rho = F.linear(x_s / x_norm, W_s / W_norm)
     
-        # if self.training:
-        #     cap = self.kernel.rho_cap
-        #     exceed = (rho.abs() > cap).sum()
-        #     total = rho.numel()
-        #     self._rho_exceed_sum += exceed
-        #     self._rho_total_sum += total
 
-        # if self.training and torch.rand(()) < 0.001:  # sample rarely
-        #     with torch.no_grad():
-        #         x_norm_sq = x_sq.mean().item()
-        #         w_norm_sq = W_sq.mean().item()
-        #         eps = rho_eps.item()
         
-        #         print(
-        #             f"x||^2={x_norm_sq:.3f}  "
-        #             f"w||^2={w_norm_sq:.3f}  "
-        #             f"rho_eps={eps:.3f}  "
-        #             f"x_ratio={eps/x_norm_sq:.4f}  "
-        #             f"w_ratio={eps/w_norm_sq:.4f}"
-        #         )
     
         out = self.kernel.forward_kernel(rho)
     
@@ -693,9 +598,6 @@ class GGMLinear(nn.Module):
 
 
 
-# ============================================================
-# Stochastic GGD layer (RF estimator) using shared kernel
-# ============================================================
 class GGDLinear(nn.Module):
     """
     GGD layer:
@@ -716,9 +618,8 @@ class GGDLinear(nn.Module):
         bias: bool = False,
         rho_cap: float = 0.995,
         soft_rho: bool = False,
-        mode: str = "cosine",      # "cosine" or "dot_detached"
+        mode: str = "cosine",
         smooth_eps: float = 0.0,
-        # table policy
         table_band: float | None = None,
         table_grid_size: int = 2048,
         table_bits_min: int = 2,
@@ -751,7 +652,6 @@ class GGDLinear(nn.Module):
         self.mode = str(mode)
         self.smooth_eps = float(smooth_eps)
 
-        # deterministic seed for G
         self.G_seed = int(torch.randint(0, 2**31 - 1, (1,)).item())
         G = make_G_from_seed(
             seed=self.G_seed,
@@ -759,7 +659,6 @@ class GGDLinear(nn.Module):
             d=self.d,
             device=torch.device("cpu"),
         )
-        # G = GlobalGRegistry.get_G(self.d, self.base_N, self.weight.device)
         self.register_buffer("G", G)
 
 
@@ -799,10 +698,8 @@ class GGDLinear(nn.Module):
 
         
         
-        # expose for parity/debug
         self.table = table
         
-        # optional debug print
         mixed_fp_x = (self.k_bits_x >= 16 and self.k_bits_w < 16)
         
         if mixed_fp_x:
@@ -858,7 +755,6 @@ class GGDLinear(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         orig_shape = x.shape
-        # x2 = x.view(-1, orig_shape[-1])
         x2 = x.reshape(-1, orig_shape[-1])
 
         out, rho = _GGDLinearFn.apply(
@@ -875,15 +771,11 @@ class GGDLinear(nn.Module):
             self.use_std_norm,
         )
 
-        # learned output gain + bias
         out = out * self.gain
         if self.bias is not None:
             out = out + self.bias
 
 
-        #=========================================================
-        #         ---- L3 spread regularizer ----
-        #=========================================================
         if self.training and self.lambda_l3 > 0:
             self._reg_loss = self.lambda_l3 * l3_spread_regularizer(self.weight)
         else:
@@ -911,21 +803,18 @@ class GGDLinear(nn.Module):
             rho_eps = self.kernel.rho_eps
             std_eps = 1e-5
         
-            # --- MUST match _GGDLinearFn preprocessing exactly ---
-            W_c = W - W.mean(dim=-1, keepdim=True)                                # (O,d)
-            W_std = torch.sqrt(W_c.pow(2).mean(dim=-1, keepdim=True) + std_eps)   # (O,1)
+            W_c = W - W.mean(dim=-1, keepdim=True)
+            W_std = torch.sqrt(W_c.pow(2).mean(dim=-1, keepdim=True) + std_eps)
             W_s = W_c / W_std
         
             W_sq = W_s.pow(2).sum(dim=-1, keepdim=True)
             W_norm = torch.sqrt(W_sq + rho_eps + 1e-12)
             W_hat = W_s / W_norm
         
-            # project
-            W_p = self.G @ W_hat.t()   # (N, O)
+            W_p = self.G @ W_hat.t()
         
             mixed_fp_x = (self.k_bits_x >= 16 and self.k_bits_w < 16)
         
-            # use the SAME quantizer rule as live forward
             W_q = ggd_quantize(W_p, self.k_bits_w, s0=1.0)
         
             export = {
@@ -937,7 +826,7 @@ class GGDLinear(nn.Module):
                 "k_bits_x": int(self.k_bits_x),
                 "k_bits_w": int(self.k_bits_w),
                 "mixed_fp_x": bool(mixed_fp_x),
-                "W_q": W_q.detach().cpu(),                # (N, O), already dequantized low-bit values
+                "W_q": W_q.detach().cpu(),
                 "gain": self.gain.detach().cpu(),
                 "bias": self.bias.detach().cpu() if self.bias is not None else None,
                 "rho_cap": float(self.rho_cap),
@@ -945,19 +834,14 @@ class GGDLinear(nn.Module):
                 "rho_eps": self.kernel.rho_eps.detach().cpu(),
             }
         
-            # Fast path for mixed mode:
-            # (Gx)^T W_q / N == x^T (G^T W_q / N)
             if mixed_fp_x:
-                W_eff = (self.G.t() @ W_q).t() / float(self.G.size(0))   # (O, d)
+                W_eff = (self.G.t() @ W_q).t() / float(self.G.size(0))
                 export["effective_weight"] = W_eff.detach().cpu()
                 export["mixed_cq"] = self.kernel.mixed_cq.detach().cpu()
         
             return export
 
 
-# ============================================================
-# Factory: fp | GGM | ggd
-# ============================================================
 def make_linear(layer_type, in_features, out_features, bias=False, **kwargs):
     """
     layer_type:
@@ -975,12 +859,10 @@ def make_linear(layer_type, in_features, out_features, bias=False, **kwargs):
     """
     layer_type = str(layer_type).lower().strip()
 
-    # defaults (safe for both)
     kwargs.setdefault("mode", "cosine")
     kwargs.setdefault("smooth_eps", 0.0)
     kwargs.setdefault("N_factor", 1.0)
 
-    # normalize mode spelling
     mode = str(kwargs.get("mode", "cosine")).lower().strip()
     if mode in {"dot-detached", "dot_detached", "dotdetached"}:
         mode = "dot_detached"

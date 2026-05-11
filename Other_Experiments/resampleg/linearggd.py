@@ -65,7 +65,7 @@ class LinearGGD(nn.Module):
         What = W32 / Wnorm
 
         s = xhat @ What.transpose(-1, -2)
-        s = s.clamp(-1.0 + 1e-4, 1.0 - 1e-4)  # safer for asin
+        s = s.clamp(-1.0 + 1e-4, 1.0 - 1e-4)
         y_surr = (2.0 / torch.pi) * torch.asin(s)
         y_surr = y_surr.to(dtype=y_bin.dtype)
 

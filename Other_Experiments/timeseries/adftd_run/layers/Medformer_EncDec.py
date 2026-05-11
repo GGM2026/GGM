@@ -1,4 +1,3 @@
-# layers/Medformer_EncDec.py
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -17,7 +16,6 @@ class BinaryNorm(nn.Module):
         self.eps = eps
 
     def forward(self, x):
-        # Mean-centering only, no variance scaling (cheap)
         x = x - x.mean(dim=-1, keepdim=True)
         return self.weight * x + self.bias
 
@@ -149,15 +147,12 @@ class Encoder(nn.Module):
         self.norm = norm_layer
 
     def forward(self, x, attn_mask=None, tau=None, delta=None):
-        # x is a list of tensors:
-        # [[B, L1, D], [B, L2, D], ...]
         attns = []
         for attn_layer in self.attn_layers:
             x, attn = attn_layer(x, attn_mask=attn_mask, tau=tau, delta=delta)
             attns.append(attn)
 
-        # concatenate all outputs along token dimension
-        x = torch.cat(x, dim=1)  # (B, patch_num_1 + patch_num_2 + ..., D)
+        x = torch.cat(x, dim=1)
 
         if self.norm is not None:
             x = self.norm(x)

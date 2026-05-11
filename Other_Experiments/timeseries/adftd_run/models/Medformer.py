@@ -1,4 +1,3 @@
-# models/Medformer.py
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -26,7 +25,6 @@ class Model(nn.Module):
         self.use_dorefa = getattr(configs, "use_dorefa", False)
         self.use_adabin = getattr(configs, "use_adabin", False)
 
-        # Embedding
         patch_len_list = list(map(int, configs.patch_len_list.split(",")))
         stride_list = patch_len_list
         seq_len = configs.seq_len
@@ -49,7 +47,6 @@ class Model(nn.Module):
         if sum([self.use_ggd, self.use_xnor, self.use_dorefa, self.use_adabin]) > 1:
             raise ValueError("Only one of use_ggd, use_xnor, use_dorefa or use_adabin can be True")
 
-        # Encoder
         self.encoder = Encoder(
             [
                 EncoderLayer(
@@ -79,7 +76,6 @@ class Model(nn.Module):
             norm_layer=torch.nn.LayerNorm(configs.d_model),
         )
 
-        # Classification head
         if self.task_name == "classification":
             self.act = F.gelu
             self.dropout = nn.Dropout(configs.dropout)

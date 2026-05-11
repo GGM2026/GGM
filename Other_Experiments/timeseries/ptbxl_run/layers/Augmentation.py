@@ -3,7 +3,6 @@ import torch.nn as nn
 
 
 class Jitter(nn.Module):
-    # apply noise on each element
     def __init__(self, scale=0.1):
         super().__init__()
         self.scale = scale
@@ -15,7 +14,6 @@ class Jitter(nn.Module):
 
 
 class Scale(nn.Module):
-    # scale each channel by a random scalar
     def __init__(self, scale=0.1):
         super().__init__()
         self.scale = scale
@@ -28,7 +26,6 @@ class Scale(nn.Module):
 
 
 class Flip(nn.Module):
-    # left-right flip
     def __init__(self, prob=0.5):
         super().__init__()
         self.prob = prob
@@ -40,7 +37,6 @@ class Flip(nn.Module):
 
 
 class Shuffle(nn.Module):
-    # shuffle channels order
     def __init__(self, prob=0.5):
         super().__init__()
         self.prob = prob
@@ -54,7 +50,6 @@ class Shuffle(nn.Module):
 
 
 class TemporalMask(nn.Module):
-    # Randomly mask a portion of timestamps across all channels
     def __init__(self, ratio=0.1):
         super().__init__()
         self.ratio = ratio
@@ -76,13 +71,9 @@ class FrequencyMask(nn.Module):
     def forward(self, x):
         if self.training:
             B, C, T = x.shape
-            # Perform rfft
             x_fft = torch.fft.rfft(x, dim=-1)
-            # Generate random indices for masking
             mask = torch.rand(x_fft.shape, device=x.device) > self.ratio
-            # Apply mask
             x_fft = x_fft * mask
-            # Perform inverse rfft
             x = torch.fft.irfft(x_fft, n=T, dim=-1)
         return x
 

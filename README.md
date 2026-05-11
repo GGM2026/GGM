@@ -7,7 +7,7 @@ This repository contains the official codebase for our NeurIPS submission.
 It is recommended to use a virtual environment or conda environment. Then, install the required dependencies:
 
 ```bash
-pip install -r requirements.txt
+conda env create -f environment.yml
 ```
 
 

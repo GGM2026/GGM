@@ -31,42 +31,17 @@ def resolve_arch_and_kwargs(
             # warning printed in main only on rank0; keep logic there if you want
             pass
 
-        if args.GGM:
-            if size == "20":
-                raise ValueError(
-                    "--GGM is not supported with --size 20. ResNet-20 is a custom CIFAR "
-                    "architecture not available in timm. Use --size 18 or --size 34 with --GGM."
-                )
-            arch = "GGM_resnet"
-            model_kwargs = dict(
-                model_name=timm_backbone,
-                num_classes=num_classes,
-                pretrained=False,
-                requires_grad=True,
-                device=device,
-                img_size=args.img_size,
-                in_chans=in_chans,
-                dataset_name=args.dataset,
-                use_prelu=args.prelu,
-                prelu_init=0.25,
-                replace_blocks_with_convbn=not args.full_precision,
-                use_double_residual=args.double_residual,
-                full_precision=args.full_precision,
-            )
-            return arch, model_kwargs
-
-        arch = "ggd_resnet"
+        arch = "ggm_resnet"
         model_kwargs = dict(
             model_name=timm_backbone,
             num_classes=num_classes,
-            N_scale=args.N_scale,
+            N_factor=args.N_factor,
             requires_grad=True,
             device=device,
             img_size=args.img_size,
             in_chans=in_chans,
             dataset_name=args.dataset,
             full_precision=args.full_precision,
-            chunk_N=args.chunk_N,
             use_prelu=args.prelu,
         )
         return arch, model_kwargs
@@ -82,7 +57,7 @@ def resolve_arch_and_kwargs(
         elif size == "11":
             model_name = "vgg11"
 
-        arch = "ggd_vgg"
+        arch = "ggm_vgg"
         model_kwargs = dict(
             model_name=model_name,
             num_classes=num_classes,
@@ -93,7 +68,6 @@ def resolve_arch_and_kwargs(
             in_chans=in_chans,
             dataset_name=args.dataset,
             full_precision=args.full_precision,
-            chunk_N=args.chunk_N,
         )
         return arch, model_kwargs
 

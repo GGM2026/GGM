@@ -6,7 +6,6 @@ import torch.nn.grad as tgrad
 try:
     from torch.amp import custom_fwd, custom_bwd
 except ImportError:
-    # Fallback for older PyTorch versions
     def custom_fwd(**kwargs):
         def decorator(func):
             return func
@@ -20,9 +19,6 @@ except ImportError:
         return func
 
 
-# ---------------------------------------------------------------------------
-# Dynamic VRAM-aware chunk sizing for 1D forward
-# ---------------------------------------------------------------------------
 _FWD_CHUNK_FLOOR = 1
 _FWD_VRAM_FRACTION = 0.25
 _FWD_CHUNK_FALLBACK = 4096
@@ -59,7 +55,7 @@ def _estimate_forward_chunk_1d(
     if torch.is_grad_enabled():
         budget //= 2
 
-    bpf = 4  # conservative float32 estimate
+    bpf = 4
     cout = groups * cout_g
 
     accum_bytes = batch_size * cout * out_l * bpf
@@ -154,9 +150,8 @@ class _Conv1d_GGD(torch.autograd.Function):
 
         Cout_g = Cout // groups
 
-        # Precompute flattened grouped weights
         W_flat = W.reshape(groups, Cout_g, K)
-        W_flat_T = W_flat.transpose(1, 2).contiguous()  # (g, K, Cout_g)
+        W_flat_T = W_flat.transpose(1, 2).contiguous()
 
         effective_k = (k - 1) * dilation + 1
         out_l = (L + 2 * padding - effective_k) // stride + 1
@@ -174,8 +169,8 @@ class _Conv1d_GGD(torch.autograd.Function):
                 n1 = min(N, n0 + effective_chunk)
                 Nc = n1 - n0
 
-                Gn = G[:, n0:n1, :]                          # (g, Nc, K)
-                G_conv = Gn.reshape(groups * Nc, Cin_g, k)  # (g*Nc, Cin_g, k)
+                Gn = G[:, n0:n1, :]
+                G_conv = Gn.reshape(groups * Nc, Cin_g, k)
 
                 Z = F.conv1d(
                     x,
@@ -187,7 +182,7 @@ class _Conv1d_GGD(torch.autograd.Function):
                 )
                 Z.sign_()
 
-                W_proj = torch.bmm(Gn, W_flat_T)            # (g, Nc, Cout_g)
+                W_proj = torch.bmm(Gn, W_flat_T)
                 W_proj.sign_()
 
                 W_b = W_proj.transpose(1, 2).reshape(Cout, Nc, 1)
@@ -244,7 +239,6 @@ class _Conv1d_GGD(torch.autograd.Function):
         Cout, Cin_g, k = W.shape
         Cout_g = Cout // groups
 
-        # ---- arcsin surrogate backward (analytic), group-aware, dilation-aware ----
         num = F.conv1d(
             x,
             W,
@@ -254,9 +248,6 @@ class _Conv1d_GGD(torch.autograd.Function):
             groups=groups,
         )
 
-        # IMPORTANT:
-        # For dilation>1, the patch norm must reflect the actual dilated receptive field.
-        # So we use a "dilated ones" kernel instead of just shape-(k,) all ones.
         ones = _make_dilated_ones_kernel_1d(
             groups=groups,
             cin_g=Cin_g,
@@ -271,15 +262,15 @@ class _Conv1d_GGD(torch.autograd.Function):
             ones,
             stride=stride,
             padding=padding,
-            dilation=1,   # already encoded into the sparse kernel itself
+            dilation=1,
             groups=groups,
         )
-        inv_pn = torch.rsqrt(p2 + eps)  # (B, groups, L_out)
+        inv_pn = torch.rsqrt(p2 + eps)
 
-        inv_pn_exp = inv_pn.repeat_interleave(Cout_g, dim=1)  # (B, Cout, L_out)
+        inv_pn_exp = inv_pn.repeat_interleave(Cout_g, dim=1)
 
         w2 = W.square().sum(dim=(1, 2))
-        inv_wn = torch.rsqrt(w2 + eps)  # (Cout,)
+        inv_wn = torch.rsqrt(w2 + eps)
 
         inv_denom = inv_pn_exp * inv_wn.view(1, Cout, 1)
 
@@ -292,7 +283,6 @@ class _Conv1d_GGD(torch.autograd.Function):
         g_corr = g * corr
         tmp = g_corr.view(B, groups, Cout_g, *corr.shape[2:]).sum(dim=2)
 
-        # d(corr)/d(p2) = -0.5 * corr / p2, represented through inv_pn
         dL_dp2 = -0.5 * tmp * inv_pn.pow(2)
         del tmp
 
@@ -302,7 +292,7 @@ class _Conv1d_GGD(torch.autograd.Function):
             dL_dp2,
             stride=stride,
             padding=padding,
-            dilation=1,   # sparse kernel already encodes dilation
+            dilation=1,
             groups=groups,
         )
         del dL_dp2, ones
@@ -331,7 +321,7 @@ class _Conv1d_GGD(torch.autograd.Function):
             groups=groups,
         )
 
-        s = g_corr.sum(dim=(0, 2))  # (Cout,)
+        s = g_corr.sum(dim=(0, 2))
         del g_corr
 
         dL_dwn = -s * inv_wn
@@ -340,7 +330,6 @@ class _Conv1d_GGD(torch.autograd.Function):
         W_grad = W_grad_num.add_(W_grad_norm)
         del W_grad_num, W_grad_norm
 
-        # grads for x, W, G, N, stride, padding, dilation, groups, eps, debug, chunk_N
         return x_grad, W_grad, None, None, None, None, None, None, None, None, None
 
 
@@ -398,7 +387,6 @@ class Conv1dGGD(nn.Module):
         k = self.kernel_size
         K = Cin_g * k
 
-        # N depends on the number of learned/random taps, not on effective receptive field
         self.N = max(500, int(K * self.N_factor))
 
         self.weight = nn.Parameter(
@@ -416,7 +404,6 @@ class Conv1dGGD(nn.Module):
 
         self.scale = nn.Parameter(torch.ones(self.out_channels, **factory_kwargs))
 
-        # Optional GPU cache for G
         self._G_gpu = None
 
     @torch.no_grad()

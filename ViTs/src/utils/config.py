@@ -15,7 +15,6 @@ class ModelParameters:
     embed_dropout: float
     attn_dropout: float
     mlp_dropout: float
-    # Quantization parameters
     k_bits_x: int = 2
     k_bits_w: int = 1
     n_factor: int = 2
@@ -44,9 +43,6 @@ def save_run_config(
         "timestamp": datetime.now().isoformat(),
         "seed": seed,
 
-        # ---------------------------
-        # Training / optimization
-        # ---------------------------
         "training": {
             "epochs": hparams.epochs,
             "batch_size": hparams.batch_size,
@@ -54,17 +50,11 @@ def save_run_config(
             "weight_decay": hparams.weight_decay,
         },
 
-        # ---------------------------
-        # EMA
-        # ---------------------------
         "ema": {
             "enabled": bool(use_ema),
             "decay": float(ema_decay) if use_ema else None,
         },
 
-        # ---------------------------
-        # Optimizer
-        # ---------------------------
         "optimizer": {
             "type": optimizer.__class__.__name__,
             "param_groups": [
@@ -76,27 +66,19 @@ def save_run_config(
             ],
         },
 
-        # ---------------------------
-        # Scheduler (OneCycleLR safe)
-        # ---------------------------
         "scheduler": {
             "type": scheduler.__class__.__name__ if scheduler else None,
             "params": {},
         },
 
-        # ---------------------------
-        # GGD layers
-        # ---------------------------
         "ggd_layers": [],
     }
 
-    # ---- scheduler params (only serializable ones) ----
     if scheduler is not None:
         for k, v in scheduler.__dict__.items():
             if isinstance(v, (int, float, str, bool)):
                 cfg["scheduler"]["params"][k] = v
 
-    # ---- collect GGD layer info ----
     for name, m in model.named_modules():
         if hasattr(m, "k_bits_x") and hasattr(m, "k_bits_w"):
             layer_info = {
@@ -106,11 +88,8 @@ def save_run_config(
                 "k_bits_w": int(m.k_bits_w),
                 "N_factor": getattr(m, "base_N_factor", None),
                 "N": getattr(m, "base_N", None),
-                # "rho_cap": m.rho_cap,
-                # "soft_rho":m.soft_rho,
             }
             cfg["ggd_layers"].append(layer_info)
 
-    # ---- write JSON (human-readable) ----
     with open(path, "w") as f:
         json.dump(cfg, f, indent=2)

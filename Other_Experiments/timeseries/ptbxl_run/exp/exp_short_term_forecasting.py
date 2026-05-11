@@ -24,8 +24,8 @@ class Exp_Short_Term_Forecast(Exp_Basic):
         if self.args.data == "m4":
             self.args.pred_len = M4Meta.horizons_map[
                 self.args.seasonal_patterns
-            ]  # Up to M4 config
-            self.args.seq_len = 2 * self.args.pred_len  # input_len = 2*pred_len
+            ]
+            self.args.seq_len = 2 * self.args.pred_len
             self.args.label_len = self.args.pred_len
             self.args.frequency_map = M4Meta.frequency_map[self.args.seasonal_patterns]
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -85,7 +85,6 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                 batch_y = batch_y.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
-                # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len :, :]).float()
                 dec_inp = (
                     torch.cat([batch_y[:, : self.args.label_len, :], dec_inp], dim=1)
@@ -109,7 +108,7 @@ class Exp_Short_Term_Forecast(Exp_Basic):
                     (outputs[:, 1:, :] - outputs[:, :-1, :]),
                     (batch_y[:, 1:, :] - batch_y[:, :-1, :]),
                 )
-                loss = loss_value  # + loss_sharpness * 1e-5
+                loss = loss_value
                 train_loss.append(loss.item())
 
                 if (i + 1) % 100 == 0:
@@ -162,17 +161,15 @@ class Exp_Short_Term_Forecast(Exp_Basic):
 
         self.model.eval()
         with torch.no_grad():
-            # decoder input
             B, _, C = x.shape
             dec_inp = torch.zeros((B, self.args.pred_len, C)).float().to(self.device)
             dec_inp = torch.cat(
                 [x[:, -self.args.label_len :, :], dec_inp], dim=1
             ).float()
-            # encoder - decoder
             outputs = torch.zeros(
                 (B, self.args.pred_len, C)
-            ).float()  # .to(self.device)
-            id_list = np.arange(0, B, 500)  # validation set size
+            ).float()
+            id_list = np.arange(0, B, 500)
             id_list = np.append(id_list, B)
             for i in range(len(id_list) - 1):
                 outputs[id_list[i] : id_list[i + 1], :, :] = (
@@ -227,7 +224,6 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             dec_inp = torch.cat(
                 [x[:, -self.args.label_len :, :], dec_inp], dim=1
             ).float()
-            # encoder - decoder
             outputs = torch.zeros((B, self.args.pred_len, C)).float().to(self.device)
             id_list = np.arange(0, B, 1)
             id_list = np.append(id_list, B)
@@ -257,7 +253,6 @@ class Exp_Short_Term_Forecast(Exp_Basic):
 
         print("test shape:", preds.shape)
 
-        # result save
         folder_path = "./m4_results/" + self.args.model + "/"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -281,7 +276,6 @@ class Exp_Short_Term_Forecast(Exp_Basic):
             and "Quarterly_forecast.csv" in os.listdir(file_path)
         ):
             m4_summary = M4Summary(file_path, self.args.root_path)
-            # m4_forecast.set_index(m4_winner_forecast.columns[0], inplace=True)
             smape_results, owa_results, mape, mase = m4_summary.evaluate()
             print("smape:", smape_results)
             print("mape:", mape)

@@ -27,7 +27,6 @@ class OddGate(nn.Module):
     def __init__(self, alpha=1.0, learnable=False):
         super().__init__()
         if learnable:
-            # learn log(alpha) for stability and positivity
             self.log_alpha = nn.Parameter(torch.log(torch.tensor(float(alpha))))
         else:
             self.register_buffer("log_alpha", torch.log(torch.tensor(float(alpha))))

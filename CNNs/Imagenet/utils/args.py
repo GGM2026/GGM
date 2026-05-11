@@ -37,8 +37,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--val_fraction",
         type=float,
-        default=0.1,
-        help="Fraction of the training split reserved for validation.",
+        default=0.0,
+        help=(
+            "Fraction of the training split reserved for validation. "
+            "For ImageNet paper runs, use 0.0 and validate on the official ImageNet val split."
+        ),
     )
     p.add_argument("--split_seed", type=int, default=1337)
 
@@ -48,10 +51,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--size",
         type=str,
         default="",
-        help="Model size. ResNet: 18/20/34. VGG: small/11/16.",
+        help="Model size. ResNet: 18/34. VGG: 16.",
     )
 
-    p.add_argument("--N_scale", type=float, default=1.0)
+    p.add_argument("--N_factor", type=float, default=1.0)
 
     # training
     p.add_argument("--epochs", type=int, default=90)
@@ -68,7 +71,7 @@ def build_parser() -> argparse.ArgumentParser:
         "-fp",
         "--full_precision",
         action="store_true",
-        help="Disable GGD conv swapping (use plain nn.Conv2d).",
+        help="Disable GGM conv swapping (use plain nn.Conv2d).",
     )
     p.add_argument("--prelu", action="store_true", help="Use channel-wise PReLU (where supported).")
 
@@ -108,13 +111,45 @@ def build_parser() -> argparse.ArgumentParser:
                     help="Enable AMP training (default: enabled).")
     p.add_argument("--no-amp", dest="amp", action="store_false",
                     help="Disable AMP training.")
-    p.add_argument("--no-compile", dest="no_compile", action="store_true",
-                    help="Disable torch.compile (useful for debugging or incompatible ops).")
+    
     p.add_argument(
-        "--GGM",
+        "--no-compile",
+        dest="no_compile",
         action="store_true",
-        help="If set, use GGM ConvBN replacements inside ResNet blocks (stem stays nn.Conv2d).",
+        help="Disable torch.compile.",
     )
+    
+    p.add_argument(
+        "--compile-fullgraph",
+        dest="compile_fullgraph",
+        action="store_true",
+        default=True,
+        help="Use torch.compile(fullgraph=True). Default: enabled.",
+    )
+    
+    p.add_argument(
+        "--no-compile-fullgraph",
+        dest="compile_fullgraph",
+        action="store_false",
+        help="Use torch.compile(fullgraph=False).",
+    )
+    
+    p.add_argument(
+        "--compile-mode",
+        type=str,
+        default="none",
+        choices=["none", "default", "reduce-overhead", "max-autotune"],
+        help="torch.compile mode. Use 'none' to omit the mode argument.",
+    )
+    
+    p.add_argument(
+        "--matmul-precision",
+        type=str,
+        default="high",
+        choices=["highest", "high", "medium"],
+        help="torch.set_float32_matmul_precision setting.",
+    )
+    
     p.add_argument(
         "--double_residual",
         action="store_true",
@@ -133,7 +168,7 @@ def parse_args(argv: list[str] | None = None):
     # Detect which tunable keys were explicitly passed on the CLI by
     # comparing parsed values against their argparse defaults.
     explicit_keys: set[str] = set()
-    for dest in ("batch_size", "num_workers", "chunk_N", "N_scale"):
+    for dest in ("batch_size", "num_workers", "N_factor", "k_bits_x", "k_bits_w"):
         default_value = parser.get_default(dest)
         if getattr(args, dest, None) != default_value:
             explicit_keys.add(dest)

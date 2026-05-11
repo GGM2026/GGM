@@ -36,16 +36,13 @@ class PTBXLLoader(Dataset):
 
         a, b = 0.6, 0.8
 
-        # list of IDs for training, val, and test sets
         self.train_ids, self.val_ids, self.test_ids = self.load_train_val_test_list(
             self.label_path, a, b
         )
 
         self.X, self.y = self.load_ptbxl(self.data_path, self.label_path, flag=flag)
 
-        # pre_process
         self.X = normalize_batch_ts(self.X)
-        # self.X = bandpass_filter_func(self.X, fs=250, lowcut=0.5, highcut=45)
 
         self.max_seq_len = self.X.shape[1]
 
@@ -64,19 +61,19 @@ class PTBXLLoader(Dataset):
         data_list = np.load(label_path)
         no_list = list(
             data_list[np.where(data_list[:, 0] == 0)][:, 1]
-        )  # Normal ECG IDs
+        )
         mi_list = list(
             data_list[np.where(data_list[:, 0] == 1)][:, 1]
-        )  # Myocardial Infarction IDs
+        )
         sttc_list = list(
             data_list[np.where(data_list[:, 0] == 2)][:, 1]
-        )  # ST/T Change IDs
+        )
         cd_list = list(
             data_list[np.where(data_list[:, 0] == 3)][:, 1]
-        )  # Conduction Disturbance IDs
+        )
         hyp_list = list(
             data_list[np.where(data_list[:, 0] == 4)][:, 1]
-        )  # Hypertrophy IDs
+        )
 
         train_ids = (
             no_list[: int(a * len(no_list))]
@@ -116,7 +113,6 @@ class PTBXLLoader(Dataset):
         feature_list = []
         label_list = []
         filenames = []
-        # The first column is the label; the second column is the patient ID
         subject_label = np.load(label_path)
         for filename in os.listdir(data_path):
             filenames.append(filename)
@@ -135,16 +131,14 @@ class PTBXLLoader(Dataset):
             path = data_path + filenames[j]
             subject_feature = np.load(path)
             for trial_feature in subject_feature:
-                # load data by ids
-                if j + 1 in ids:  # id starts from 1, not 0.
+                if j + 1 in ids:
                     feature_list.append(trial_feature)
                     label_list.append(trial_label)
-        # reshape and shuffle
         X = np.array(feature_list)
         y = np.array(label_list)
         X, y = shuffle(X, y, random_state=42)
 
-        return X, y[:, 0]  # only use the first column (label)
+        return X, y[:, 0]
 
     def __getitem__(self, index):
         return torch.from_numpy(self.X[index]), torch.from_numpy(

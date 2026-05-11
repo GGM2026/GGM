@@ -1,0 +1,5 @@
+classification_PTB-XL-Indep-xnor_Medformer_PTB-XL_ftM_sl250_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed42  
+Validation results --- Loss: 0.83790, Accuracy: 0.73136, Precision: 0.64872, Recall: 0.60328, F1: 0.61923, AUROC: 0.89535, AUPRC: 0.66710
+Test results --- Loss: 0.86861, Accuracy: 0.72005, Precision: 0.63170, Recall: 0.58649, F1: 0.60267, AUROC: 0.88985, AUPRC: 0.64708
+
+

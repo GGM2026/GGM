@@ -21,8 +21,6 @@ class PatchEmbedding(nn.Module):
         self.cls_token = nn.Parameter(torch.rand(1,1,self.D))
 
     def forward(self, x):
-        # Input: [B, C, H, W]
-        # Output: [B, N, D] here N is selected num_patches(from image) + 1 (cls token)
         b = x.shape[0]
         cls_token = repeat(self.cls_token, '1 1 d -> b 1 d', b=b)
         x = self.patch_embed(x)
@@ -39,26 +37,16 @@ class MHA(nn.Module):
         self.head_size = self.D // self.num_head
         self.all_head_size = self.D
 
-        # Step-1: only Q,K are GGD
         self.query = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
-        # self.query = QLinearSTE(self.D, self.all_head_size, k_bits_x=3, k_bits_w=3)
-        # self.query = nn.Linear(self.D, self.all_head_size, bias=False)
         self.key   = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
-        # self.key   = QLinearSTE(self.D, self.all_head_size, k_bits_x=3, k_bits_w=3)
-        # self.key = nn.Linear(self.D, self.all_head_size, bias=False)
 
         self.value = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
-        # self.value = QLinearSTE(self.D, self.all_head_size, k_bits_x=3, k_bits_w=3)
-        # self.value  = nn.Linear(self.D, self.all_head_size, bias=False)  # FP
        
         self.output = GGDLinear(self.D, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
-        # self.output = QLinearSTE(self.D, self.D, k_bits_x=3, k_bits_w=3)
-        # self.output = nn.Linear(self.D, self.D, bias=False)              # FP
 
         self.attn_dropout = nn.Dropout(mparams.attn_dropout)
         self.proj_dropout = nn.Dropout(mparams.attn_dropout)
 
-        # Learnable positive temperature. Start at 1.0
         self.log_tau = nn.Parameter(torch.zeros(self.num_head, 1, 1))
     
 
@@ -72,15 +60,12 @@ class MHA(nn.Module):
         k = rearrange(k, 'b n (h d) -> b h n d', h=self.num_head)
         v = rearrange(v, 'b n (h d) -> b h n d', h=self.num_head)
 
-        # Route A: cosine attention + correct scaling
         q = q / (q.norm(dim=-1, keepdim=True) + 1e-6)
         k = k / (k.norm(dim=-1, keepdim=True) + 1e-6)
         attn_score = torch.matmul(q, k.transpose(-1, -2)) * (self.head_size ** 0.5)
         attn_score = attn_score * torch.exp(self.log_tau)
 
 
-        # Route B: FP 
-        # attn_score = torch.matmul(q, k.transpose(-1, -2)) / (self.head_size ** 0.5)
         
 
         if mask is not None:
@@ -101,15 +86,10 @@ class MLP(nn.Module):
         self.D = mparams.inner_dim
         self.hidden_dim = 4* self.D
         self.net = nn.Sequential(
-            # nn.Linear(self.D, self.hidden_dim),
             GGDLinear(self.D, self.hidden_dim, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
-            # QLinearSTE(self.D, self.hidden_dim, k_bits_x=3, k_bits_w=3),
-            # nn.GELU(),
             OddGate(alpha=1.0),
             nn.Dropout(mparams.mlp_dropout),
             GGDLinear(self.hidden_dim, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
-            # QLinearSTE(self.hidden_dim, self.D, k_bits_x=3, k_bits_w=3),
-            # nn.Linear(self.hidden_dim, self.D, bias=False),
             nn.Dropout(mparams.mlp_dropout)
         )
     def forward(self, x):
@@ -163,6 +143,6 @@ class ViT(nn.Module):
         x = x + self.pos_embed
         x = self.embed_dropout(x)
         x = self.transformer(x)
-        cls_token_ouput = x[:,0] # or u can do x.mean(dim=1) if we do a mean pooling for the final cls token
+        cls_token_ouput = x[:,0]
         return self.mlp_head(cls_token_ouput)
 

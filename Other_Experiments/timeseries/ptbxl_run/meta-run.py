@@ -6,17 +6,6 @@ SCRIPT_ROOT = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), "scripts", "classification"
 )
 skip_list = [
-    # "Autoformer",
-    # "Crossformer"
-    # "FEDformer",
-    # "Informer",
-    # "iTransformer",
-    # "MTST",
-    # "Nonstationary",
-    # "PatchTST",
-    # "Reformer",
-    # "Transformer",
-    # "Medformer",
 ]
 
 for dir_path, dir_names, file_names in os.walk(SCRIPT_ROOT):

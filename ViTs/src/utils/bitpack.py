@@ -1,37 +1,14 @@
-# src/utils/bitpack.py
 
 import torch
 
-# def pack_kbit(tensor, k):
-#     assert k in (1, 2, 4, 8), "pack_kbit only supports k in {1,2,4,8}"
-
-#     flat = tensor.detach().cpu().flatten().to(torch.int64)
-
-#     vals_per_byte = 8 // k
-#     pad = (-flat.numel()) % vals_per_byte
-#     if pad:
-#         flat = torch.cat([flat, torch.zeros(pad, dtype=flat.dtype)])
-
-#     flat = flat.view(-1, vals_per_byte)
-#     packed = torch.zeros(flat.size(0), dtype=torch.uint8)
-
-#     for i in range(vals_per_byte):
-#         packed |= (flat[:, i] << (i * k))
-
-#     return packed
 
 
-# def unpack_kbit(packed, k, shape):
-#     assert k in (1, 2, 4, 8), "unpack_kbit only supports k in {1,2,4,8}"
-#     vals_per_byte = 8 // k
-#     total = shape[0] * shape[1]
-#     out = []
 
-#     for byte in packed:
-#         for i in range(vals_per_byte):
-#             out.append((byte >> (i * k)) & ((1 << k) - 1))
-#             if len(out) == total:
-#                 return torch.tensor(out).view(shape)
+
+
+
+
+
 def pack_kbit(tensor, k):
     """
     Pack unsigned integer values (0 .. 2^k - 1) into a byte stream.
@@ -52,7 +29,6 @@ def pack_kbit(tensor, k):
             bit_buffer >>= 8
             bit_count -= 8
 
-    # flush remaining bits (pad with zeros)
     if bit_count > 0:
         out.append(bit_buffer & 0xFF)
 

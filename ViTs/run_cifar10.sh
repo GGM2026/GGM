@@ -1,7 +1,4 @@
-#!/bin/bash
 
-# Run CIFAR-10 training with the exact original hardcoded hyperparameters
-# to guarantee reproducibility with the newly generalized command line argument parser.
 
 python train_cifar.py \
     --num_runs 1 \

@@ -46,7 +46,6 @@ class Exp_Imputation(Exp_Basic):
                 batch_x = batch_x.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
 
-                # random mask
                 B, T, N = batch_x.shape
                 """
                 B = batch size
@@ -54,8 +53,8 @@ class Exp_Imputation(Exp_Basic):
                 N = number of features
                 """
                 mask = torch.rand((B, T, N)).to(self.device)
-                mask[mask <= self.args.mask_rate] = 0  # masked
-                mask[mask > self.args.mask_rate] = 1  # remained
+                mask[mask <= self.args.mask_rate] = 0
+                mask[mask > self.args.mask_rate] = 1
                 inp = batch_x.masked_fill(mask == 0, 0)
 
                 outputs = self.model(inp, batch_x_mark, None, None, mask)
@@ -104,11 +103,10 @@ class Exp_Imputation(Exp_Basic):
                 batch_x = batch_x.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
 
-                # random mask
                 B, T, N = batch_x.shape
                 mask = torch.rand((B, T, N)).to(self.device)
-                mask[mask <= self.args.mask_rate] = 0  # masked
-                mask[mask > self.args.mask_rate] = 1  # remained
+                mask[mask <= self.args.mask_rate] = 0
+                mask[mask > self.args.mask_rate] = 1
                 inp = batch_x.masked_fill(mask == 0, 0)
 
                 outputs = self.model(inp, batch_x_mark, None, None, mask)
@@ -183,17 +181,14 @@ class Exp_Imputation(Exp_Basic):
                 batch_x = batch_x.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
 
-                # random mask
                 B, T, N = batch_x.shape
                 mask = torch.rand((B, T, N)).to(self.device)
-                mask[mask <= self.args.mask_rate] = 0  # masked
-                mask[mask > self.args.mask_rate] = 1  # remained
+                mask[mask <= self.args.mask_rate] = 0
+                mask[mask > self.args.mask_rate] = 1
                 inp = batch_x.masked_fill(mask == 0, 0)
 
-                # imputation
                 outputs = self.model(inp, batch_x_mark, None, None, mask)
 
-                # eval
                 f_dim = -1 if self.args.features == "MS" else 0
                 outputs = outputs[:, :, f_dim:]
                 outputs = outputs.detach().cpu().numpy()
@@ -219,7 +214,6 @@ class Exp_Imputation(Exp_Basic):
         masks = np.concatenate(masks, 0)
         print("test shape:", preds.shape, trues.shape)
 
-        # result save
         folder_path = "./results/" + setting + "/"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

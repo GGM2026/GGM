@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class Inception_Block_V1(nn.Module):  # handle different spatial sizes
+class Inception_Block_V1(nn.Module):
     def __init__(self, in_channels, out_channels, num_kernels=6, init_weight=True):
         super(Inception_Block_V1, self).__init__()
         self.in_channels = in_channels
@@ -14,7 +14,7 @@ class Inception_Block_V1(nn.Module):  # handle different spatial sizes
             kernels.append(
                 nn.Conv2d(in_channels, out_channels, kernel_size=2 * i + 1, padding=i)
             )
-        self.kernels = nn.ModuleList(kernels)  # register kernels by ModuleList
+        self.kernels = nn.ModuleList(kernels)
         if init_weight:
             self._initialize_weights()
 
@@ -80,7 +80,6 @@ class Inception_Block_V2(nn.Module):
 class CausalConv(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, dilation=1, groups=1):
         super().__init__()
-        # Compute the padding size required for causality
         self.padding = (kernel_size - 1) * dilation
         self.conv = nn.Conv1d(
             in_channels,
@@ -92,9 +91,7 @@ class CausalConv(nn.Module):
         )
 
     def forward(self, x):
-        # only left-side padding is required
         x = F.pad(x, (self.padding, 0))
-        # Perform the convolution
         out = self.conv(x)
         return out
 
@@ -144,20 +141,15 @@ class DilatedConvEncoder(nn.Module):
 
 
 class TemporalSpatialConv(nn.Module):
-    # Initialize EEGGM
     def __init__(self, f1, d, channels, kernel_size, dropout_rate):
         super(TemporalSpatialConv, self).__init__()
-        # Number of spatial filters to learn within each temporal filter.
         self.f2 = f1 * d
-        # Convolutional blocks
-        # Block 1
         self.temporal = nn.Sequential(
             nn.Conv2d(1, f1, (1, kernel_size), padding="same", bias=False),
             nn.BatchNorm2d(f1),
             nn.ELU(),
             nn.Dropout(dropout_rate),
         )
-        # Depthwise Conv2D
         self.depthwise = nn.Sequential(
             nn.Conv2d(f1, self.f2, (channels, 1), groups=f1, bias=False),
             nn.BatchNorm2d(self.f2),
@@ -165,7 +157,6 @@ class TemporalSpatialConv(nn.Module):
             nn.AvgPool2d((1, 4)),
             nn.Dropout(dropout_rate),
         )
-        # Separable Conv2D
         self.separable = nn.Sequential(
             nn.Conv2d(
                 self.f2, self.f2, (1, 16), padding="same", bias=False, groups=self.f2
@@ -176,17 +167,10 @@ class TemporalSpatialConv(nn.Module):
             nn.Dropout(dropout_rate),
         )
 
-    # Forward pass
     def forward(self, x):
-        # Add channel dimension
         x = x.unsqueeze(1)
-        # Apply blocks
         x = self.temporal(x)
-        # print(x.shape)
         x = self.depthwise(x)
-        # print(x.shape)
         x = self.separable(x)
-        # print(x.shape)
         x = x.squeeze()
-        # print(x.shape)
         return x

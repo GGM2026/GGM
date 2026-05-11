@@ -1,4 +1,3 @@
-# layers/SelfAttention_Family
 import torch
 import torch.nn as nn
 import numpy as np
@@ -42,7 +41,7 @@ class FullAttention(nn.Module):
 
         A = self.dropout(
             torch.softmax(scale * scores, dim=-1)
-        )  # Scaled Dot-Product Attention
+        )
         V = torch.einsum("bhls,bshd->blhd", A, values)
 
         if self.output_attention:
@@ -186,21 +185,19 @@ class MedformerLayer(nn.Module):
 
     def forward(self, x, attn_mask=None, tau=None, delta=None):
         attn_mask = attn_mask or ([None] * len(x))
-        # Intra attention
         x_intra = []
         attn_out = []
         for x_in, layer, mask in zip(x, self.intra_attentions, attn_mask):
             _x_out, _attn = layer(x_in, x_in, x_in, attn_mask=mask, tau=tau, delta=delta)
-            x_intra.append(_x_out)  # (B, Li, D)
+            x_intra.append(_x_out)
             attn_out.append(_attn)
         if self.inter_attention is not None:
-            # Inter attention
-            routers = torch.cat([x[:, -1:] for x in x_intra], dim=1)  # (B, N, D)
+            routers = torch.cat([x[:, -1:] for x in x_intra], dim=1)
             x_inter, attn_inter = self.inter_attention(
                 routers, routers, routers, attn_mask=None, tau=tau, delta=delta
             )
             x_out = [
-                torch.cat([x[:, :-1], x_inter[:, i : i + 1]], dim=1)  # (B, Li, D)
+                torch.cat([x[:, :-1], x_inter[:, i : i + 1]], dim=1)
                 for i, x in enumerate(x_intra)
             ]
             attn_out += [attn_inter]

@@ -49,14 +49,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
-                # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len :, :]).float()
                 dec_inp = (
                     torch.cat([batch_y[:, : self.args.label_len, :], dec_inp], dim=1)
                     .float()
                     .to(self.device)
                 )
-                # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
                         if self.args.output_attention:
@@ -127,7 +125,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
-                # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len :, :]).float()
                 dec_inp = (
                     torch.cat([batch_y[:, : self.args.label_len, :], dec_inp], dim=1)
@@ -135,7 +132,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     .to(self.device)
                 )
 
-                # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
                         if self.args.output_attention:
@@ -243,14 +239,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
-                # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len :, :]).float()
                 dec_inp = (
                     torch.cat([batch_y[:, : self.args.label_len, :], dec_inp], dim=1)
                     .float()
                     .to(self.device)
                 )
-                # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
                         if self.args.output_attention:
@@ -312,7 +306,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print("test shape:", preds.shape, trues.shape)
 
-        # result save
         folder_path = "./results/" + setting + "/"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

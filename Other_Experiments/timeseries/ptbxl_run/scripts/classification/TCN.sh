@@ -1,7 +1,6 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 
 
-# TBRAIN Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -21,9 +20,7 @@ python \
   --patience 10
 
 
-# Two human activities dataset
 
-# UCI-HAR Dataset
 python \
   -u run.py \
   --task_name classification \
@@ -43,7 +40,6 @@ python \
   --patience 10
 
 
-# FLAAP Dataset
 python \
   -u run.py \
   --task_name classification \

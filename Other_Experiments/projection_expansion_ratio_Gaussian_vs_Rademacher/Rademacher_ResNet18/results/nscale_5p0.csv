@@ -1,0 +1,6 @@
+run_name,seed,split_seed,N_scale,epochs,test_loss,test_acc,best_val_acc
+cifar10_resnet18_N5p0_seed6,6,1337,5.0,300,0.451795,94.7300,95.9400
+cifar10_resnet18_N5p0_seed7,7,1337,5.0,300,0.445136,94.7800,95.8000
+cifar10_resnet18_N5p0_seed8,8,1337,5.0,300,0.444972,94.9000,95.6600
+cifar10_resnet18_N5p0_seed9,9,1337,5.0,300,0.448418,94.6900,95.4200
+cifar10_resnet18_N5p0_seed10,10,1337,5.0,300,0.450729,94.6800,95.6400

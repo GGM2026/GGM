@@ -1,4 +1,3 @@
-# layers/Embed.py
 import math
 import random
 
@@ -14,7 +13,6 @@ from layers.Augmentation import get_augmentation
 class PositionalEmbedding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super(PositionalEmbedding, self).__init__()
-        # Compute the positional encodings once in log space.
         pe = torch.zeros(max_len, d_model).float()
         pe.require_grad = False
 
@@ -149,17 +147,15 @@ class DataEmbedding(nn.Module):
 class DataEmbedding_inverted(nn.Module):
     def __init__(self, c_in, d_model, embed_type="fixed", freq="h", dropout=0.1):
         super(DataEmbedding_inverted, self).__init__()
-        self.value_embedding = nn.Linear(c_in, d_model)  # c_in is seq_length here
+        self.value_embedding = nn.Linear(c_in, d_model)
         self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, x, x_mark):
-        x = x.permute(0, 2, 1)  # (batch_size, enc_in, seq_length)
-        # x: [Batch Variate Time]
+        x = x.permute(0, 2, 1)
         if x_mark is None:
-            x = self.value_embedding(x)  # (batch_size, enc_in, d_model)
+            x = self.value_embedding(x)
         else:
             x = self.value_embedding(torch.cat([x, x_mark.permute(0, 2, 1)], 1))
-        # x: [Batch Variate d_model]
         return self.dropout(x)
 
 
@@ -187,27 +183,21 @@ class DataEmbedding_wo_pos(nn.Module):
 class PatchEmbedding(nn.Module):
     def __init__(self, d_model, patch_len, stride, padding, dropout):
         super(PatchEmbedding, self).__init__()
-        # Patching
         self.patch_len = patch_len
         self.stride = stride
         self.padding_patch_layer = nn.ReplicationPad1d((0, padding))
 
-        # Backbone, Input encoding: projection of feature vectors onto a d-dim vector space
         self.value_embedding = nn.Linear(patch_len, d_model, bias=False)
 
-        # Positional embedding
         self.position_embedding = PositionalEmbedding(d_model)
 
-        # Residual dropout
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
-        # do patching
         n_vars = x.shape[1]
         x = self.padding_patch_layer(x)
         x = x.unfold(dimension=-1, size=self.patch_len, step=self.stride)
         x = torch.reshape(x, (x.shape[0] * x.shape[1], x.shape[2], x.shape[3]))
-        # Input encoding
         x = self.value_embedding(x) + self.position_embedding(x)
         return self.dropout(x), n_vars
 
@@ -273,18 +263,17 @@ class ListPatchEmbedding(nn.Module):
             [nn.Parameter(torch.randn(1, d_model)) for _ in patch_len_list]
         )
 
-    def forward(self, x):  # (batch_size, seq_len, enc_in)
-        x = x.permute(0, 2, 1)  # (batch_size, enc_in, seq_len)
+    def forward(self, x):
+        x = x.permute(0, 2, 1)
         if self.single_channel:
             B, C, L = x.shape
             x = torch.reshape(x, (B * C, 1, L))
 
         x_list = []
         for padding, value_embedding in zip(self.paddings, self.value_embeddings):
-            x_new = padding(x).unsqueeze(1)  # (batch_size, 1, enc_in, seq_len+stride)
-            x_new = value_embedding(x_new)  # (batch_size, d_model, 1, patch_num)
-            x_new = x_new.squeeze(2).transpose(1, 2)  # (batch_size, patch_num, d_model)
-            # Per patch augmentation
+            x_new = padding(x).unsqueeze(1)
+            x_new = value_embedding(x_new)
+            x_new = x_new.squeeze(2).transpose(1, 2)
             aug_idx = random.randint(0, len(self.augmentation) - 1)
             x_new = self.augmentation[aug_idx](x_new)
             x_list.append(x_new)
@@ -292,5 +281,5 @@ class ListPatchEmbedding(nn.Module):
         x = [
             x + cxt + self.position_embedding(x)
             for x, cxt in zip(x_list, self.learnable_embeddings)
-        ]  # (batch_size, patch_num_1, d_model), (batch_size, patch_num_2, d_model), ...
+        ]
         return x

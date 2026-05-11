@@ -8,9 +8,6 @@ import torch.nn.functional as F
 from torch.autograd import Function
 
 
-# -----------------------------------------------------------------------------
-# Utilities
-# -----------------------------------------------------------------------------
 
 def get_ab(N: int):
     """
@@ -31,9 +28,6 @@ def _make_orthogonal(n: int, dtype=torch.float32):
     return torch.tensor(ortho_group.rvs(dim=n), dtype=dtype)
 
 
-# -----------------------------------------------------------------------------
-# Binary quantizers from RBNN-style code
-# -----------------------------------------------------------------------------
 
 class BinaryQuantize(Function):
     @staticmethod
@@ -68,9 +62,6 @@ class BinaryQuantizeAct(Function):
         return grad_input, None, None
 
 
-# -----------------------------------------------------------------------------
-# Shared RBNN rotation mixin
-# -----------------------------------------------------------------------------
 
 class _RBNNMixin:
     """
@@ -102,21 +93,18 @@ class _RBNNMixin:
             Xd = X.detach()
 
             for _ in range(3):
-                # V = R1^T X R2
                 V = torch.matmul(
                     torch.matmul(self.R1.t().unsqueeze(0), Xd),
                     self.R2.unsqueeze(0),
                 )
                 B = torch.sign(V)
 
-                # D1 = sum_i B_i R2^T X_i^T
                 D1 = torch.zeros_like(self.R1)
                 for Bi, Xi in zip(B, Xd):
                     D1 += Bi @ self.R2.t() @ Xi.t()
                 U1, _, Vh1 = torch.linalg.svd(D1, full_matrices=False)
                 self.R1.copy_(Vh1.transpose(-2, -1) @ U1.transpose(-2, -1))
 
-                # D2 = sum_i X_i^T R1 B_i
                 D2 = torch.zeros_like(self.R2)
                 for Xi, Bi in zip(Xd, B):
                     D2 += Xi.t() @ self.R1 @ Bi
@@ -143,9 +131,6 @@ class _RBNNMixin:
         return w_mix
 
 
-# -----------------------------------------------------------------------------
-# Conv1d RBNN
-# -----------------------------------------------------------------------------
 
 class Conv1dRBNN(_RBNNMixin, nn.Conv1d):
     def __init__(
@@ -181,14 +166,12 @@ class Conv1dRBNN(_RBNNMixin, nn.Conv1d):
         self.register_buffer("k", torch.tensor([k], dtype=torch.float32))
         self.register_buffer("t", torch.tensor([t], dtype=torch.float32))
 
-        # weight shape: [out_channels, in_channels/groups, kernel_size]
         N = int(np.prod(self.weight.shape[1:]))
         self.a, self.b = get_ab(N)
 
         self.register_buffer("R1", _make_orthogonal(self.a))
         self.register_buffer("R2", _make_orthogonal(self.b))
 
-        # per-output-channel scaling, stored as [out_channels, 1]
         sw = (
             self.weight.detach()
             .abs()
@@ -197,25 +180,20 @@ class Conv1dRBNN(_RBNNMixin, nn.Conv1d):
         )
         self.alpha = nn.Parameter(sw, requires_grad=True)
 
-        # broadcastable to [out_channels, in_channels/groups, kernel_size]
         self.rotate = nn.Parameter(
             torch.ones(self.weight.size(0), 1, 1) * (math.pi / 2),
             requires_grad=True,
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # activation normalization over [C, L]
         a1 = x - x.mean(dim=(1, 2), keepdim=True)
         a2 = a1 / _safe_std(a1, dim=(1, 2), keepdim=True)
 
-        # weight normalization per output channel
         w1 = self.weight - self.weight.mean(dim=(1, 2), keepdim=True)
         w2 = w1 / _safe_std(w1, dim=(1, 2), keepdim=True)
 
-        # rotation-guided interpolation
         w3 = self._rotated_weight(w2)
 
-        # binarize
         bw = BinaryQuantize.apply(w3, self.k.to(w3.device), self.t.to(w3.device))
         if self.binary_input:
             ba = BinaryQuantizeAct.apply(a2, self.k.to(a2.device), self.t.to(a2.device))
@@ -232,15 +210,11 @@ class Conv1dRBNN(_RBNNMixin, nn.Conv1d):
             groups=self.groups,
         )
 
-        # [B, Cout, L] * [1, Cout, 1]
         out = out * self.alpha.view(1, -1, 1)
         return out
 
 
 
-# -----------------------------------------------------------------------------
-# Linear RBNN
-# -----------------------------------------------------------------------------
 
 class LinearRBNN(_RBNNMixin, nn.Linear):
     def __init__(
@@ -262,36 +236,29 @@ class LinearRBNN(_RBNNMixin, nn.Linear):
         self.register_buffer("k", torch.tensor([k], dtype=torch.float32))
         self.register_buffer("t", torch.tensor([t], dtype=torch.float32))
 
-        # weight shape: [out_features, in_features]
         N = int(self.weight.shape[1])
         self.a, self.b = get_ab(N)
 
         self.register_buffer("R1", _make_orthogonal(self.a))
         self.register_buffer("R2", _make_orthogonal(self.b))
 
-        # per-output-neuron scaling, stored as [out_features, 1]
         sw = self.weight.detach().abs().mean(dim=1, keepdim=True)
         self.alpha = nn.Parameter(sw, requires_grad=True)
 
-        # broadcastable to [out_features, in_features]
         self.rotate = nn.Parameter(
             torch.ones(self.weight.size(0), 1) * (math.pi / 2),
             requires_grad=True,
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # activation normalization over feature dimension
         a1 = x - x.mean(dim=-1, keepdim=True)
         a2 = a1 / _safe_std(a1, dim=-1, keepdim=True)
 
-        # weight normalization per output neuron
         w1 = self.weight - self.weight.mean(dim=1, keepdim=True)
         w2 = w1 / _safe_std(w1, dim=1, keepdim=True)
 
-        # rotation-guided interpolation
         w3 = self._rotated_weight(w2)
 
-        # binarize
         bw = BinaryQuantize.apply(w3, self.k.to(w3.device), self.t.to(w3.device))
         if self.binary_input:
             ba = BinaryQuantizeAct.apply(a2, self.k.to(a2.device), self.t.to(a2.device))
@@ -300,16 +267,12 @@ class LinearRBNN(_RBNNMixin, nn.Linear):
 
         out = F.linear(ba, bw, self.bias)
 
-        # broadcast alpha to [..., out_features]
         alpha = self.alpha.squeeze(-1)
         view_shape = [1] * (out.dim() - 1) + [alpha.numel()]
         out = out * alpha.view(*view_shape)
         return out
 
 
-# -----------------------------------------------------------------------------
-# Optional helper
-# -----------------------------------------------------------------------------
 
 def set_rbnn_epoch(module: nn.Module, epoch: int):
     """
