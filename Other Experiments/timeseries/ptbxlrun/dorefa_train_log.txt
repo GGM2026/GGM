@@ -1,0 +1,3501 @@
+Args in experiment:
+Namespace(task_name='classification', is_training=1, model_id='PTB-XL-Indep-dorefa', model='Medformer', data='PTB-XL', root_path='/nfs/hpc/share/pourmans/Experiments/timeseries-ggm/Medformer/PTB-XL', data_path='ETTh1.csv', features='M', target='OT', freq='h', seq_len=250, label_len=48, pred_len=96, seasonal_patterns='Monthly', inverse=False, mask_rate=0.25, anomaly_ratio=0.25, expand=2, d_conv=4, top_k=5, num_kernels=6, enc_in=7, dec_in=7, c_out=7, d_model=128, n_heads=8, e_layers=6, d_layers=1, d_ff=256, moving_avg=25, factor=1, distil=True, dropout=0.1, embed='timeF', activation='gelu', output_attention=False, no_inter_attn=False, chunk_size=16, patch_len=16, stride=8, sampling_rate=256, patch_len_list='2,4,8,8,16,16,16,16,32,32,32,32,32,32,32,32', single_channel=False, augmentations='jitter0.2,scale0.2,drop0.5', num_workers=0, itr=5, train_epochs=100, batch_size=256, patience=10, learning_rate=0.0001, des='Exp', loss='MSE', lradj='type1', use_amp=False, swa=True, use_gpu=True, gpu=0, use_multi_gpu=False, devices='0', p_hidden_dims=[128, 128], p_hidden_layers=2, use_ggm=False, use_xnor=False, use_dorefa=True, use_rbnn=False, use_irnet=False, use_adabin=False)
+Use GPU: cuda:0
+>>>>>>>start training : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed43>>>>>>>>>>>>>>>>>>>>>>>>>>
+(112570, 250, 12)
+(112570,)
+(39280, 250, 12)
+(39280,)
+(39550, 250, 12)
+(39550,)
+	iters: 100, epoch: 1 | loss: 1.0246989
+	speed: 0.2232s/iter; left time: 9799.1364s
+	iters: 200, epoch: 1 | loss: 1.0065287
+	speed: 0.2077s/iter; left time: 9095.4034s
+	iters: 300, epoch: 1 | loss: 0.8727897
+	speed: 0.2079s/iter; left time: 9084.8386s
+	iters: 400, epoch: 1 | loss: 0.9475793
+	speed: 0.2092s/iter; left time: 9119.6390s
+Epoch: 1 cost time: 92.33886861801147
+Epoch: 1, Steps: 440, | Train Loss: 0.99638
+Validation results --- Loss: 0.88161, Accuracy: 0.68498, Precision: 0.58516, Recall: 0.55469, F1: 0.56650, AUROC: 0.86538, AUPRC: 0.60093
+Test results --- Loss: 0.90392, Accuracy: 0.67851, Precision: 0.57071, Recall: 0.53746 F1: 0.54977, AUROC: 0.85688, AUPRC: 0.58079
+
+Metric score decreased (inf --> -0.566501).  Saving model ...
+
+	iters: 100, epoch: 2 | loss: 0.9646072
+	speed: 0.5499s/iter; left time: 23898.1854s
+	iters: 200, epoch: 2 | loss: 0.8007443
+	speed: 0.2136s/iter; left time: 9262.5857s
+	iters: 300, epoch: 2 | loss: 0.7500706
+	speed: 0.2112s/iter; left time: 9136.4693s
+	iters: 400, epoch: 2 | loss: 0.7940330
+	speed: 0.2088s/iter; left time: 9011.6988s
+Epoch: 2 cost time: 93.16622352600098
+Epoch: 2, Steps: 440, | Train Loss: 0.87182
+Validation results --- Loss: 0.84400, Accuracy: 0.70087, Precision: 0.60970, Recall: 0.56444, F1: 0.57972, AUROC: 0.87436, AUPRC: 0.62616
+Test results --- Loss: 0.86590, Accuracy: 0.69350, Precision: 0.58754, Recall: 0.54507 F1: 0.55802, AUROC: 0.86545, AUPRC: 0.59890
+
+Metric score decreased (-0.566501 --> -0.579719).  Saving model ...
+
+	iters: 100, epoch: 3 | loss: 0.7859199
+	speed: 0.5451s/iter; left time: 23450.0519s
+	iters: 200, epoch: 3 | loss: 0.8372719
+	speed: 0.2096s/iter; left time: 8995.6561s
+	iters: 300, epoch: 3 | loss: 0.7956144
+	speed: 0.2088s/iter; left time: 8941.0447s
+	iters: 400, epoch: 3 | loss: 0.7647085
+	speed: 0.2099s/iter; left time: 8965.1370s
+Epoch: 3 cost time: 92.21688985824585
+Epoch: 3, Steps: 440, | Train Loss: 0.83007
+Validation results --- Loss: 0.83252, Accuracy: 0.70723, Precision: 0.61749, Recall: 0.57099, F1: 0.58803, AUROC: 0.87844, AUPRC: 0.63307
+Test results --- Loss: 0.85277, Accuracy: 0.70265, Precision: 0.60381, Recall: 0.55648 F1: 0.57256, AUROC: 0.87172, AUPRC: 0.60924
+
+Metric score decreased (-0.579719 --> -0.588028).  Saving model ...
+
+	iters: 100, epoch: 4 | loss: 0.9404663
+	speed: 0.5434s/iter; left time: 23140.2939s
+	iters: 200, epoch: 4 | loss: 0.7464873
+	speed: 0.2089s/iter; left time: 8873.2569s
+	iters: 300, epoch: 4 | loss: 0.8501134
+	speed: 0.2085s/iter; left time: 8834.3310s
+	iters: 400, epoch: 4 | loss: 0.9316933
+	speed: 0.2083s/iter; left time: 8805.3210s
+Epoch: 4 cost time: 91.77234292030334
+Epoch: 4, Steps: 440, | Train Loss: 0.79788
+Validation results --- Loss: 0.81855, Accuracy: 0.71197, Precision: 0.62320, Recall: 0.57446, F1: 0.58863, AUROC: 0.88178, AUPRC: 0.63906
+Test results --- Loss: 0.84193, Accuracy: 0.70630, Precision: 0.60294, Recall: 0.56059 F1: 0.57122, AUROC: 0.87461, AUPRC: 0.61581
+
+Metric score decreased (-0.588028 --> -0.588634).  Saving model ...
+
+	iters: 100, epoch: 5 | loss: 0.8197293
+	speed: 0.5444s/iter; left time: 22941.2894s
+	iters: 200, epoch: 5 | loss: 0.8745310
+	speed: 0.2068s/iter; left time: 8693.2646s
+	iters: 300, epoch: 5 | loss: 0.6800151
+	speed: 0.2085s/iter; left time: 8746.0708s
+	iters: 400, epoch: 5 | loss: 0.8144974
+	speed: 0.2110s/iter; left time: 8828.1626s
+Epoch: 5 cost time: 91.97750091552734
+Epoch: 5, Steps: 440, | Train Loss: 0.77791
+Validation results --- Loss: 0.80667, Accuracy: 0.71617, Precision: 0.62864, Recall: 0.58658, F1: 0.60138, AUROC: 0.88484, AUPRC: 0.64878
+Test results --- Loss: 0.82827, Accuracy: 0.70966, Precision: 0.60923, Recall: 0.56937 F1: 0.58215, AUROC: 0.87771, AUPRC: 0.62315
+
+Metric score decreased (-0.588634 --> -0.601381).  Saving model ...
+
+	iters: 100, epoch: 6 | loss: 0.6829730
+	speed: 0.5427s/iter; left time: 22632.5822s
+	iters: 200, epoch: 6 | loss: 0.6511650
+	speed: 0.2087s/iter; left time: 8681.3076s
+	iters: 300, epoch: 6 | loss: 0.6738238
+	speed: 0.2122s/iter; left time: 8807.8568s
+	iters: 400, epoch: 6 | loss: 0.7595033
+	speed: 0.2157s/iter; left time: 8930.1791s
+Epoch: 6 cost time: 93.1498556137085
+Epoch: 6, Steps: 440, | Train Loss: 0.75762
+Validation results --- Loss: 0.80345, Accuracy: 0.72011, Precision: 0.63793, Recall: 0.58809, F1: 0.60499, AUROC: 0.88676, AUPRC: 0.65159
+Test results --- Loss: 0.82443, Accuracy: 0.71249, Precision: 0.61281, Recall: 0.56861 F1: 0.58231, AUROC: 0.88031, AUPRC: 0.62769
+
+Metric score decreased (-0.601381 --> -0.604995).  Saving model ...
+
+	iters: 100, epoch: 7 | loss: 0.7058626
+	speed: 0.5575s/iter; left time: 23002.2649s
+	iters: 200, epoch: 7 | loss: 0.8187757
+	speed: 0.2154s/iter; left time: 8866.6632s
+	iters: 300, epoch: 7 | loss: 0.7853546
+	speed: 0.2142s/iter; left time: 8794.0518s
+	iters: 400, epoch: 7 | loss: 0.6919274
+	speed: 0.2140s/iter; left time: 8765.3006s
+Epoch: 7 cost time: 94.65474319458008
+Epoch: 7, Steps: 440, | Train Loss: 0.73818
+Validation results --- Loss: 0.79944, Accuracy: 0.72289, Precision: 0.64155, Recall: 0.59384, F1: 0.61185, AUROC: 0.88811, AUPRC: 0.65569
+Test results --- Loss: 0.82413, Accuracy: 0.71327, Precision: 0.61458, Recall: 0.57020 F1: 0.58579, AUROC: 0.88144, AUPRC: 0.63064
+
+Metric score decreased (-0.604995 --> -0.611849).  Saving model ...
+
+	iters: 100, epoch: 8 | loss: 0.7751606
+	speed: 0.5496s/iter; left time: 22434.8576s
+	iters: 200, epoch: 8 | loss: 0.6866676
+	speed: 0.2125s/iter; left time: 8653.2560s
+	iters: 300, epoch: 8 | loss: 0.7642608
+	speed: 0.2113s/iter; left time: 8583.2193s
+	iters: 400, epoch: 8 | loss: 0.6779221
+	speed: 0.2108s/iter; left time: 8541.0342s
+Epoch: 8 cost time: 93.17284059524536
+Epoch: 8, Steps: 440, | Train Loss: 0.72737
+Validation results --- Loss: 0.79648, Accuracy: 0.72525, Precision: 0.64223, Recall: 0.59631, F1: 0.61325, AUROC: 0.88911, AUPRC: 0.65713
+Test results --- Loss: 0.81976, Accuracy: 0.71598, Precision: 0.61948, Recall: 0.57548 F1: 0.59104, AUROC: 0.88322, AUPRC: 0.63282
+
+Metric score decreased (-0.611849 --> -0.613253).  Saving model ...
+
+	iters: 100, epoch: 9 | loss: 0.6215469
+	speed: 0.5467s/iter; left time: 22077.9296s
+	iters: 200, epoch: 9 | loss: 0.7066734
+	speed: 0.2098s/iter; left time: 8451.7590s
+	iters: 300, epoch: 9 | loss: 0.6717552
+	speed: 0.2097s/iter; left time: 8427.7616s
+	iters: 400, epoch: 9 | loss: 0.7021636
+	speed: 0.2109s/iter; left time: 8451.7198s
+Epoch: 9 cost time: 92.48723769187927
+Epoch: 9, Steps: 440, | Train Loss: 0.71345
+Validation results --- Loss: 0.79047, Accuracy: 0.72347, Precision: 0.63539, Recall: 0.60482, F1: 0.61791, AUROC: 0.89157, AUPRC: 0.66141
+Test results --- Loss: 0.81780, Accuracy: 0.71363, Precision: 0.61583, Recall: 0.58212 F1: 0.59591, AUROC: 0.88447, AUPRC: 0.63566
+
+Metric score decreased (-0.613253 --> -0.617906).  Saving model ...
+
+	iters: 100, epoch: 10 | loss: 0.7228093
+	speed: 0.5470s/iter; left time: 21847.3618s
+	iters: 200, epoch: 10 | loss: 0.7406368
+	speed: 0.2113s/iter; left time: 8417.8054s
+	iters: 300, epoch: 10 | loss: 0.7638589
+	speed: 0.2095s/iter; left time: 8325.8091s
+	iters: 400, epoch: 10 | loss: 0.7096210
+	speed: 0.2097s/iter; left time: 8312.1445s
+Epoch: 10 cost time: 92.5319676399231
+Epoch: 10, Steps: 440, | Train Loss: 0.69917
+Validation results --- Loss: 0.79560, Accuracy: 0.72462, Precision: 0.64129, Recall: 0.60783, F1: 0.62159, AUROC: 0.89252, AUPRC: 0.66405
+Test results --- Loss: 0.82022, Accuracy: 0.71504, Precision: 0.61996, Recall: 0.58496 F1: 0.59951, AUROC: 0.88565, AUPRC: 0.64004
+
+Metric score decreased (-0.617906 --> -0.621591).  Saving model ...
+
+	iters: 100, epoch: 11 | loss: 0.7203641
+	speed: 0.5475s/iter; left time: 21625.8818s
+	iters: 200, epoch: 11 | loss: 0.6428428
+	speed: 0.2106s/iter; left time: 8296.9197s
+	iters: 300, epoch: 11 | loss: 0.7283858
+	speed: 0.2125s/iter; left time: 8350.9347s
+	iters: 400, epoch: 11 | loss: 0.6928098
+	speed: 0.2103s/iter; left time: 8244.1874s
+Epoch: 11 cost time: 92.87785720825195
+Epoch: 11, Steps: 440, | Train Loss: 0.68737
+Validation results --- Loss: 0.79180, Accuracy: 0.72655, Precision: 0.64150, Recall: 0.60761, F1: 0.62126, AUROC: 0.89277, AUPRC: 0.66462
+Test results --- Loss: 0.81759, Accuracy: 0.71593, Precision: 0.61758, Recall: 0.58297 F1: 0.59695, AUROC: 0.88636, AUPRC: 0.63988
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 12 | loss: 0.6120421
+	speed: 0.5476s/iter; left time: 21389.6424s
+	iters: 200, epoch: 12 | loss: 0.7289831
+	speed: 0.2113s/iter; left time: 8231.1541s
+	iters: 300, epoch: 12 | loss: 0.6990154
+	speed: 0.2108s/iter; left time: 8192.2811s
+	iters: 400, epoch: 12 | loss: 0.6358601
+	speed: 0.2101s/iter; left time: 8142.1509s
+Epoch: 12 cost time: 92.65885615348816
+Epoch: 12, Steps: 440, | Train Loss: 0.67647
+Validation results --- Loss: 0.79365, Accuracy: 0.72579, Precision: 0.64303, Recall: 0.60256, F1: 0.61861, AUROC: 0.89340, AUPRC: 0.66488
+Test results --- Loss: 0.81958, Accuracy: 0.71757, Precision: 0.62370, Recall: 0.58237 F1: 0.59862, AUROC: 0.88705, AUPRC: 0.64127
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 13 | loss: 0.7358636
+	speed: 0.5479s/iter; left time: 21160.8927s
+	iters: 200, epoch: 13 | loss: 0.5833661
+	speed: 0.2101s/iter; left time: 8093.3080s
+	iters: 300, epoch: 13 | loss: 0.7388307
+	speed: 0.2115s/iter; left time: 8125.6455s
+	iters: 400, epoch: 13 | loss: 0.7936805
+	speed: 0.2107s/iter; left time: 8074.7106s
+Epoch: 13 cost time: 92.76225352287292
+Epoch: 13, Steps: 440, | Train Loss: 0.66419
+Validation results --- Loss: 0.79474, Accuracy: 0.72734, Precision: 0.64670, Recall: 0.59951, F1: 0.61703, AUROC: 0.89395, AUPRC: 0.66623
+Test results --- Loss: 0.81997, Accuracy: 0.71760, Precision: 0.62420, Recall: 0.57769 F1: 0.59448, AUROC: 0.88772, AUPRC: 0.64173
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 14 | loss: 0.7115811
+	speed: 0.5472s/iter; left time: 20890.8383s
+	iters: 200, epoch: 14 | loss: 0.6394572
+	speed: 0.2108s/iter; left time: 8028.2676s
+	iters: 300, epoch: 14 | loss: 0.7476443
+	speed: 0.2103s/iter; left time: 7987.8712s
+	iters: 400, epoch: 14 | loss: 0.7271348
+	speed: 0.2093s/iter; left time: 7928.2751s
+Epoch: 14 cost time: 92.43133497238159
+Epoch: 14, Steps: 440, | Train Loss: 0.65200
+Validation results --- Loss: 0.79065, Accuracy: 0.72828, Precision: 0.64259, Recall: 0.59927, F1: 0.61547, AUROC: 0.89436, AUPRC: 0.66544
+Test results --- Loss: 0.81812, Accuracy: 0.71944, Precision: 0.62213, Recall: 0.57969 F1: 0.59500, AUROC: 0.88824, AUPRC: 0.64214
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 15 | loss: 0.6157873
+	speed: 0.5414s/iter; left time: 20431.5735s
+	iters: 200, epoch: 15 | loss: 0.6104044
+	speed: 0.2081s/iter; left time: 7831.5595s
+	iters: 300, epoch: 15 | loss: 0.6649756
+	speed: 0.2073s/iter; left time: 7783.5178s
+	iters: 400, epoch: 15 | loss: 0.6974016
+	speed: 0.2086s/iter; left time: 7810.4144s
+Epoch: 15 cost time: 91.5916907787323
+Epoch: 15, Steps: 440, | Train Loss: 0.63959
+Validation results --- Loss: 0.79235, Accuracy: 0.72887, Precision: 0.64308, Recall: 0.60017, F1: 0.61640, AUROC: 0.89488, AUPRC: 0.66482
+Test results --- Loss: 0.82070, Accuracy: 0.72096, Precision: 0.62586, Recall: 0.58327 F1: 0.59889, AUROC: 0.88822, AUPRC: 0.64172
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 16 | loss: 0.5739010
+	speed: 0.5423s/iter; left time: 20228.7702s
+	iters: 200, epoch: 16 | loss: 0.5969178
+	speed: 0.2090s/iter; left time: 7775.9751s
+	iters: 300, epoch: 16 | loss: 0.6946856
+	speed: 0.2080s/iter; left time: 7715.5967s
+	iters: 400, epoch: 16 | loss: 0.6375089
+	speed: 0.2076s/iter; left time: 7682.8513s
+Epoch: 16 cost time: 91.64936828613281
+Epoch: 16, Steps: 440, | Train Loss: 0.63612
+Validation results --- Loss: 0.79072, Accuracy: 0.72966, Precision: 0.64683, Recall: 0.60330, F1: 0.62034, AUROC: 0.89578, AUPRC: 0.66845
+Test results --- Loss: 0.82215, Accuracy: 0.72038, Precision: 0.62606, Recall: 0.58333 F1: 0.59961, AUROC: 0.88891, AUPRC: 0.64304
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 17 | loss: 0.6021832
+	speed: 0.5421s/iter; left time: 19980.8317s
+	iters: 200, epoch: 17 | loss: 0.6270714
+	speed: 0.2082s/iter; left time: 7653.6590s
+	iters: 300, epoch: 17 | loss: 0.5479063
+	speed: 0.2082s/iter; left time: 7634.5617s
+	iters: 400, epoch: 17 | loss: 0.5637263
+	speed: 0.2097s/iter; left time: 7665.5840s
+Epoch: 17 cost time: 91.84044480323792
+Epoch: 17, Steps: 440, | Train Loss: 0.62008
+Validation results --- Loss: 0.78646, Accuracy: 0.73108, Precision: 0.64916, Recall: 0.60674, F1: 0.62363, AUROC: 0.89652, AUPRC: 0.67099
+Test results --- Loss: 0.82015, Accuracy: 0.72134, Precision: 0.62886, Recall: 0.58666 F1: 0.60308, AUROC: 0.88936, AUPRC: 0.64541
+
+Metric score decreased (-0.621591 --> -0.623628).  Saving model ...
+
+	iters: 100, epoch: 18 | loss: 0.6211588
+	speed: 0.5449s/iter; left time: 19846.9182s
+	iters: 200, epoch: 18 | loss: 0.6796059
+	speed: 0.2097s/iter; left time: 7616.5123s
+	iters: 300, epoch: 18 | loss: 0.5953789
+	speed: 0.2079s/iter; left time: 7531.7187s
+	iters: 400, epoch: 18 | loss: 0.6019469
+	speed: 0.2095s/iter; left time: 7566.6371s
+Epoch: 18 cost time: 91.96327829360962
+Epoch: 18, Steps: 440, | Train Loss: 0.61042
+Validation results --- Loss: 0.78903, Accuracy: 0.73144, Precision: 0.64822, Recall: 0.60098, F1: 0.61874, AUROC: 0.89683, AUPRC: 0.66947
+Test results --- Loss: 0.82251, Accuracy: 0.72162, Precision: 0.62792, Recall: 0.58279 F1: 0.59942, AUROC: 0.88975, AUPRC: 0.64656
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 19 | loss: 0.5390147
+	speed: 0.5458s/iter; left time: 19636.8526s
+	iters: 200, epoch: 19 | loss: 0.6140274
+	speed: 0.2088s/iter; left time: 7490.5760s
+	iters: 300, epoch: 19 | loss: 0.6130195
+	speed: 0.2079s/iter; left time: 7439.7045s
+	iters: 400, epoch: 19 | loss: 0.6423145
+	speed: 0.2094s/iter; left time: 7471.4890s
+Epoch: 19 cost time: 91.90616178512573
+Epoch: 19, Steps: 440, | Train Loss: 0.60179
+Validation results --- Loss: 0.78891, Accuracy: 0.73195, Precision: 0.64757, Recall: 0.60550, F1: 0.62225, AUROC: 0.89712, AUPRC: 0.67014
+Test results --- Loss: 0.82514, Accuracy: 0.72185, Precision: 0.62881, Recall: 0.58724 F1: 0.60345, AUROC: 0.89000, AUPRC: 0.64513
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 20 | loss: 0.5083799
+	speed: 0.5436s/iter; left time: 19321.5684s
+	iters: 200, epoch: 20 | loss: 0.5791289
+	speed: 0.2098s/iter; left time: 7434.4741s
+	iters: 300, epoch: 20 | loss: 0.5435010
+	speed: 0.2089s/iter; left time: 7382.2444s
+	iters: 400, epoch: 20 | loss: 0.5674268
+	speed: 0.2083s/iter; left time: 7341.9555s
+Epoch: 20 cost time: 91.92679190635681
+Epoch: 20, Steps: 440, | Train Loss: 0.59658
+Validation results --- Loss: 0.78828, Accuracy: 0.73325, Precision: 0.64972, Recall: 0.60719, F1: 0.62360, AUROC: 0.89718, AUPRC: 0.67131
+Test results --- Loss: 0.82126, Accuracy: 0.72260, Precision: 0.62734, Recall: 0.58661 F1: 0.60191, AUROC: 0.89056, AUPRC: 0.64757
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 21 | loss: 0.5743498
+	speed: 0.5446s/iter; left time: 19116.3769s
+	iters: 200, epoch: 21 | loss: 0.4623094
+	speed: 0.2092s/iter; left time: 7321.5434s
+	iters: 300, epoch: 21 | loss: 0.6499172
+	speed: 0.2082s/iter; left time: 7266.6742s
+	iters: 400, epoch: 21 | loss: 0.4752153
+	speed: 0.2091s/iter; left time: 7276.0160s
+Epoch: 21 cost time: 91.8447585105896
+Epoch: 21, Steps: 440, | Train Loss: 0.58678
+Validation results --- Loss: 0.78785, Accuracy: 0.73404, Precision: 0.65102, Recall: 0.60748, F1: 0.62434, AUROC: 0.89749, AUPRC: 0.67158
+Test results --- Loss: 0.82264, Accuracy: 0.72389, Precision: 0.63072, Recall: 0.58823 F1: 0.60420, AUROC: 0.89063, AUPRC: 0.64835
+
+Metric score decreased (-0.623628 --> -0.624343).  Saving model ...
+
+	iters: 100, epoch: 22 | loss: 0.5821495
+	speed: 0.5445s/iter; left time: 18873.7092s
+	iters: 200, epoch: 22 | loss: 0.5860937
+	speed: 0.2092s/iter; left time: 7231.0605s
+	iters: 300, epoch: 22 | loss: 0.4687644
+	speed: 0.2079s/iter; left time: 7166.0445s
+	iters: 400, epoch: 22 | loss: 0.6721946
+	speed: 0.2088s/iter; left time: 7173.8764s
+Epoch: 22 cost time: 91.8345844745636
+Epoch: 22, Steps: 440, | Train Loss: 0.57400
+Validation results --- Loss: 0.78936, Accuracy: 0.73457, Precision: 0.64976, Recall: 0.60831, F1: 0.62399, AUROC: 0.89753, AUPRC: 0.67120
+Test results --- Loss: 0.82237, Accuracy: 0.72442, Precision: 0.63201, Recall: 0.58981 F1: 0.60497, AUROC: 0.89085, AUPRC: 0.64968
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 23 | loss: 0.5858634
+	speed: 0.5443s/iter; left time: 18626.5629s
+	iters: 200, epoch: 23 | loss: 0.4930788
+	speed: 0.2083s/iter; left time: 7106.6948s
+	iters: 300, epoch: 23 | loss: 0.5272136
+	speed: 0.2085s/iter; left time: 7093.1179s
+	iters: 400, epoch: 23 | loss: 0.6020510
+	speed: 0.2114s/iter; left time: 7169.7879s
+Epoch: 23 cost time: 92.03198766708374
+Epoch: 23, Steps: 440, | Train Loss: 0.56710
+Validation results --- Loss: 0.79079, Accuracy: 0.73406, Precision: 0.65049, Recall: 0.60660, F1: 0.62247, AUROC: 0.89802, AUPRC: 0.67206
+Test results --- Loss: 0.82422, Accuracy: 0.72427, Precision: 0.63158, Recall: 0.58846 F1: 0.60358, AUROC: 0.89118, AUPRC: 0.65071
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 24 | loss: 0.5088847
+	speed: 0.5440s/iter; left time: 18375.3288s
+	iters: 200, epoch: 24 | loss: 0.4613025
+	speed: 0.2097s/iter; left time: 7063.0804s
+	iters: 300, epoch: 24 | loss: 0.5306574
+	speed: 0.2082s/iter; left time: 6990.9193s
+	iters: 400, epoch: 24 | loss: 0.5166025
+	speed: 0.2080s/iter; left time: 6962.8542s
+Epoch: 24 cost time: 91.87262964248657
+Epoch: 24, Steps: 440, | Train Loss: 0.56194
+Validation results --- Loss: 0.78981, Accuracy: 0.73450, Precision: 0.65046, Recall: 0.61033, F1: 0.62547, AUROC: 0.89812, AUPRC: 0.67180
+Test results --- Loss: 0.82488, Accuracy: 0.72357, Precision: 0.63076, Recall: 0.59188 F1: 0.60646, AUROC: 0.89106, AUPRC: 0.65132
+
+Metric score decreased (-0.624343 --> -0.625469).  Saving model ...
+
+	iters: 100, epoch: 25 | loss: 0.4899644
+	speed: 0.5459s/iter; left time: 18200.1355s
+	iters: 200, epoch: 25 | loss: 0.5698607
+	speed: 0.2078s/iter; left time: 6907.6985s
+	iters: 300, epoch: 25 | loss: 0.5721107
+	speed: 0.2076s/iter; left time: 6881.6829s
+	iters: 400, epoch: 25 | loss: 0.6539364
+	speed: 0.2086s/iter; left time: 6891.3133s
+Epoch: 25 cost time: 91.5979335308075
+Epoch: 25, Steps: 440, | Train Loss: 0.54840
+Validation results --- Loss: 0.79023, Accuracy: 0.73493, Precision: 0.64917, Recall: 0.61178, F1: 0.62629, AUROC: 0.89826, AUPRC: 0.67169
+Test results --- Loss: 0.82557, Accuracy: 0.72382, Precision: 0.63236, Recall: 0.59315 F1: 0.60800, AUROC: 0.89108, AUPRC: 0.65100
+
+Metric score decreased (-0.625469 --> -0.626294).  Saving model ...
+
+	iters: 100, epoch: 26 | loss: 0.6392221
+	speed: 0.5428s/iter; left time: 17858.3039s
+	iters: 200, epoch: 26 | loss: 0.5096854
+	speed: 0.2098s/iter; left time: 6882.2442s
+	iters: 300, epoch: 26 | loss: 0.5044858
+	speed: 0.2084s/iter; left time: 6814.6882s
+	iters: 400, epoch: 26 | loss: 0.4967426
+	speed: 0.2083s/iter; left time: 6791.0169s
+Epoch: 26 cost time: 91.87702965736389
+Epoch: 26, Steps: 440, | Train Loss: 0.54023
+Validation results --- Loss: 0.78766, Accuracy: 0.73557, Precision: 0.65139, Recall: 0.61109, F1: 0.62634, AUROC: 0.89887, AUPRC: 0.67328
+Test results --- Loss: 0.82512, Accuracy: 0.72480, Precision: 0.63361, Recall: 0.59278 F1: 0.60776, AUROC: 0.89149, AUPRC: 0.65189
+
+Metric score decreased (-0.626294 --> -0.626337).  Saving model ...
+
+	iters: 100, epoch: 27 | loss: 0.4380561
+	speed: 0.5433s/iter; left time: 17634.7711s
+	iters: 200, epoch: 27 | loss: 0.5727125
+	speed: 0.2084s/iter; left time: 6744.6277s
+	iters: 300, epoch: 27 | loss: 0.4622675
+	speed: 0.2081s/iter; left time: 6711.9796s
+	iters: 400, epoch: 27 | loss: 0.5759698
+	speed: 0.2089s/iter; left time: 6718.5457s
+Epoch: 27 cost time: 91.83164405822754
+Epoch: 27, Steps: 440, | Train Loss: 0.53581
+Validation results --- Loss: 0.79076, Accuracy: 0.73529, Precision: 0.65032, Recall: 0.60999, F1: 0.62489, AUROC: 0.89873, AUPRC: 0.67276
+Test results --- Loss: 0.82502, Accuracy: 0.72625, Precision: 0.63610, Recall: 0.59451 F1: 0.60940, AUROC: 0.89162, AUPRC: 0.65337
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 28 | loss: 0.5371655
+	speed: 0.5414s/iter; left time: 17335.8467s
+	iters: 200, epoch: 28 | loss: 0.4813759
+	speed: 0.2082s/iter; left time: 6647.1862s
+	iters: 300, epoch: 28 | loss: 0.4993849
+	speed: 0.2075s/iter; left time: 6603.4225s
+	iters: 400, epoch: 28 | loss: 0.5609887
+	speed: 0.2070s/iter; left time: 6566.1109s
+Epoch: 28 cost time: 91.43454694747925
+Epoch: 28, Steps: 440, | Train Loss: 0.52616
+Validation results --- Loss: 0.79076, Accuracy: 0.73628, Precision: 0.64906, Recall: 0.60906, F1: 0.62351, AUROC: 0.89905, AUPRC: 0.67237
+Test results --- Loss: 0.82695, Accuracy: 0.72703, Precision: 0.63760, Recall: 0.59492 F1: 0.60958, AUROC: 0.89197, AUPRC: 0.65415
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 29 | loss: 0.5907806
+	speed: 0.5418s/iter; left time: 17109.2581s
+	iters: 200, epoch: 29 | loss: 0.3815964
+	speed: 0.2079s/iter; left time: 6544.8405s
+	iters: 300, epoch: 29 | loss: 0.4904440
+	speed: 0.2075s/iter; left time: 6510.1184s
+	iters: 400, epoch: 29 | loss: 0.5118899
+	speed: 0.2083s/iter; left time: 6514.4115s
+Epoch: 29 cost time: 91.50753593444824
+Epoch: 29, Steps: 440, | Train Loss: 0.51689
+Validation results --- Loss: 0.79440, Accuracy: 0.73521, Precision: 0.64578, Recall: 0.60846, F1: 0.62220, AUROC: 0.89907, AUPRC: 0.67139
+Test results --- Loss: 0.83308, Accuracy: 0.72526, Precision: 0.63482, Recall: 0.59458 F1: 0.60853, AUROC: 0.89191, AUPRC: 0.65339
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 30 | loss: 0.3912509
+	speed: 0.5411s/iter; left time: 16849.1680s
+	iters: 200, epoch: 30 | loss: 0.4597735
+	speed: 0.2088s/iter; left time: 6481.9592s
+	iters: 300, epoch: 30 | loss: 0.4982078
+	speed: 0.2081s/iter; left time: 6437.5209s
+	iters: 400, epoch: 30 | loss: 0.5883365
+	speed: 0.2081s/iter; left time: 6416.6942s
+Epoch: 30 cost time: 91.89801359176636
+Epoch: 30, Steps: 440, | Train Loss: 0.51088
+Validation results --- Loss: 0.79812, Accuracy: 0.73467, Precision: 0.64729, Recall: 0.61010, F1: 0.62396, AUROC: 0.89867, AUPRC: 0.67114
+Test results --- Loss: 0.83524, Accuracy: 0.72513, Precision: 0.63297, Recall: 0.59421 F1: 0.60794, AUROC: 0.89145, AUPRC: 0.65306
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 31 | loss: 0.5148110
+	speed: 0.5551s/iter; left time: 17041.9108s
+	iters: 200, epoch: 31 | loss: 0.4644103
+	speed: 0.2160s/iter; left time: 6610.6691s
+	iters: 300, epoch: 31 | loss: 0.5181807
+	speed: 0.2162s/iter; left time: 6594.1877s
+	iters: 400, epoch: 31 | loss: 0.5488916
+	speed: 0.2142s/iter; left time: 6510.8390s
+Epoch: 31 cost time: 94.99463057518005
+Epoch: 31, Steps: 440, | Train Loss: 0.50543
+Validation results --- Loss: 0.79969, Accuracy: 0.73427, Precision: 0.64437, Recall: 0.60954, F1: 0.62318, AUROC: 0.89881, AUPRC: 0.67114
+Test results --- Loss: 0.83904, Accuracy: 0.72453, Precision: 0.63132, Recall: 0.59353 F1: 0.60744, AUROC: 0.89134, AUPRC: 0.65143
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 32 | loss: 0.4190106
+	speed: 0.5487s/iter; left time: 16603.8434s
+	iters: 200, epoch: 32 | loss: 0.5062574
+	speed: 0.2127s/iter; left time: 6414.6532s
+	iters: 300, epoch: 32 | loss: 0.4251150
+	speed: 0.2117s/iter; left time: 6362.6145s
+	iters: 400, epoch: 32 | loss: 0.4989834
+	speed: 0.2132s/iter; left time: 6388.9942s
+Epoch: 32 cost time: 93.61179995536804
+Epoch: 32, Steps: 440, | Train Loss: 0.49514
+Validation results --- Loss: 0.80260, Accuracy: 0.73424, Precision: 0.64480, Recall: 0.61204, F1: 0.62532, AUROC: 0.89891, AUPRC: 0.67118
+Test results --- Loss: 0.83966, Accuracy: 0.72455, Precision: 0.63062, Recall: 0.59580 F1: 0.60929, AUROC: 0.89199, AUPRC: 0.65217
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 33 | loss: 0.4439992
+	speed: 0.5476s/iter; left time: 16328.8639s
+	iters: 200, epoch: 33 | loss: 0.4692641
+	speed: 0.2105s/iter; left time: 6256.1869s
+	iters: 300, epoch: 33 | loss: 0.4996693
+	speed: 0.2100s/iter; left time: 6220.5952s
+	iters: 400, epoch: 33 | loss: 0.4324808
+	speed: 0.2121s/iter; left time: 6260.4020s
+Epoch: 33 cost time: 92.88379621505737
+Epoch: 33, Steps: 440, | Train Loss: 0.48498
+Validation results --- Loss: 0.80406, Accuracy: 0.73434, Precision: 0.64458, Recall: 0.61031, F1: 0.62381, AUROC: 0.89900, AUPRC: 0.67216
+Test results --- Loss: 0.84386, Accuracy: 0.72609, Precision: 0.63328, Recall: 0.59669 F1: 0.61031, AUROC: 0.89134, AUPRC: 0.65152
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 34 | loss: 0.5582483
+	speed: 0.5479s/iter; left time: 16097.2109s
+	iters: 200, epoch: 34 | loss: 0.4995393
+	speed: 0.2147s/iter; left time: 6285.3495s
+	iters: 300, epoch: 34 | loss: 0.3556124
+	speed: 0.2127s/iter; left time: 6206.3669s
+	iters: 400, epoch: 34 | loss: 0.5000281
+	speed: 0.2114s/iter; left time: 6148.3049s
+Epoch: 34 cost time: 93.80398488044739
+Epoch: 34, Steps: 440, | Train Loss: 0.47886
+Validation results --- Loss: 0.80375, Accuracy: 0.73506, Precision: 0.64477, Recall: 0.60717, F1: 0.62121, AUROC: 0.89927, AUPRC: 0.67165
+Test results --- Loss: 0.84471, Accuracy: 0.72513, Precision: 0.63198, Recall: 0.59276 F1: 0.60667, AUROC: 0.89182, AUPRC: 0.65195
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 35 | loss: 0.5580275
+	speed: 0.5529s/iter; left time: 16000.4624s
+	iters: 200, epoch: 35 | loss: 0.5034730
+	speed: 0.2107s/iter; left time: 6077.3181s
+	iters: 300, epoch: 35 | loss: 0.5087965
+	speed: 0.2122s/iter; left time: 6098.7960s
+	iters: 400, epoch: 35 | loss: 0.5418849
+	speed: 0.2107s/iter; left time: 6034.1538s
+Epoch: 35 cost time: 93.3972499370575
+Epoch: 35, Steps: 440, | Train Loss: 0.46919
+Validation results --- Loss: 0.80066, Accuracy: 0.73526, Precision: 0.64402, Recall: 0.60772, F1: 0.62110, AUROC: 0.89900, AUPRC: 0.67124
+Test results --- Loss: 0.84288, Accuracy: 0.72662, Precision: 0.63384, Recall: 0.59518 F1: 0.60894, AUROC: 0.89176, AUPRC: 0.65250
+
+EarlyStopping counter: 9 out of 10
+	iters: 100, epoch: 36 | loss: 0.5086119
+	speed: 0.5451s/iter; left time: 15537.1671s
+	iters: 200, epoch: 36 | loss: 0.5777242
+	speed: 0.2118s/iter; left time: 6016.1387s
+	iters: 300, epoch: 36 | loss: 0.5593434
+	speed: 0.2099s/iter; left time: 5939.4447s
+	iters: 400, epoch: 36 | loss: 0.4606574
+	speed: 0.2092s/iter; left time: 5900.3587s
+Epoch: 36 cost time: 92.57173681259155
+Epoch: 36, Steps: 440, | Train Loss: 0.46440
+Validation results --- Loss: 0.80644, Accuracy: 0.73592, Precision: 0.64535, Recall: 0.61003, F1: 0.62353, AUROC: 0.89896, AUPRC: 0.67115
+Test results --- Loss: 0.84861, Accuracy: 0.72508, Precision: 0.63019, Recall: 0.59407 F1: 0.60744, AUROC: 0.89153, AUPRC: 0.65159
+
+EarlyStopping counter: 10 out of 10
+Early stopping
+>>>>>>>testing : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed43<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Validation results --- Loss: 0.78842, Accuracy: 0.73557, Precision: 0.65139, Recall: 0.61109, F1: 0.62634, AUROC: 0.89887, AUPRC: 0.67328
+Test results --- Loss: 0.82563, Accuracy: 0.72480, Precision: 0.63361, Recall: 0.59278, F1: 0.60776, AUROC: 0.89149, AUPRC: 0.65189
+
+Use GPU: cuda:0
+>>>>>>>start training : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed44>>>>>>>>>>>>>>>>>>>>>>>>>>
+(112570, 250, 12)
+(112570,)
+(39280, 250, 12)
+(39280,)
+(39550, 250, 12)
+(39550,)
+	iters: 100, epoch: 1 | loss: 1.0316820
+	speed: 0.2098s/iter; left time: 9208.9458s
+	iters: 200, epoch: 1 | loss: 0.9852414
+	speed: 0.2086s/iter; left time: 9135.0815s
+	iters: 300, epoch: 1 | loss: 0.9049482
+	speed: 0.2080s/iter; left time: 9088.2767s
+	iters: 400, epoch: 1 | loss: 0.9025927
+	speed: 0.2079s/iter; left time: 9066.0852s
+Epoch: 1 cost time: 91.88907837867737
+Epoch: 1, Steps: 440, | Train Loss: 0.99658
+Validation results --- Loss: 0.88545, Accuracy: 0.68625, Precision: 0.59260, Recall: 0.54882, F1: 0.54725, AUROC: 0.85835, AUPRC: 0.59348
+Test results --- Loss: 0.89835, Accuracy: 0.67919, Precision: 0.55617, Recall: 0.53406 F1: 0.52850, AUROC: 0.85268, AUPRC: 0.57585
+
+Metric score decreased (inf --> -0.547246).  Saving model ...
+
+	iters: 100, epoch: 2 | loss: 0.8542403
+	speed: 0.5445s/iter; left time: 23663.9779s
+	iters: 200, epoch: 2 | loss: 0.7713252
+	speed: 0.2080s/iter; left time: 9019.6901s
+	iters: 300, epoch: 2 | loss: 0.9368434
+	speed: 0.2091s/iter; left time: 9045.7703s
+	iters: 400, epoch: 2 | loss: 0.7437543
+	speed: 0.2080s/iter; left time: 8979.3293s
+Epoch: 2 cost time: 91.7493166923523
+Epoch: 2, Steps: 440, | Train Loss: 0.86834
+Validation results --- Loss: 0.83811, Accuracy: 0.70321, Precision: 0.61817, Recall: 0.55701, F1: 0.56736, AUROC: 0.87273, AUPRC: 0.62055
+Test results --- Loss: 0.85878, Accuracy: 0.69750, Precision: 0.59711, Recall: 0.54389 F1: 0.55140, AUROC: 0.86646, AUPRC: 0.60198
+
+Metric score decreased (-0.547246 --> -0.567359).  Saving model ...
+
+	iters: 100, epoch: 3 | loss: 0.8022505
+	speed: 0.5439s/iter; left time: 23397.6462s
+	iters: 200, epoch: 3 | loss: 0.8143303
+	speed: 0.2104s/iter; left time: 9028.8242s
+	iters: 300, epoch: 3 | loss: 0.8446051
+	speed: 0.2093s/iter; left time: 8961.7462s
+	iters: 400, epoch: 3 | loss: 0.8858360
+	speed: 0.2100s/iter; left time: 8970.6848s
+Epoch: 3 cost time: 92.28450608253479
+Epoch: 3, Steps: 440, | Train Loss: 0.82916
+Validation results --- Loss: 0.83763, Accuracy: 0.70868, Precision: 0.61672, Recall: 0.56856, F1: 0.58532, AUROC: 0.87636, AUPRC: 0.62635
+Test results --- Loss: 0.85539, Accuracy: 0.70131, Precision: 0.60081, Recall: 0.55299 F1: 0.56878, AUROC: 0.87073, AUPRC: 0.60947
+
+Metric score decreased (-0.567359 --> -0.585324).  Saving model ...
+
+	iters: 100, epoch: 4 | loss: 0.8372574
+	speed: 0.5461s/iter; left time: 23255.3007s
+	iters: 200, epoch: 4 | loss: 0.8597094
+	speed: 0.2091s/iter; left time: 8884.4937s
+	iters: 300, epoch: 4 | loss: 0.8222436
+	speed: 0.2103s/iter; left time: 8913.6695s
+	iters: 400, epoch: 4 | loss: 0.7695913
+	speed: 0.2101s/iter; left time: 8883.1731s
+Epoch: 4 cost time: 92.29155373573303
+Epoch: 4, Steps: 440, | Train Loss: 0.80106
+Validation results --- Loss: 0.82609, Accuracy: 0.71291, Precision: 0.63144, Recall: 0.56530, F1: 0.58133, AUROC: 0.88045, AUPRC: 0.63654
+Test results --- Loss: 0.85084, Accuracy: 0.70630, Precision: 0.61476, Recall: 0.55118 F1: 0.56611, AUROC: 0.87453, AUPRC: 0.61686
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 5 | loss: 0.6945326
+	speed: 0.5442s/iter; left time: 22935.1885s
+	iters: 200, epoch: 5 | loss: 0.8228183
+	speed: 0.2093s/iter; left time: 8800.7601s
+	iters: 300, epoch: 5 | loss: 0.6818759
+	speed: 0.2093s/iter; left time: 8779.2736s
+	iters: 400, epoch: 5 | loss: 0.7686703
+	speed: 0.2110s/iter; left time: 8826.9068s
+Epoch: 5 cost time: 92.35159945487976
+Epoch: 5, Steps: 440, | Train Loss: 0.77364
+Validation results --- Loss: 0.81173, Accuracy: 0.71841, Precision: 0.63511, Recall: 0.57857, F1: 0.59287, AUROC: 0.88394, AUPRC: 0.64493
+Test results --- Loss: 0.83511, Accuracy: 0.71014, Precision: 0.61747, Recall: 0.56297 F1: 0.57530, AUROC: 0.87764, AUPRC: 0.62343
+
+Metric score decreased (-0.585324 --> -0.592868).  Saving model ...
+
+	iters: 100, epoch: 6 | loss: 0.8483557
+	speed: 0.5450s/iter; left time: 22725.3346s
+	iters: 200, epoch: 6 | loss: 0.7842262
+	speed: 0.2091s/iter; left time: 8699.0399s
+	iters: 300, epoch: 6 | loss: 0.7048667
+	speed: 0.2102s/iter; left time: 8724.8174s
+	iters: 400, epoch: 6 | loss: 0.7016982
+	speed: 0.2093s/iter; left time: 8667.0608s
+Epoch: 6 cost time: 92.24470591545105
+Epoch: 6, Steps: 440, | Train Loss: 0.75763
+Validation results --- Loss: 0.80526, Accuracy: 0.71879, Precision: 0.63343, Recall: 0.58037, F1: 0.59275, AUROC: 0.88571, AUPRC: 0.64690
+Test results --- Loss: 0.82830, Accuracy: 0.71231, Precision: 0.61596, Recall: 0.56519 F1: 0.57477, AUROC: 0.88028, AUPRC: 0.62765
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 7 | loss: 0.9558304
+	speed: 0.5471s/iter; left time: 22574.3410s
+	iters: 200, epoch: 7 | loss: 0.8083778
+	speed: 0.2099s/iter; left time: 8638.4066s
+	iters: 300, epoch: 7 | loss: 0.6560603
+	speed: 0.2091s/iter; left time: 8586.2293s
+	iters: 400, epoch: 7 | loss: 0.6552728
+	speed: 0.2107s/iter; left time: 8628.9040s
+Epoch: 7 cost time: 92.30273485183716
+Epoch: 7, Steps: 440, | Train Loss: 0.74143
+Validation results --- Loss: 0.80112, Accuracy: 0.72182, Precision: 0.63896, Recall: 0.58235, F1: 0.59434, AUROC: 0.88761, AUPRC: 0.65077
+Test results --- Loss: 0.82568, Accuracy: 0.71378, Precision: 0.62038, Recall: 0.56732 F1: 0.57692, AUROC: 0.88164, AUPRC: 0.63028
+
+Metric score decreased (-0.592868 --> -0.594345).  Saving model ...
+
+	iters: 100, epoch: 8 | loss: 0.7410958
+	speed: 0.5458s/iter; left time: 22278.3796s
+	iters: 200, epoch: 8 | loss: 0.6766748
+	speed: 0.2142s/iter; left time: 8720.5450s
+	iters: 300, epoch: 8 | loss: 0.7244638
+	speed: 0.2201s/iter; left time: 8940.7077s
+	iters: 400, epoch: 8 | loss: 0.7440580
+	speed: 0.2194s/iter; left time: 8891.7343s
+Epoch: 8 cost time: 95.11298298835754
+Epoch: 8, Steps: 440, | Train Loss: 0.72520
+Validation results --- Loss: 0.79758, Accuracy: 0.72368, Precision: 0.63973, Recall: 0.58234, F1: 0.59183, AUROC: 0.88863, AUPRC: 0.65237
+Test results --- Loss: 0.82310, Accuracy: 0.71429, Precision: 0.62273, Recall: 0.56805 F1: 0.57584, AUROC: 0.88260, AUPRC: 0.63156
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 9 | loss: 0.6025242
+	speed: 0.5594s/iter; left time: 22590.7873s
+	iters: 200, epoch: 9 | loss: 0.6623744
+	speed: 0.2159s/iter; left time: 8697.2750s
+	iters: 300, epoch: 9 | loss: 0.7803299
+	speed: 0.2141s/iter; left time: 8604.1221s
+	iters: 400, epoch: 9 | loss: 0.7332606
+	speed: 0.2141s/iter; left time: 8581.4058s
+Epoch: 9 cost time: 94.78799438476562
+Epoch: 9, Steps: 440, | Train Loss: 0.70917
+Validation results --- Loss: 0.79299, Accuracy: 0.72368, Precision: 0.64041, Recall: 0.58612, F1: 0.59604, AUROC: 0.88956, AUPRC: 0.65499
+Test results --- Loss: 0.81680, Accuracy: 0.71588, Precision: 0.62236, Recall: 0.57309 F1: 0.58069, AUROC: 0.88369, AUPRC: 0.63400
+
+Metric score decreased (-0.594345 --> -0.596038).  Saving model ...
+
+	iters: 100, epoch: 10 | loss: 0.6892577
+	speed: 0.5556s/iter; left time: 22191.2743s
+	iters: 200, epoch: 10 | loss: 0.7756151
+	speed: 0.2128s/iter; left time: 8478.6027s
+	iters: 300, epoch: 10 | loss: 0.6788381
+	speed: 0.2139s/iter; left time: 8500.0100s
+	iters: 400, epoch: 10 | loss: 0.7512057
+	speed: 0.2138s/iter; left time: 8474.1664s
+Epoch: 10 cost time: 94.1168360710144
+Epoch: 10, Steps: 440, | Train Loss: 0.69656
+Validation results --- Loss: 0.79077, Accuracy: 0.72798, Precision: 0.65172, Recall: 0.58793, F1: 0.60235, AUROC: 0.89184, AUPRC: 0.66203
+Test results --- Loss: 0.81655, Accuracy: 0.71990, Precision: 0.63360, Recall: 0.57299 F1: 0.58559, AUROC: 0.88618, AUPRC: 0.64081
+
+Metric score decreased (-0.596038 --> -0.602352).  Saving model ...
+
+	iters: 100, epoch: 11 | loss: 0.6171597
+	speed: 0.5560s/iter; left time: 21963.6020s
+	iters: 200, epoch: 11 | loss: 0.7473709
+	speed: 0.2148s/iter; left time: 8463.1980s
+	iters: 300, epoch: 11 | loss: 0.7223084
+	speed: 0.2118s/iter; left time: 8322.1447s
+	iters: 400, epoch: 11 | loss: 0.7199813
+	speed: 0.2134s/iter; left time: 8366.9065s
+Epoch: 11 cost time: 93.9049379825592
+Epoch: 11, Steps: 440, | Train Loss: 0.68393
+Validation results --- Loss: 0.79408, Accuracy: 0.72874, Precision: 0.65660, Recall: 0.58686, F1: 0.60318, AUROC: 0.89259, AUPRC: 0.66321
+Test results --- Loss: 0.81849, Accuracy: 0.72164, Precision: 0.63667, Recall: 0.57345 F1: 0.58738, AUROC: 0.88683, AUPRC: 0.64178
+
+Metric score decreased (-0.602352 --> -0.603179).  Saving model ...
+
+	iters: 100, epoch: 12 | loss: 0.5782179
+	speed: 0.5513s/iter; left time: 21535.2918s
+	iters: 200, epoch: 12 | loss: 0.7098057
+	speed: 0.2115s/iter; left time: 8240.6483s
+	iters: 300, epoch: 12 | loss: 0.7386029
+	speed: 0.2139s/iter; left time: 8313.9277s
+	iters: 400, epoch: 12 | loss: 0.6933724
+	speed: 0.2131s/iter; left time: 8258.1185s
+Epoch: 12 cost time: 93.81096363067627
+Epoch: 12, Steps: 440, | Train Loss: 0.67387
+Validation results --- Loss: 0.79022, Accuracy: 0.72915, Precision: 0.65560, Recall: 0.58449, F1: 0.59780, AUROC: 0.89361, AUPRC: 0.66429
+Test results --- Loss: 0.81647, Accuracy: 0.72215, Precision: 0.63786, Recall: 0.57249 F1: 0.58418, AUROC: 0.88774, AUPRC: 0.64450
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 13 | loss: 0.6066109
+	speed: 0.5518s/iter; left time: 21309.9319s
+	iters: 200, epoch: 13 | loss: 0.7409799
+	speed: 0.2136s/iter; left time: 8227.2858s
+	iters: 300, epoch: 13 | loss: 0.6450045
+	speed: 0.2130s/iter; left time: 8184.8825s
+	iters: 400, epoch: 13 | loss: 0.7046562
+	speed: 0.2145s/iter; left time: 8220.8657s
+Epoch: 13 cost time: 93.98817825317383
+Epoch: 13, Steps: 440, | Train Loss: 0.65971
+Validation results --- Loss: 0.79174, Accuracy: 0.73101, Precision: 0.66176, Recall: 0.58781, F1: 0.60283, AUROC: 0.89452, AUPRC: 0.66603
+Test results --- Loss: 0.81745, Accuracy: 0.72301, Precision: 0.64392, Recall: 0.57431 F1: 0.58796, AUROC: 0.88859, AUPRC: 0.64684
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 14 | loss: 0.6882266
+	speed: 0.5519s/iter; left time: 21073.9560s
+	iters: 200, epoch: 14 | loss: 0.6253591
+	speed: 0.2133s/iter; left time: 8122.9515s
+	iters: 300, epoch: 14 | loss: 0.6762936
+	speed: 0.2140s/iter; left time: 8128.8248s
+	iters: 400, epoch: 14 | loss: 0.7127209
+	speed: 0.2126s/iter; left time: 8053.4187s
+Epoch: 14 cost time: 93.87449407577515
+Epoch: 14, Steps: 440, | Train Loss: 0.65096
+Validation results --- Loss: 0.78890, Accuracy: 0.73124, Precision: 0.66034, Recall: 0.58655, F1: 0.60051, AUROC: 0.89506, AUPRC: 0.66764
+Test results --- Loss: 0.81703, Accuracy: 0.72329, Precision: 0.64281, Recall: 0.57397 F1: 0.58602, AUROC: 0.88896, AUPRC: 0.64620
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 15 | loss: 0.5573695
+	speed: 0.5499s/iter; left time: 20752.4144s
+	iters: 200, epoch: 15 | loss: 0.6427500
+	speed: 0.2144s/iter; left time: 8071.5812s
+	iters: 300, epoch: 15 | loss: 0.6531085
+	speed: 0.2135s/iter; left time: 8013.9886s
+	iters: 400, epoch: 15 | loss: 0.6645869
+	speed: 0.2143s/iter; left time: 8023.1887s
+Epoch: 15 cost time: 93.9726448059082
+Epoch: 15, Steps: 440, | Train Loss: 0.64004
+Validation results --- Loss: 0.78563, Accuracy: 0.73289, Precision: 0.66157, Recall: 0.59102, F1: 0.60532, AUROC: 0.89584, AUPRC: 0.67032
+Test results --- Loss: 0.81220, Accuracy: 0.72397, Precision: 0.64340, Recall: 0.57735 F1: 0.58965, AUROC: 0.89064, AUPRC: 0.65097
+
+Metric score decreased (-0.603179 --> -0.605317).  Saving model ...
+
+	iters: 100, epoch: 16 | loss: 0.5949000
+	speed: 0.5532s/iter; left time: 20634.8472s
+	iters: 200, epoch: 16 | loss: 0.6783813
+	speed: 0.2123s/iter; left time: 7897.2851s
+	iters: 300, epoch: 16 | loss: 0.6490964
+	speed: 0.2134s/iter; left time: 7916.2388s
+	iters: 400, epoch: 16 | loss: 0.6940009
+	speed: 0.2126s/iter; left time: 7866.5965s
+Epoch: 16 cost time: 93.81660294532776
+Epoch: 16, Steps: 440, | Train Loss: 0.62865
+Validation results --- Loss: 0.78319, Accuracy: 0.73355, Precision: 0.65976, Recall: 0.59685, F1: 0.61275, AUROC: 0.89673, AUPRC: 0.67313
+Test results --- Loss: 0.81299, Accuracy: 0.72303, Precision: 0.63936, Recall: 0.58022 F1: 0.59357, AUROC: 0.89107, AUPRC: 0.65129
+
+Metric score decreased (-0.605317 --> -0.612752).  Saving model ...
+
+	iters: 100, epoch: 17 | loss: 0.6019282
+	speed: 0.5501s/iter; left time: 20276.5046s
+	iters: 200, epoch: 17 | loss: 0.5796832
+	speed: 0.2093s/iter; left time: 7693.5979s
+	iters: 300, epoch: 17 | loss: 0.6281117
+	speed: 0.2119s/iter; left time: 7767.2756s
+	iters: 400, epoch: 17 | loss: 0.7536102
+	speed: 0.2121s/iter; left time: 7753.1213s
+Epoch: 17 cost time: 92.83711647987366
+Epoch: 17, Steps: 440, | Train Loss: 0.61786
+Validation results --- Loss: 0.78364, Accuracy: 0.73320, Precision: 0.66348, Recall: 0.59485, F1: 0.61199, AUROC: 0.89763, AUPRC: 0.67485
+Test results --- Loss: 0.81531, Accuracy: 0.72410, Precision: 0.64423, Recall: 0.57980 F1: 0.59474, AUROC: 0.89154, AUPRC: 0.65261
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 18 | loss: 0.4731455
+	speed: 0.5477s/iter; left time: 19949.6000s
+	iters: 200, epoch: 18 | loss: 0.6528041
+	speed: 0.2117s/iter; left time: 7689.7929s
+	iters: 300, epoch: 18 | loss: 0.7162384
+	speed: 0.2105s/iter; left time: 7625.5471s
+	iters: 400, epoch: 18 | loss: 0.6468721
+	speed: 0.2096s/iter; left time: 7570.2290s
+Epoch: 18 cost time: 92.797518491745
+Epoch: 18, Steps: 440, | Train Loss: 0.60784
+Validation results --- Loss: 0.78443, Accuracy: 0.73437, Precision: 0.66544, Recall: 0.59825, F1: 0.61525, AUROC: 0.89748, AUPRC: 0.67535
+Test results --- Loss: 0.81418, Accuracy: 0.72445, Precision: 0.64621, Recall: 0.58316 F1: 0.59864, AUROC: 0.89170, AUPRC: 0.65357
+
+Metric score decreased (-0.612752 --> -0.615251).  Saving model ...
+
+	iters: 100, epoch: 19 | loss: 0.7512810
+	speed: 0.5472s/iter; left time: 19690.2293s
+	iters: 200, epoch: 19 | loss: 0.5941897
+	speed: 0.2108s/iter; left time: 7563.9639s
+	iters: 300, epoch: 19 | loss: 0.5290207
+	speed: 0.2102s/iter; left time: 7520.8285s
+	iters: 400, epoch: 19 | loss: 0.6483296
+	speed: 0.2105s/iter; left time: 7509.7565s
+Epoch: 19 cost time: 92.74650359153748
+Epoch: 19, Steps: 440, | Train Loss: 0.59929
+Validation results --- Loss: 0.78331, Accuracy: 0.73506, Precision: 0.66389, Recall: 0.60001, F1: 0.61643, AUROC: 0.89778, AUPRC: 0.67581
+Test results --- Loss: 0.81171, Accuracy: 0.72511, Precision: 0.64490, Recall: 0.58481 F1: 0.59954, AUROC: 0.89160, AUPRC: 0.65569
+
+Metric score decreased (-0.615251 --> -0.616429).  Saving model ...
+
+	iters: 100, epoch: 20 | loss: 0.5523264
+	speed: 0.5495s/iter; left time: 19529.9679s
+	iters: 200, epoch: 20 | loss: 0.5754899
+	speed: 0.2100s/iter; left time: 7442.1725s
+	iters: 300, epoch: 20 | loss: 0.5251063
+	speed: 0.2119s/iter; left time: 7488.1296s
+	iters: 400, epoch: 20 | loss: 0.5331680
+	speed: 0.2098s/iter; left time: 7392.5215s
+Epoch: 20 cost time: 92.74826121330261
+Epoch: 20, Steps: 440, | Train Loss: 0.58827
+Validation results --- Loss: 0.78175, Accuracy: 0.73679, Precision: 0.66490, Recall: 0.60282, F1: 0.61916, AUROC: 0.89838, AUPRC: 0.67730
+Test results --- Loss: 0.81306, Accuracy: 0.72544, Precision: 0.64474, Recall: 0.58609 F1: 0.60117, AUROC: 0.89181, AUPRC: 0.65460
+
+Metric score decreased (-0.616429 --> -0.619162).  Saving model ...
+
+	iters: 100, epoch: 21 | loss: 0.5302297
+	speed: 0.5495s/iter; left time: 19289.4927s
+	iters: 200, epoch: 21 | loss: 0.6221302
+	speed: 0.2105s/iter; left time: 7368.9658s
+	iters: 300, epoch: 21 | loss: 0.6136823
+	speed: 0.2097s/iter; left time: 7320.3154s
+	iters: 400, epoch: 21 | loss: 0.6233369
+	speed: 0.2105s/iter; left time: 7324.6423s
+Epoch: 21 cost time: 92.69255638122559
+Epoch: 21, Steps: 440, | Train Loss: 0.58452
+Validation results --- Loss: 0.78179, Accuracy: 0.73658, Precision: 0.66280, Recall: 0.60366, F1: 0.62117, AUROC: 0.89906, AUPRC: 0.67919
+Test results --- Loss: 0.81433, Accuracy: 0.72561, Precision: 0.64409, Recall: 0.58735 F1: 0.60365, AUROC: 0.89227, AUPRC: 0.65569
+
+Metric score decreased (-0.619162 --> -0.621171).  Saving model ...
+
+	iters: 100, epoch: 22 | loss: 0.5718150
+	speed: 0.5429s/iter; left time: 18816.7810s
+	iters: 200, epoch: 22 | loss: 0.6347238
+	speed: 0.2087s/iter; left time: 7214.1244s
+	iters: 300, epoch: 22 | loss: 0.6815473
+	speed: 0.2096s/iter; left time: 7224.2474s
+	iters: 400, epoch: 22 | loss: 0.5363982
+	speed: 0.2081s/iter; left time: 7150.8422s
+Epoch: 22 cost time: 91.83857464790344
+Epoch: 22, Steps: 440, | Train Loss: 0.57177
+Validation results --- Loss: 0.78317, Accuracy: 0.73798, Precision: 0.66596, Recall: 0.60682, F1: 0.62503, AUROC: 0.89929, AUPRC: 0.68050
+Test results --- Loss: 0.81634, Accuracy: 0.72523, Precision: 0.64371, Recall: 0.58871 F1: 0.60574, AUROC: 0.89252, AUPRC: 0.65642
+
+Metric score decreased (-0.621171 --> -0.625026).  Saving model ...
+
+	iters: 100, epoch: 23 | loss: 0.5379584
+	speed: 0.5438s/iter; left time: 18610.2333s
+	iters: 200, epoch: 23 | loss: 0.6047264
+	speed: 0.2085s/iter; left time: 7112.9774s
+	iters: 300, epoch: 23 | loss: 0.5572681
+	speed: 0.2082s/iter; left time: 7083.4758s
+	iters: 400, epoch: 23 | loss: 0.4558067
+	speed: 0.2092s/iter; left time: 7096.1179s
+Epoch: 23 cost time: 91.84966468811035
+Epoch: 23, Steps: 440, | Train Loss: 0.56483
+Validation results --- Loss: 0.78822, Accuracy: 0.73887, Precision: 0.66893, Recall: 0.60547, F1: 0.62481, AUROC: 0.89994, AUPRC: 0.68040
+Test results --- Loss: 0.81907, Accuracy: 0.72710, Precision: 0.64766, Recall: 0.58710 F1: 0.60533, AUROC: 0.89322, AUPRC: 0.65824
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 24 | loss: 0.4866106
+	speed: 0.5426s/iter; left time: 18328.9062s
+	iters: 200, epoch: 24 | loss: 0.6144263
+	speed: 0.2093s/iter; left time: 7049.0480s
+	iters: 300, epoch: 24 | loss: 0.5772811
+	speed: 0.2086s/iter; left time: 7005.5331s
+	iters: 400, epoch: 24 | loss: 0.5876679
+	speed: 0.2079s/iter; left time: 6962.0851s
+Epoch: 24 cost time: 91.79879832267761
+Epoch: 24, Steps: 440, | Train Loss: 0.55614
+Validation results --- Loss: 0.79181, Accuracy: 0.73829, Precision: 0.66757, Recall: 0.60377, F1: 0.62339, AUROC: 0.90002, AUPRC: 0.68076
+Test results --- Loss: 0.82408, Accuracy: 0.72640, Precision: 0.64840, Recall: 0.58584 F1: 0.60477, AUROC: 0.89328, AUPRC: 0.65850
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 25 | loss: 0.5961112
+	speed: 0.5434s/iter; left time: 18116.3526s
+	iters: 200, epoch: 25 | loss: 0.4254144
+	speed: 0.2087s/iter; left time: 6938.2691s
+	iters: 300, epoch: 25 | loss: 0.5716522
+	speed: 0.2082s/iter; left time: 6898.5811s
+	iters: 400, epoch: 25 | loss: 0.5094710
+	speed: 0.2091s/iter; left time: 6909.6848s
+Epoch: 25 cost time: 91.93157505989075
+Epoch: 25, Steps: 440, | Train Loss: 0.54691
+Validation results --- Loss: 0.79716, Accuracy: 0.73926, Precision: 0.67107, Recall: 0.60406, F1: 0.62428, AUROC: 0.90016, AUPRC: 0.68181
+Test results --- Loss: 0.82922, Accuracy: 0.72619, Precision: 0.64794, Recall: 0.58381 F1: 0.60285, AUROC: 0.89338, AUPRC: 0.65821
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 26 | loss: 0.4633781
+	speed: 0.5441s/iter; left time: 17900.3569s
+	iters: 200, epoch: 26 | loss: 0.5089221
+	speed: 0.2113s/iter; left time: 6931.4824s
+	iters: 300, epoch: 26 | loss: 0.6461537
+	speed: 0.2084s/iter; left time: 6814.2793s
+	iters: 400, epoch: 26 | loss: 0.5728064
+	speed: 0.2088s/iter; left time: 6807.9077s
+Epoch: 26 cost time: 92.21589827537537
+Epoch: 26, Steps: 440, | Train Loss: 0.53644
+Validation results --- Loss: 0.79823, Accuracy: 0.73898, Precision: 0.66773, Recall: 0.60605, F1: 0.62625, AUROC: 0.90052, AUPRC: 0.68035
+Test results --- Loss: 0.83234, Accuracy: 0.72650, Precision: 0.64575, Recall: 0.58666 F1: 0.60594, AUROC: 0.89364, AUPRC: 0.65737
+
+Metric score decreased (-0.625026 --> -0.626246).  Saving model ...
+
+	iters: 100, epoch: 27 | loss: 0.5608049
+	speed: 0.5425s/iter; left time: 17610.4453s
+	iters: 200, epoch: 27 | loss: 0.5325095
+	speed: 0.2095s/iter; left time: 6779.8685s
+	iters: 300, epoch: 27 | loss: 0.5497965
+	speed: 0.2112s/iter; left time: 6813.4954s
+	iters: 400, epoch: 27 | loss: 0.5857700
+	speed: 0.2090s/iter; left time: 6721.5852s
+Epoch: 27 cost time: 92.320880651474
+Epoch: 27, Steps: 440, | Train Loss: 0.52834
+Validation results --- Loss: 0.80361, Accuracy: 0.73732, Precision: 0.66619, Recall: 0.60145, F1: 0.62204, AUROC: 0.90116, AUPRC: 0.68156
+Test results --- Loss: 0.83885, Accuracy: 0.72728, Precision: 0.64760, Recall: 0.58527 F1: 0.60487, AUROC: 0.89381, AUPRC: 0.65798
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 28 | loss: 0.5306144
+	speed: 0.5439s/iter; left time: 17416.0344s
+	iters: 200, epoch: 28 | loss: 0.5602331
+	speed: 0.2100s/iter; left time: 6701.9860s
+	iters: 300, epoch: 28 | loss: 0.6298193
+	speed: 0.2089s/iter; left time: 6648.7157s
+	iters: 400, epoch: 28 | loss: 0.5203727
+	speed: 0.2089s/iter; left time: 6626.8135s
+Epoch: 28 cost time: 92.07658314704895
+Epoch: 28, Steps: 440, | Train Loss: 0.52029
+Validation results --- Loss: 0.80472, Accuracy: 0.73796, Precision: 0.66823, Recall: 0.60672, F1: 0.62727, AUROC: 0.90126, AUPRC: 0.68244
+Test results --- Loss: 0.83865, Accuracy: 0.72559, Precision: 0.64522, Recall: 0.58636 F1: 0.60626, AUROC: 0.89462, AUPRC: 0.66040
+
+Metric score decreased (-0.626246 --> -0.627266).  Saving model ...
+
+	iters: 100, epoch: 29 | loss: 0.6154961
+	speed: 0.5457s/iter; left time: 17232.8267s
+	iters: 200, epoch: 29 | loss: 0.5447484
+	speed: 0.2091s/iter; left time: 6583.2449s
+	iters: 300, epoch: 29 | loss: 0.6121767
+	speed: 0.2095s/iter; left time: 6574.9277s
+	iters: 400, epoch: 29 | loss: 0.4653281
+	speed: 0.2101s/iter; left time: 6573.2238s
+Epoch: 29 cost time: 92.32582306861877
+Epoch: 29, Steps: 440, | Train Loss: 0.51655
+Validation results --- Loss: 0.80690, Accuracy: 0.73903, Precision: 0.66883, Recall: 0.60714, F1: 0.62812, AUROC: 0.90137, AUPRC: 0.68361
+Test results --- Loss: 0.84622, Accuracy: 0.72650, Precision: 0.64666, Recall: 0.58665 F1: 0.60688, AUROC: 0.89393, AUPRC: 0.65925
+
+Metric score decreased (-0.627266 --> -0.628115).  Saving model ...
+
+	iters: 100, epoch: 30 | loss: 0.5876213
+	speed: 0.5442s/iter; left time: 16946.0458s
+	iters: 200, epoch: 30 | loss: 0.3693445
+	speed: 0.2099s/iter; left time: 6514.9856s
+	iters: 300, epoch: 30 | loss: 0.5213714
+	speed: 0.2092s/iter; left time: 6472.1403s
+	iters: 400, epoch: 30 | loss: 0.4947550
+	speed: 0.2094s/iter; left time: 6457.0218s
+Epoch: 30 cost time: 92.19784283638
+Epoch: 30, Steps: 440, | Train Loss: 0.50500
+Validation results --- Loss: 0.80693, Accuracy: 0.74015, Precision: 0.66889, Recall: 0.60857, F1: 0.62908, AUROC: 0.90192, AUPRC: 0.68438
+Test results --- Loss: 0.84655, Accuracy: 0.72738, Precision: 0.64850, Recall: 0.58923 F1: 0.60950, AUROC: 0.89450, AUPRC: 0.66020
+
+Metric score decreased (-0.628115 --> -0.629083).  Saving model ...
+
+	iters: 100, epoch: 31 | loss: 0.4583465
+	speed: 0.5476s/iter; left time: 16811.4097s
+	iters: 200, epoch: 31 | loss: 0.6184762
+	speed: 0.2099s/iter; left time: 6421.6501s
+	iters: 300, epoch: 31 | loss: 0.4554757
+	speed: 0.2092s/iter; left time: 6379.8464s
+	iters: 400, epoch: 31 | loss: 0.4809136
+	speed: 0.2090s/iter; left time: 6355.1238s
+Epoch: 31 cost time: 92.18262267112732
+Epoch: 31, Steps: 440, | Train Loss: 0.49906
+Validation results --- Loss: 0.81403, Accuracy: 0.73839, Precision: 0.66790, Recall: 0.60789, F1: 0.62913, AUROC: 0.90166, AUPRC: 0.68198
+Test results --- Loss: 0.85456, Accuracy: 0.72680, Precision: 0.64742, Recall: 0.58819 F1: 0.60896, AUROC: 0.89445, AUPRC: 0.66011
+
+Metric score decreased (-0.629083 --> -0.629131).  Saving model ...
+
+	iters: 100, epoch: 32 | loss: 0.5965831
+	speed: 0.5423s/iter; left time: 16411.1953s
+	iters: 200, epoch: 32 | loss: 0.4873391
+	speed: 0.2089s/iter; left time: 6301.1188s
+	iters: 300, epoch: 32 | loss: 0.5050997
+	speed: 0.2078s/iter; left time: 6245.5840s
+	iters: 400, epoch: 32 | loss: 0.5067629
+	speed: 0.2083s/iter; left time: 6239.5111s
+Epoch: 32 cost time: 91.69396424293518
+Epoch: 32, Steps: 440, | Train Loss: 0.49508
+Validation results --- Loss: 0.82070, Accuracy: 0.73943, Precision: 0.66792, Recall: 0.60924, F1: 0.63034, AUROC: 0.90135, AUPRC: 0.68226
+Test results --- Loss: 0.86134, Accuracy: 0.72566, Precision: 0.64601, Recall: 0.58807 F1: 0.60884, AUROC: 0.89419, AUPRC: 0.65870
+
+Metric score decreased (-0.629131 --> -0.630341).  Saving model ...
+
+	iters: 100, epoch: 33 | loss: 0.4250314
+	speed: 0.5441s/iter; left time: 16224.9545s
+	iters: 200, epoch: 33 | loss: 0.4797957
+	speed: 0.2083s/iter; left time: 6191.8908s
+	iters: 300, epoch: 33 | loss: 0.5586921
+	speed: 0.2134s/iter; left time: 6320.5134s
+	iters: 400, epoch: 33 | loss: 0.4674572
+	speed: 0.2183s/iter; left time: 6443.4691s
+Epoch: 33 cost time: 93.78263401985168
+Epoch: 33, Steps: 440, | Train Loss: 0.48061
+Validation results --- Loss: 0.82445, Accuracy: 0.73737, Precision: 0.66459, Recall: 0.60531, F1: 0.62607, AUROC: 0.90108, AUPRC: 0.68227
+Test results --- Loss: 0.86020, Accuracy: 0.72523, Precision: 0.64761, Recall: 0.58894 F1: 0.60989, AUROC: 0.89503, AUPRC: 0.66120
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 34 | loss: 0.5174611
+	speed: 0.5607s/iter; left time: 16472.9673s
+	iters: 200, epoch: 34 | loss: 0.3667631
+	speed: 0.2180s/iter; left time: 6382.4776s
+	iters: 300, epoch: 34 | loss: 0.5510017
+	speed: 0.2162s/iter; left time: 6309.0715s
+	iters: 400, epoch: 34 | loss: 0.5268051
+	speed: 0.2165s/iter; left time: 6296.6768s
+Epoch: 34 cost time: 95.70938992500305
+Epoch: 34, Steps: 440, | Train Loss: 0.47455
+Validation results --- Loss: 0.83481, Accuracy: 0.73679, Precision: 0.66536, Recall: 0.60488, F1: 0.62594, AUROC: 0.90103, AUPRC: 0.68071
+Test results --- Loss: 0.87097, Accuracy: 0.72539, Precision: 0.64952, Recall: 0.58859 F1: 0.61014, AUROC: 0.89457, AUPRC: 0.66070
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 35 | loss: 0.4429429
+	speed: 0.5592s/iter; left time: 16184.1353s
+	iters: 200, epoch: 35 | loss: 0.4066010
+	speed: 0.2152s/iter; left time: 6206.2500s
+	iters: 300, epoch: 35 | loss: 0.4950429
+	speed: 0.2169s/iter; left time: 6232.6045s
+	iters: 400, epoch: 35 | loss: 0.4783219
+	speed: 0.2155s/iter; left time: 6171.1298s
+Epoch: 35 cost time: 95.14250564575195
+Epoch: 35, Steps: 440, | Train Loss: 0.46951
+Validation results --- Loss: 0.83201, Accuracy: 0.73824, Precision: 0.66647, Recall: 0.60904, F1: 0.62955, AUROC: 0.90140, AUPRC: 0.68316
+Test results --- Loss: 0.86995, Accuracy: 0.72422, Precision: 0.64458, Recall: 0.58871 F1: 0.60917, AUROC: 0.89486, AUPRC: 0.66161
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 36 | loss: 0.4840403
+	speed: 0.5553s/iter; left time: 15827.4153s
+	iters: 200, epoch: 36 | loss: 0.4947605
+	speed: 0.2164s/iter; left time: 6144.8461s
+	iters: 300, epoch: 36 | loss: 0.4659164
+	speed: 0.2150s/iter; left time: 6085.2205s
+	iters: 400, epoch: 36 | loss: 0.4976834
+	speed: 0.2145s/iter; left time: 6048.1324s
+Epoch: 36 cost time: 94.78234195709229
+Epoch: 36, Steps: 440, | Train Loss: 0.46276
+Validation results --- Loss: 0.83279, Accuracy: 0.73699, Precision: 0.66365, Recall: 0.60713, F1: 0.62734, AUROC: 0.90144, AUPRC: 0.68361
+Test results --- Loss: 0.87329, Accuracy: 0.72551, Precision: 0.64533, Recall: 0.59035 F1: 0.61057, AUROC: 0.89437, AUPRC: 0.65967
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 37 | loss: 0.5680290
+	speed: 0.5516s/iter; left time: 15479.5712s
+	iters: 200, epoch: 37 | loss: 0.4718038
+	speed: 0.2133s/iter; left time: 5963.3602s
+	iters: 300, epoch: 37 | loss: 0.3935575
+	speed: 0.2133s/iter; left time: 5941.6718s
+	iters: 400, epoch: 37 | loss: 0.3905247
+	speed: 0.2156s/iter; left time: 5986.0392s
+Epoch: 37 cost time: 94.04941868782043
+Epoch: 37, Steps: 440, | Train Loss: 0.45403
+Validation results --- Loss: 0.83536, Accuracy: 0.73783, Precision: 0.66413, Recall: 0.60858, F1: 0.62861, AUROC: 0.90119, AUPRC: 0.68213
+Test results --- Loss: 0.87517, Accuracy: 0.72660, Precision: 0.64860, Recall: 0.59365 F1: 0.61405, AUROC: 0.89462, AUPRC: 0.66101
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 38 | loss: 0.4442413
+	speed: 0.5533s/iter; left time: 15281.9053s
+	iters: 200, epoch: 38 | loss: 0.4801079
+	speed: 0.2144s/iter; left time: 5899.6540s
+	iters: 300, epoch: 38 | loss: 0.4592532
+	speed: 0.2128s/iter; left time: 5836.4145s
+	iters: 400, epoch: 38 | loss: 0.5840582
+	speed: 0.2130s/iter; left time: 5818.6485s
+Epoch: 38 cost time: 94.03154182434082
+Epoch: 38, Steps: 440, | Train Loss: 0.44622
+Validation results --- Loss: 0.83705, Accuracy: 0.73788, Precision: 0.66385, Recall: 0.61007, F1: 0.62923, AUROC: 0.90112, AUPRC: 0.68232
+Test results --- Loss: 0.87593, Accuracy: 0.72468, Precision: 0.64691, Recall: 0.59300 F1: 0.61291, AUROC: 0.89450, AUPRC: 0.65961
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 39 | loss: 0.4655706
+	speed: 0.5525s/iter; left time: 15018.1675s
+	iters: 200, epoch: 39 | loss: 0.3271649
+	speed: 0.2112s/iter; left time: 5719.1071s
+	iters: 300, epoch: 39 | loss: 0.4842001
+	speed: 0.2118s/iter; left time: 5713.8662s
+	iters: 400, epoch: 39 | loss: 0.4723747
+	speed: 0.2125s/iter; left time: 5712.7209s
+Epoch: 39 cost time: 93.4595422744751
+Epoch: 39, Steps: 440, | Train Loss: 0.43889
+Validation results --- Loss: 0.84080, Accuracy: 0.73755, Precision: 0.66273, Recall: 0.61002, F1: 0.62901, AUROC: 0.90120, AUPRC: 0.68205
+Test results --- Loss: 0.88278, Accuracy: 0.72417, Precision: 0.64460, Recall: 0.59286 F1: 0.61235, AUROC: 0.89424, AUPRC: 0.65814
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 40 | loss: 0.3503599
+	speed: 0.5500s/iter; left time: 14708.1226s
+	iters: 200, epoch: 40 | loss: 0.5356870
+	speed: 0.2147s/iter; left time: 5719.9358s
+	iters: 300, epoch: 40 | loss: 0.3963250
+	speed: 0.2134s/iter; left time: 5663.6374s
+	iters: 400, epoch: 40 | loss: 0.4283946
+	speed: 0.2160s/iter; left time: 5710.7109s
+Epoch: 40 cost time: 94.41787981987
+Epoch: 40, Steps: 440, | Train Loss: 0.43237
+Validation results --- Loss: 0.83845, Accuracy: 0.73801, Precision: 0.66319, Recall: 0.60988, F1: 0.62881, AUROC: 0.90106, AUPRC: 0.68128
+Test results --- Loss: 0.87866, Accuracy: 0.72556, Precision: 0.64339, Recall: 0.59204 F1: 0.61085, AUROC: 0.89411, AUPRC: 0.65892
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 41 | loss: 0.4586292
+	speed: 0.5528s/iter; left time: 14538.5374s
+	iters: 200, epoch: 41 | loss: 0.3525760
+	speed: 0.2147s/iter; left time: 5624.4868s
+	iters: 300, epoch: 41 | loss: 0.4586738
+	speed: 0.2147s/iter; left time: 5603.4559s
+	iters: 400, epoch: 41 | loss: 0.4535050
+	speed: 0.2123s/iter; left time: 5520.6125s
+Epoch: 41 cost time: 94.18615460395813
+Epoch: 41, Steps: 440, | Train Loss: 0.42229
+Validation results --- Loss: 0.83945, Accuracy: 0.73913, Precision: 0.66488, Recall: 0.61263, F1: 0.63140, AUROC: 0.90105, AUPRC: 0.68131
+Test results --- Loss: 0.87770, Accuracy: 0.72463, Precision: 0.64133, Recall: 0.59113 F1: 0.60953, AUROC: 0.89439, AUPRC: 0.66039
+
+Metric score decreased (-0.630341 --> -0.631400).  Saving model ...
+
+	iters: 100, epoch: 42 | loss: 0.3580888
+	speed: 0.5500s/iter; left time: 14224.8108s
+	iters: 200, epoch: 42 | loss: 0.4139258
+	speed: 0.2139s/iter; left time: 5509.5575s
+	iters: 300, epoch: 42 | loss: 0.3531382
+	speed: 0.2133s/iter; left time: 5472.2964s
+	iters: 400, epoch: 42 | loss: 0.3508601
+	speed: 0.2134s/iter; left time: 5454.8438s
+Epoch: 42 cost time: 93.81880831718445
+Epoch: 42, Steps: 440, | Train Loss: 0.41310
+Validation results --- Loss: 0.84434, Accuracy: 0.73775, Precision: 0.66222, Recall: 0.61278, F1: 0.63145, AUROC: 0.90104, AUPRC: 0.68192
+Test results --- Loss: 0.88741, Accuracy: 0.72549, Precision: 0.64291, Recall: 0.59517 F1: 0.61373, AUROC: 0.89415, AUPRC: 0.65905
+
+Metric score decreased (-0.631400 --> -0.631452).  Saving model ...
+
+	iters: 100, epoch: 43 | loss: 0.4071762
+	speed: 0.5523s/iter; left time: 14040.2315s
+	iters: 200, epoch: 43 | loss: 0.4578474
+	speed: 0.2143s/iter; left time: 5425.7763s
+	iters: 300, epoch: 43 | loss: 0.5040456
+	speed: 0.2136s/iter; left time: 5386.4405s
+	iters: 400, epoch: 43 | loss: 0.4159918
+	speed: 0.2127s/iter; left time: 5342.6605s
+Epoch: 43 cost time: 93.9024167060852
+Epoch: 43, Steps: 440, | Train Loss: 0.41056
+Validation results --- Loss: 0.84389, Accuracy: 0.73824, Precision: 0.65905, Recall: 0.61341, F1: 0.63078, AUROC: 0.90128, AUPRC: 0.68129
+Test results --- Loss: 0.88377, Accuracy: 0.72602, Precision: 0.64244, Recall: 0.59638 F1: 0.61415, AUROC: 0.89468, AUPRC: 0.65917
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 44 | loss: 0.3283272
+	speed: 0.5520s/iter; left time: 13788.9092s
+	iters: 200, epoch: 44 | loss: 0.3466602
+	speed: 0.2141s/iter; left time: 5325.9889s
+	iters: 300, epoch: 44 | loss: 0.4019407
+	speed: 0.2127s/iter; left time: 5271.2401s
+	iters: 400, epoch: 44 | loss: 0.3385903
+	speed: 0.2120s/iter; left time: 5231.3226s
+Epoch: 44 cost time: 93.7485237121582
+Epoch: 44, Steps: 440, | Train Loss: 0.39929
+Validation results --- Loss: 0.84854, Accuracy: 0.73834, Precision: 0.66023, Recall: 0.61491, F1: 0.63232, AUROC: 0.90123, AUPRC: 0.68212
+Test results --- Loss: 0.88796, Accuracy: 0.72485, Precision: 0.64115, Recall: 0.59586 F1: 0.61361, AUROC: 0.89495, AUPRC: 0.66025
+
+Metric score decreased (-0.631452 --> -0.632315).  Saving model ...
+
+	iters: 100, epoch: 45 | loss: 0.4480079
+	speed: 0.5518s/iter; left time: 13541.8126s
+	iters: 200, epoch: 45 | loss: 0.4651254
+	speed: 0.2116s/iter; left time: 5171.4447s
+	iters: 300, epoch: 45 | loss: 0.4433548
+	speed: 0.2125s/iter; left time: 5172.9578s
+	iters: 400, epoch: 45 | loss: 0.3520226
+	speed: 0.2115s/iter; left time: 5127.3279s
+Epoch: 45 cost time: 93.23646187782288
+Epoch: 45, Steps: 440, | Train Loss: 0.39790
+Validation results --- Loss: 0.85286, Accuracy: 0.73719, Precision: 0.65732, Recall: 0.61498, F1: 0.63115, AUROC: 0.90071, AUPRC: 0.68095
+Test results --- Loss: 0.89083, Accuracy: 0.72539, Precision: 0.64224, Recall: 0.59943 F1: 0.61634, AUROC: 0.89484, AUPRC: 0.66079
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 46 | loss: 0.4940465
+	speed: 0.5472s/iter; left time: 13188.4461s
+	iters: 200, epoch: 46 | loss: 0.3431624
+	speed: 0.2123s/iter; left time: 5095.9559s
+	iters: 300, epoch: 46 | loss: 0.4053524
+	speed: 0.2112s/iter; left time: 5046.9245s
+	iters: 400, epoch: 46 | loss: 0.4440938
+	speed: 0.2116s/iter; left time: 5036.9677s
+Epoch: 46 cost time: 93.1019926071167
+Epoch: 46, Steps: 440, | Train Loss: 0.39249
+Validation results --- Loss: 0.85787, Accuracy: 0.73635, Precision: 0.65596, Recall: 0.61485, F1: 0.63074, AUROC: 0.90079, AUPRC: 0.68159
+Test results --- Loss: 0.90096, Accuracy: 0.72344, Precision: 0.63953, Recall: 0.59697 F1: 0.61397, AUROC: 0.89485, AUPRC: 0.65837
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 47 | loss: 0.3864400
+	speed: 0.5478s/iter; left time: 12960.7803s
+	iters: 200, epoch: 47 | loss: 0.3766486
+	speed: 0.2117s/iter; left time: 4987.3739s
+	iters: 300, epoch: 47 | loss: 0.4025801
+	speed: 0.2115s/iter; left time: 4962.3543s
+	iters: 400, epoch: 47 | loss: 0.5033532
+	speed: 0.2109s/iter; left time: 4927.3641s
+Epoch: 47 cost time: 93.08632183074951
+Epoch: 47, Steps: 440, | Train Loss: 0.38449
+Validation results --- Loss: 0.86373, Accuracy: 0.73615, Precision: 0.65825, Recall: 0.61443, F1: 0.63123, AUROC: 0.90083, AUPRC: 0.68179
+Test results --- Loss: 0.90302, Accuracy: 0.72344, Precision: 0.64051, Recall: 0.59738 F1: 0.61451, AUROC: 0.89489, AUPRC: 0.65966
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 48 | loss: 0.3749105
+	speed: 0.5461s/iter; left time: 12681.6117s
+	iters: 200, epoch: 48 | loss: 0.3719884
+	speed: 0.2104s/iter; left time: 4863.5433s
+	iters: 300, epoch: 48 | loss: 0.3876638
+	speed: 0.2107s/iter; left time: 4850.4949s
+	iters: 400, epoch: 48 | loss: 0.4741780
+	speed: 0.2091s/iter; left time: 4793.1487s
+Epoch: 48 cost time: 92.4221019744873
+Epoch: 48, Steps: 440, | Train Loss: 0.37542
+Validation results --- Loss: 0.87082, Accuracy: 0.73483, Precision: 0.65549, Recall: 0.61193, F1: 0.62867, AUROC: 0.90077, AUPRC: 0.68111
+Test results --- Loss: 0.91148, Accuracy: 0.72379, Precision: 0.63973, Recall: 0.59602 F1: 0.61333, AUROC: 0.89458, AUPRC: 0.65868
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 49 | loss: 0.3263123
+	speed: 0.5458s/iter; left time: 12434.7033s
+	iters: 200, epoch: 49 | loss: 0.3528056
+	speed: 0.2095s/iter; left time: 4750.5465s
+	iters: 300, epoch: 49 | loss: 0.3508213
+	speed: 0.2108s/iter; left time: 4760.1810s
+	iters: 400, epoch: 49 | loss: 0.3169822
+	speed: 0.2109s/iter; left time: 4741.4711s
+Epoch: 49 cost time: 92.56174445152283
+Epoch: 49, Steps: 440, | Train Loss: 0.37066
+Validation results --- Loss: 0.87517, Accuracy: 0.73633, Precision: 0.65772, Recall: 0.61586, F1: 0.63213, AUROC: 0.90026, AUPRC: 0.67957
+Test results --- Loss: 0.91116, Accuracy: 0.72379, Precision: 0.64089, Recall: 0.59857 F1: 0.61548, AUROC: 0.89478, AUPRC: 0.66003
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 50 | loss: 0.4551829
+	speed: 0.5466s/iter; left time: 12212.4431s
+	iters: 200, epoch: 50 | loss: 0.3043358
+	speed: 0.2113s/iter; left time: 4700.5368s
+	iters: 300, epoch: 50 | loss: 0.3654283
+	speed: 0.2094s/iter; left time: 4636.1779s
+	iters: 400, epoch: 50 | loss: 0.3434626
+	speed: 0.2095s/iter; left time: 4618.2555s
+Epoch: 50 cost time: 92.46957039833069
+Epoch: 50, Steps: 440, | Train Loss: 0.36438
+Validation results --- Loss: 0.87937, Accuracy: 0.73577, Precision: 0.65662, Recall: 0.61245, F1: 0.62960, AUROC: 0.90039, AUPRC: 0.67870
+Test results --- Loss: 0.91972, Accuracy: 0.72374, Precision: 0.64065, Recall: 0.59554 F1: 0.61342, AUROC: 0.89460, AUPRC: 0.65778
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 51 | loss: 0.2792656
+	speed: 0.5444s/iter; left time: 11923.1980s
+	iters: 200, epoch: 51 | loss: 0.3735844
+	speed: 0.2090s/iter; left time: 4556.6794s
+	iters: 300, epoch: 51 | loss: 0.3755083
+	speed: 0.2094s/iter; left time: 4545.0621s
+	iters: 400, epoch: 51 | loss: 0.3483561
+	speed: 0.2101s/iter; left time: 4538.5747s
+Epoch: 51 cost time: 92.25169134140015
+Epoch: 51, Steps: 440, | Train Loss: 0.35824
+Validation results --- Loss: 0.88028, Accuracy: 0.73551, Precision: 0.65619, Recall: 0.61063, F1: 0.62820, AUROC: 0.90059, AUPRC: 0.67988
+Test results --- Loss: 0.92479, Accuracy: 0.72364, Precision: 0.64031, Recall: 0.59386 F1: 0.61211, AUROC: 0.89436, AUPRC: 0.65751
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 52 | loss: 0.2829820
+	speed: 0.5452s/iter; left time: 11700.0010s
+	iters: 200, epoch: 52 | loss: 0.3162527
+	speed: 0.2098s/iter; left time: 4481.6246s
+	iters: 300, epoch: 52 | loss: 0.2611894
+	speed: 0.2107s/iter; left time: 4480.6231s
+	iters: 400, epoch: 52 | loss: 0.3494354
+	speed: 0.2096s/iter; left time: 4435.4591s
+Epoch: 52 cost time: 92.53996157646179
+Epoch: 52, Steps: 440, | Train Loss: 0.35379
+Validation results --- Loss: 0.88745, Accuracy: 0.73740, Precision: 0.66131, Recall: 0.61352, F1: 0.63203, AUROC: 0.90025, AUPRC: 0.68064
+Test results --- Loss: 0.93056, Accuracy: 0.72498, Precision: 0.64201, Recall: 0.59433 F1: 0.61301, AUROC: 0.89435, AUPRC: 0.65826
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 53 | loss: 0.3834922
+	speed: 0.5483s/iter; left time: 11526.1010s
+	iters: 200, epoch: 53 | loss: 0.4081870
+	speed: 0.2098s/iter; left time: 4389.4803s
+	iters: 300, epoch: 53 | loss: 0.3790928
+	speed: 0.2104s/iter; left time: 4380.7574s
+	iters: 400, epoch: 53 | loss: 0.3997118
+	speed: 0.2104s/iter; left time: 4360.7055s
+Epoch: 53 cost time: 92.68014693260193
+Epoch: 53, Steps: 440, | Train Loss: 0.34883
+Validation results --- Loss: 0.88937, Accuracy: 0.73544, Precision: 0.65510, Recall: 0.61110, F1: 0.62831, AUROC: 0.90063, AUPRC: 0.67978
+Test results --- Loss: 0.92970, Accuracy: 0.72556, Precision: 0.64322, Recall: 0.59808 F1: 0.61615, AUROC: 0.89490, AUPRC: 0.65935
+
+EarlyStopping counter: 9 out of 10
+	iters: 100, epoch: 54 | loss: 0.2888083
+	speed: 0.5463s/iter; left time: 11243.1744s
+	iters: 200, epoch: 54 | loss: 0.3148512
+	speed: 0.2108s/iter; left time: 4317.9804s
+	iters: 300, epoch: 54 | loss: 0.3257313
+	speed: 0.2095s/iter; left time: 4270.3508s
+	iters: 400, epoch: 54 | loss: 0.3357053
+	speed: 0.2096s/iter; left time: 4249.9540s
+Epoch: 54 cost time: 92.41559505462646
+Epoch: 54, Steps: 440, | Train Loss: 0.34093
+Validation results --- Loss: 0.89037, Accuracy: 0.73625, Precision: 0.65721, Recall: 0.61465, F1: 0.63156, AUROC: 0.90056, AUPRC: 0.68046
+Test results --- Loss: 0.92988, Accuracy: 0.72372, Precision: 0.63823, Recall: 0.59599 F1: 0.61305, AUROC: 0.89465, AUPRC: 0.65859
+
+EarlyStopping counter: 10 out of 10
+Early stopping
+>>>>>>>testing : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed44<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Validation results --- Loss: 0.84868, Accuracy: 0.73834, Precision: 0.66023, Recall: 0.61491, F1: 0.63232, AUROC: 0.90123, AUPRC: 0.68212
+Test results --- Loss: 0.88780, Accuracy: 0.72485, Precision: 0.64115, Recall: 0.59586, F1: 0.61361, AUROC: 0.89495, AUPRC: 0.66025
+
+Use GPU: cuda:0
+>>>>>>>start training : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed45>>>>>>>>>>>>>>>>>>>>>>>>>>
+(112570, 250, 12)
+(112570,)
+(39280, 250, 12)
+(39280,)
+(39550, 250, 12)
+(39550,)
+	iters: 100, epoch: 1 | loss: 1.0658755
+	speed: 0.2185s/iter; left time: 9590.3095s
+	iters: 200, epoch: 1 | loss: 0.9270456
+	speed: 0.2175s/iter; left time: 9528.0143s
+	iters: 300, epoch: 1 | loss: 1.0313909
+	speed: 0.2165s/iter; left time: 9460.1131s
+	iters: 400, epoch: 1 | loss: 0.8656852
+	speed: 0.2141s/iter; left time: 9334.0504s
+Epoch: 1 cost time: 95.40300846099854
+Epoch: 1, Steps: 440, | Train Loss: 1.00048
+Validation results --- Loss: 0.92235, Accuracy: 0.67676, Precision: 0.58734, Recall: 0.52831, F1: 0.53547, AUROC: 0.86287, AUPRC: 0.59253
+Test results --- Loss: 0.94963, Accuracy: 0.67638, Precision: 0.57587, Recall: 0.51926 F1: 0.52202, AUROC: 0.85616, AUPRC: 0.57916
+
+Metric score decreased (inf --> -0.535467).  Saving model ...
+
+	iters: 100, epoch: 2 | loss: 0.8664370
+	speed: 0.5520s/iter; left time: 23989.8046s
+	iters: 200, epoch: 2 | loss: 0.8636914
+	speed: 0.2123s/iter; left time: 9204.0542s
+	iters: 300, epoch: 2 | loss: 0.7676706
+	speed: 0.2126s/iter; left time: 9198.0804s
+	iters: 400, epoch: 2 | loss: 0.8000988
+	speed: 0.2115s/iter; left time: 9127.6911s
+Epoch: 2 cost time: 93.33209729194641
+Epoch: 2, Steps: 440, | Train Loss: 0.86791
+Validation results --- Loss: 0.85686, Accuracy: 0.69812, Precision: 0.61239, Recall: 0.55244, F1: 0.56943, AUROC: 0.87364, AUPRC: 0.62131
+Test results --- Loss: 0.88099, Accuracy: 0.69461, Precision: 0.59653, Recall: 0.53987 F1: 0.55383, AUROC: 0.86817, AUPRC: 0.60110
+
+Metric score decreased (-0.535467 --> -0.569430).  Saving model ...
+
+	iters: 100, epoch: 3 | loss: 0.8428466
+	speed: 0.5479s/iter; left time: 23569.8425s
+	iters: 200, epoch: 3 | loss: 0.8537122
+	speed: 0.2108s/iter; left time: 9048.4205s
+	iters: 300, epoch: 3 | loss: 0.9542353
+	speed: 0.2108s/iter; left time: 9025.6829s
+	iters: 400, epoch: 3 | loss: 0.8287095
+	speed: 0.2100s/iter; left time: 8969.4630s
+Epoch: 3 cost time: 92.91991996765137
+Epoch: 3, Steps: 440, | Train Loss: 0.82785
+Validation results --- Loss: 0.83673, Accuracy: 0.70881, Precision: 0.63115, Recall: 0.56037, F1: 0.58003, AUROC: 0.87814, AUPRC: 0.63486
+Test results --- Loss: 0.85890, Accuracy: 0.70212, Precision: 0.60851, Recall: 0.54407 F1: 0.56050, AUROC: 0.87309, AUPRC: 0.61208
+
+Metric score decreased (-0.569430 --> -0.580027).  Saving model ...
+
+	iters: 100, epoch: 4 | loss: 0.7320476
+	speed: 0.5493s/iter; left time: 23388.9681s
+	iters: 200, epoch: 4 | loss: 0.8305234
+	speed: 0.2118s/iter; left time: 8995.4588s
+	iters: 300, epoch: 4 | loss: 0.9119972
+	speed: 0.2136s/iter; left time: 9053.8342s
+	iters: 400, epoch: 4 | loss: 0.7484413
+	speed: 0.2111s/iter; left time: 8926.9083s
+Epoch: 4 cost time: 93.2937536239624
+Epoch: 4, Steps: 440, | Train Loss: 0.80050
+Validation results --- Loss: 0.82720, Accuracy: 0.71283, Precision: 0.63506, Recall: 0.57117, F1: 0.59249, AUROC: 0.88175, AUPRC: 0.64364
+Test results --- Loss: 0.84990, Accuracy: 0.70516, Precision: 0.61135, Recall: 0.55121 F1: 0.56977, AUROC: 0.87617, AUPRC: 0.61771
+
+Metric score decreased (-0.580027 --> -0.592491).  Saving model ...
+
+	iters: 100, epoch: 5 | loss: 0.6814263
+	speed: 0.5496s/iter; left time: 23161.4414s
+	iters: 200, epoch: 5 | loss: 0.8075891
+	speed: 0.2109s/iter; left time: 8865.4356s
+	iters: 300, epoch: 5 | loss: 0.7968130
+	speed: 0.2101s/iter; left time: 8811.7889s
+	iters: 400, epoch: 5 | loss: 0.8322701
+	speed: 0.2116s/iter; left time: 8853.4366s
+Epoch: 5 cost time: 93.07339262962341
+Epoch: 5, Steps: 440, | Train Loss: 0.77791
+Validation results --- Loss: 0.81571, Accuracy: 0.71624, Precision: 0.64208, Recall: 0.57629, F1: 0.59768, AUROC: 0.88404, AUPRC: 0.64970
+Test results --- Loss: 0.84001, Accuracy: 0.70875, Precision: 0.61871, Recall: 0.55698 F1: 0.57516, AUROC: 0.87864, AUPRC: 0.62468
+
+Metric score decreased (-0.592491 --> -0.597676).  Saving model ...
+
+	iters: 100, epoch: 6 | loss: 0.8331592
+	speed: 0.5480s/iter; left time: 22851.6790s
+	iters: 200, epoch: 6 | loss: 0.7141591
+	speed: 0.2120s/iter; left time: 8819.9465s
+	iters: 300, epoch: 6 | loss: 0.7657479
+	speed: 0.2113s/iter; left time: 8767.5626s
+	iters: 400, epoch: 6 | loss: 0.7992790
+	speed: 0.2099s/iter; left time: 8690.6348s
+Epoch: 6 cost time: 92.88889050483704
+Epoch: 6, Steps: 440, | Train Loss: 0.75961
+Validation results --- Loss: 0.80965, Accuracy: 0.72004, Precision: 0.64464, Recall: 0.58459, F1: 0.60404, AUROC: 0.88598, AUPRC: 0.65378
+Test results --- Loss: 0.83053, Accuracy: 0.71110, Precision: 0.62196, Recall: 0.56504 F1: 0.58221, AUROC: 0.88105, AUPRC: 0.63025
+
+Metric score decreased (-0.597676 --> -0.604042).  Saving model ...
+
+	iters: 100, epoch: 7 | loss: 0.7018459
+	speed: 0.5453s/iter; left time: 22499.7081s
+	iters: 200, epoch: 7 | loss: 0.6246285
+	speed: 0.2096s/iter; left time: 8628.5701s
+	iters: 300, epoch: 7 | loss: 0.6116721
+	speed: 0.2091s/iter; left time: 8585.4955s
+	iters: 400, epoch: 7 | loss: 0.6921924
+	speed: 0.2109s/iter; left time: 8639.0270s
+Epoch: 7 cost time: 92.49934768676758
+Epoch: 7, Steps: 440, | Train Loss: 0.74332
+Validation results --- Loss: 0.81172, Accuracy: 0.72021, Precision: 0.64170, Recall: 0.58390, F1: 0.60278, AUROC: 0.88742, AUPRC: 0.65563
+Test results --- Loss: 0.83563, Accuracy: 0.71360, Precision: 0.62609, Recall: 0.56855 F1: 0.58570, AUROC: 0.88217, AUPRC: 0.63265
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 8 | loss: 0.8189191
+	speed: 0.5460s/iter; left time: 22288.2220s
+	iters: 200, epoch: 8 | loss: 0.6611782
+	speed: 0.2118s/iter; left time: 8624.5045s
+	iters: 300, epoch: 8 | loss: 0.6550598
+	speed: 0.2104s/iter; left time: 8545.1989s
+	iters: 400, epoch: 8 | loss: 0.6278331
+	speed: 0.2107s/iter; left time: 8538.0992s
+Epoch: 8 cost time: 92.80779147148132
+Epoch: 8, Steps: 440, | Train Loss: 0.72596
+Validation results --- Loss: 0.80920, Accuracy: 0.72378, Precision: 0.65453, Recall: 0.58205, F1: 0.60171, AUROC: 0.88908, AUPRC: 0.65928
+Test results --- Loss: 0.83390, Accuracy: 0.71431, Precision: 0.62830, Recall: 0.56396 F1: 0.58050, AUROC: 0.88395, AUPRC: 0.63445
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 9 | loss: 0.7016065
+	speed: 0.5475s/iter; left time: 22108.3053s
+	iters: 200, epoch: 9 | loss: 0.6243163
+	speed: 0.2105s/iter; left time: 8478.6321s
+	iters: 300, epoch: 9 | loss: 0.7926005
+	speed: 0.2104s/iter; left time: 8452.6050s
+	iters: 400, epoch: 9 | loss: 0.7361563
+	speed: 0.2121s/iter; left time: 8501.0068s
+Epoch: 9 cost time: 93.16906976699829
+Epoch: 9, Steps: 440, | Train Loss: 0.71255
+Validation results --- Loss: 0.80372, Accuracy: 0.72490, Precision: 0.65189, Recall: 0.58456, F1: 0.60298, AUROC: 0.89059, AUPRC: 0.66036
+Test results --- Loss: 0.83284, Accuracy: 0.71474, Precision: 0.62427, Recall: 0.56550 F1: 0.58082, AUROC: 0.88421, AUPRC: 0.63475
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 10 | loss: 0.6623775
+	speed: 0.5505s/iter; left time: 21987.1896s
+	iters: 200, epoch: 10 | loss: 0.6405280
+	speed: 0.2128s/iter; left time: 8476.4185s
+	iters: 300, epoch: 10 | loss: 0.6617942
+	speed: 0.2126s/iter; left time: 8450.5056s
+	iters: 400, epoch: 10 | loss: 0.7029850
+	speed: 0.2098s/iter; left time: 8315.8562s
+Epoch: 10 cost time: 93.21192932128906
+Epoch: 10, Steps: 440, | Train Loss: 0.69609
+Validation results --- Loss: 0.79764, Accuracy: 0.72688, Precision: 0.65545, Recall: 0.58832, F1: 0.60607, AUROC: 0.89242, AUPRC: 0.66656
+Test results --- Loss: 0.82987, Accuracy: 0.71664, Precision: 0.63150, Recall: 0.57014 F1: 0.58540, AUROC: 0.88562, AUPRC: 0.63796
+
+Metric score decreased (-0.604042 --> -0.606075).  Saving model ...
+
+	iters: 100, epoch: 11 | loss: 0.6863008
+	speed: 0.5479s/iter; left time: 21643.8186s
+	iters: 200, epoch: 11 | loss: 0.7889294
+	speed: 0.2093s/iter; left time: 8247.2046s
+	iters: 300, epoch: 11 | loss: 0.6856983
+	speed: 0.2103s/iter; left time: 8263.8543s
+	iters: 400, epoch: 11 | loss: 0.7733551
+	speed: 0.2108s/iter; left time: 8264.6049s
+Epoch: 11 cost time: 92.70591139793396
+Epoch: 11, Steps: 440, | Train Loss: 0.68256
+Validation results --- Loss: 0.79971, Accuracy: 0.72744, Precision: 0.65579, Recall: 0.58542, F1: 0.60349, AUROC: 0.89279, AUPRC: 0.66547
+Test results --- Loss: 0.83206, Accuracy: 0.71906, Precision: 0.63292, Recall: 0.56966 F1: 0.58492, AUROC: 0.88613, AUPRC: 0.63775
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 12 | loss: 0.6833534
+	speed: 0.5458s/iter; left time: 21318.8957s
+	iters: 200, epoch: 12 | loss: 0.6419484
+	speed: 0.2089s/iter; left time: 8138.0923s
+	iters: 300, epoch: 12 | loss: 0.6534028
+	speed: 0.2106s/iter; left time: 8182.8445s
+	iters: 400, epoch: 12 | loss: 0.7053826
+	speed: 0.2089s/iter; left time: 8098.6033s
+Epoch: 12 cost time: 92.24296236038208
+Epoch: 12, Steps: 440, | Train Loss: 0.67615
+Validation results --- Loss: 0.80375, Accuracy: 0.72716, Precision: 0.65279, Recall: 0.59015, F1: 0.60968, AUROC: 0.89362, AUPRC: 0.66778
+Test results --- Loss: 0.83858, Accuracy: 0.71601, Precision: 0.62755, Recall: 0.56806 F1: 0.58473, AUROC: 0.88690, AUPRC: 0.63876
+
+Metric score decreased (-0.606075 --> -0.609678).  Saving model ...
+
+	iters: 100, epoch: 13 | loss: 0.6713431
+	speed: 0.5465s/iter; left time: 21107.2714s
+	iters: 200, epoch: 13 | loss: 0.6290746
+	speed: 0.2087s/iter; left time: 8039.7843s
+	iters: 300, epoch: 13 | loss: 0.6593189
+	speed: 0.2088s/iter; left time: 8020.8545s
+	iters: 400, epoch: 13 | loss: 0.6201165
+	speed: 0.2095s/iter; left time: 8029.2261s
+Epoch: 13 cost time: 92.1140444278717
+Epoch: 13, Steps: 440, | Train Loss: 0.66387
+Validation results --- Loss: 0.79959, Accuracy: 0.72958, Precision: 0.65813, Recall: 0.59026, F1: 0.60881, AUROC: 0.89437, AUPRC: 0.66969
+Test results --- Loss: 0.83267, Accuracy: 0.71965, Precision: 0.63604, Recall: 0.57306 F1: 0.58971, AUROC: 0.88763, AUPRC: 0.64133
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 14 | loss: 0.6955993
+	speed: 0.5442s/iter; left time: 20776.9620s
+	iters: 200, epoch: 14 | loss: 0.5109370
+	speed: 0.2090s/iter; left time: 7957.6149s
+	iters: 300, epoch: 14 | loss: 0.7289448
+	speed: 0.2097s/iter; left time: 7963.9101s
+	iters: 400, epoch: 14 | loss: 0.5957077
+	speed: 0.2104s/iter; left time: 7968.8758s
+Epoch: 14 cost time: 92.20955562591553
+Epoch: 14, Steps: 440, | Train Loss: 0.65252
+Validation results --- Loss: 0.79841, Accuracy: 0.73030, Precision: 0.65923, Recall: 0.59264, F1: 0.61239, AUROC: 0.89505, AUPRC: 0.67173
+Test results --- Loss: 0.83619, Accuracy: 0.71914, Precision: 0.63459, Recall: 0.57210 F1: 0.58892, AUROC: 0.88790, AUPRC: 0.64216
+
+Metric score decreased (-0.609678 --> -0.612389).  Saving model ...
+
+	iters: 100, epoch: 15 | loss: 0.5968876
+	speed: 0.5463s/iter; left time: 20618.4703s
+	iters: 200, epoch: 15 | loss: 0.6153278
+	speed: 0.2100s/iter; left time: 7905.7253s
+	iters: 300, epoch: 15 | loss: 0.5920309
+	speed: 0.2092s/iter; left time: 7852.0629s
+	iters: 400, epoch: 15 | loss: 0.7353915
+	speed: 0.2096s/iter; left time: 7846.5885s
+Epoch: 15 cost time: 92.3386800289154
+Epoch: 15, Steps: 440, | Train Loss: 0.64222
+Validation results --- Loss: 0.80300, Accuracy: 0.73004, Precision: 0.66007, Recall: 0.59520, F1: 0.61690, AUROC: 0.89577, AUPRC: 0.67488
+Test results --- Loss: 0.83909, Accuracy: 0.71952, Precision: 0.63403, Recall: 0.57341 F1: 0.59251, AUROC: 0.88858, AUPRC: 0.64347
+
+Metric score decreased (-0.612389 --> -0.616902).  Saving model ...
+
+	iters: 100, epoch: 16 | loss: 0.5566596
+	speed: 0.5471s/iter; left time: 20408.9148s
+	iters: 200, epoch: 16 | loss: 0.6173377
+	speed: 0.2116s/iter; left time: 7873.0654s
+	iters: 300, epoch: 16 | loss: 0.5494525
+	speed: 0.2111s/iter; left time: 7833.5357s
+	iters: 400, epoch: 16 | loss: 0.6487518
+	speed: 0.2109s/iter; left time: 7804.3126s
+Epoch: 16 cost time: 92.85902905464172
+Epoch: 16, Steps: 440, | Train Loss: 0.63388
+Validation results --- Loss: 0.80097, Accuracy: 0.73088, Precision: 0.65522, Recall: 0.59780, F1: 0.61812, AUROC: 0.89615, AUPRC: 0.67357
+Test results --- Loss: 0.83658, Accuracy: 0.72035, Precision: 0.63352, Recall: 0.57615 F1: 0.59468, AUROC: 0.88907, AUPRC: 0.64451
+
+Metric score decreased (-0.616902 --> -0.618119).  Saving model ...
+
+	iters: 100, epoch: 17 | loss: 0.6317452
+	speed: 0.5497s/iter; left time: 20263.0508s
+	iters: 200, epoch: 17 | loss: 0.5852843
+	speed: 0.2106s/iter; left time: 7740.6470s
+	iters: 300, epoch: 17 | loss: 0.5625555
+	speed: 0.2103s/iter; left time: 7711.2321s
+	iters: 400, epoch: 17 | loss: 0.5809586
+	speed: 0.2114s/iter; left time: 7727.1974s
+Epoch: 17 cost time: 92.89893102645874
+Epoch: 17, Steps: 440, | Train Loss: 0.62526
+Validation results --- Loss: 0.79825, Accuracy: 0.73075, Precision: 0.65420, Recall: 0.59888, F1: 0.61864, AUROC: 0.89674, AUPRC: 0.67512
+Test results --- Loss: 0.83179, Accuracy: 0.72152, Precision: 0.63507, Recall: 0.57872 F1: 0.59760, AUROC: 0.88993, AUPRC: 0.64680
+
+Metric score decreased (-0.618119 --> -0.618643).  Saving model ...
+
+	iters: 100, epoch: 18 | loss: 0.4897544
+	speed: 0.5484s/iter; left time: 19973.5242s
+	iters: 200, epoch: 18 | loss: 0.7181655
+	speed: 0.2112s/iter; left time: 7669.8156s
+	iters: 300, epoch: 18 | loss: 0.5549729
+	speed: 0.2097s/iter; left time: 7594.0882s
+	iters: 400, epoch: 18 | loss: 0.6080173
+	speed: 0.2105s/iter; left time: 7603.8714s
+Epoch: 18 cost time: 92.62004733085632
+Epoch: 18, Steps: 440, | Train Loss: 0.61038
+Validation results --- Loss: 0.79708, Accuracy: 0.73282, Precision: 0.65854, Recall: 0.59887, F1: 0.61896, AUROC: 0.89719, AUPRC: 0.67594
+Test results --- Loss: 0.83028, Accuracy: 0.72321, Precision: 0.64010, Recall: 0.58038 F1: 0.59973, AUROC: 0.89050, AUPRC: 0.64833
+
+Metric score decreased (-0.618643 --> -0.618965).  Saving model ...
+
+	iters: 100, epoch: 19 | loss: 0.5491002
+	speed: 0.5479s/iter; left time: 19714.6389s
+	iters: 200, epoch: 19 | loss: 0.6111981
+	speed: 0.2096s/iter; left time: 7520.2060s
+	iters: 300, epoch: 19 | loss: 0.5871797
+	speed: 0.2100s/iter; left time: 7512.4663s
+	iters: 400, epoch: 19 | loss: 0.6861961
+	speed: 0.2104s/iter; left time: 7506.3732s
+Epoch: 19 cost time: 92.52256965637207
+Epoch: 19, Steps: 440, | Train Loss: 0.60243
+Validation results --- Loss: 0.79955, Accuracy: 0.73147, Precision: 0.65508, Recall: 0.59725, F1: 0.61681, AUROC: 0.89673, AUPRC: 0.67391
+Test results --- Loss: 0.82774, Accuracy: 0.72268, Precision: 0.63997, Recall: 0.58098 F1: 0.59998, AUROC: 0.89112, AUPRC: 0.64958
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 20 | loss: 0.6258689
+	speed: 0.5464s/iter; left time: 19418.1751s
+	iters: 200, epoch: 20 | loss: 0.5257273
+	speed: 0.2102s/iter; left time: 7449.4237s
+	iters: 300, epoch: 20 | loss: 0.6274453
+	speed: 0.2119s/iter; left time: 7488.4159s
+	iters: 400, epoch: 20 | loss: 0.5500742
+	speed: 0.2103s/iter; left time: 7410.7053s
+Epoch: 20 cost time: 92.67735123634338
+Epoch: 20, Steps: 440, | Train Loss: 0.59568
+Validation results --- Loss: 0.79858, Accuracy: 0.73233, Precision: 0.65300, Recall: 0.59911, F1: 0.61822, AUROC: 0.89731, AUPRC: 0.67434
+Test results --- Loss: 0.83053, Accuracy: 0.72427, Precision: 0.64145, Recall: 0.58379 F1: 0.60280, AUROC: 0.89118, AUPRC: 0.65119
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 21 | loss: 0.6029164
+	speed: 0.5448s/iter; left time: 19123.0487s
+	iters: 200, epoch: 21 | loss: 0.5084728
+	speed: 0.2086s/iter; left time: 7301.9749s
+	iters: 300, epoch: 21 | loss: 0.5995054
+	speed: 0.2084s/iter; left time: 7274.9303s
+	iters: 400, epoch: 21 | loss: 0.6645715
+	speed: 0.2102s/iter; left time: 7315.6449s
+Epoch: 21 cost time: 92.443044424057
+Epoch: 21, Steps: 440, | Train Loss: 0.58585
+Validation results --- Loss: 0.79969, Accuracy: 0.73348, Precision: 0.65743, Recall: 0.59915, F1: 0.61995, AUROC: 0.89820, AUPRC: 0.67655
+Test results --- Loss: 0.83593, Accuracy: 0.72364, Precision: 0.64144, Recall: 0.58236 F1: 0.60248, AUROC: 0.89125, AUPRC: 0.65123
+
+Metric score decreased (-0.618965 --> -0.619945).  Saving model ...
+
+	iters: 100, epoch: 22 | loss: 0.5332375
+	speed: 0.5492s/iter; left time: 19035.3448s
+	iters: 200, epoch: 22 | loss: 0.5950264
+	speed: 0.2102s/iter; left time: 7265.0553s
+	iters: 300, epoch: 22 | loss: 0.5210477
+	speed: 0.2115s/iter; left time: 7289.2128s
+	iters: 400, epoch: 22 | loss: 0.6326705
+	speed: 0.2157s/iter; left time: 7413.3040s
+Epoch: 22 cost time: 93.56620717048645
+Epoch: 22, Steps: 440, | Train Loss: 0.58059
+Validation results --- Loss: 0.80006, Accuracy: 0.73396, Precision: 0.65537, Recall: 0.60092, F1: 0.62032, AUROC: 0.89807, AUPRC: 0.67479
+Test results --- Loss: 0.83285, Accuracy: 0.72579, Precision: 0.64357, Recall: 0.58553 F1: 0.60499, AUROC: 0.89170, AUPRC: 0.65149
+
+Metric score decreased (-0.619945 --> -0.620322).  Saving model ...
+
+	iters: 100, epoch: 23 | loss: 0.5124391
+	speed: 0.5608s/iter; left time: 19190.0849s
+	iters: 200, epoch: 23 | loss: 0.5534036
+	speed: 0.2175s/iter; left time: 7421.0277s
+	iters: 300, epoch: 23 | loss: 0.6178317
+	speed: 0.2168s/iter; left time: 7376.3159s
+	iters: 400, epoch: 23 | loss: 0.5625326
+	speed: 0.2167s/iter; left time: 7352.0143s
+Epoch: 23 cost time: 95.64855122566223
+Epoch: 23, Steps: 440, | Train Loss: 0.56730
+Validation results --- Loss: 0.80154, Accuracy: 0.73394, Precision: 0.65916, Recall: 0.59913, F1: 0.61992, AUROC: 0.89850, AUPRC: 0.67611
+Test results --- Loss: 0.84020, Accuracy: 0.72475, Precision: 0.64032, Recall: 0.58130 F1: 0.60044, AUROC: 0.89121, AUPRC: 0.65112
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 24 | loss: 0.6443829
+	speed: 0.5528s/iter; left time: 18674.3071s
+	iters: 200, epoch: 24 | loss: 0.6057558
+	speed: 0.2128s/iter; left time: 7168.6999s
+	iters: 300, epoch: 24 | loss: 0.5679141
+	speed: 0.2136s/iter; left time: 7172.5555s
+	iters: 400, epoch: 24 | loss: 0.5511919
+	speed: 0.2126s/iter; left time: 7119.0418s
+Epoch: 24 cost time: 93.87078642845154
+Epoch: 24, Steps: 440, | Train Loss: 0.56261
+Validation results --- Loss: 0.80593, Accuracy: 0.73340, Precision: 0.65413, Recall: 0.59855, F1: 0.61831, AUROC: 0.89813, AUPRC: 0.67342
+Test results --- Loss: 0.84353, Accuracy: 0.72473, Precision: 0.64011, Recall: 0.58224 F1: 0.60139, AUROC: 0.89158, AUPRC: 0.65123
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 25 | loss: 0.4788720
+	speed: 0.5506s/iter; left time: 18357.3493s
+	iters: 200, epoch: 25 | loss: 0.4672737
+	speed: 0.2111s/iter; left time: 7017.7661s
+	iters: 300, epoch: 25 | loss: 0.6500397
+	speed: 0.2119s/iter; left time: 7023.1827s
+	iters: 400, epoch: 25 | loss: 0.4824706
+	speed: 0.2124s/iter; left time: 7019.3566s
+Epoch: 25 cost time: 93.30154395103455
+Epoch: 25, Steps: 440, | Train Loss: 0.55387
+Validation results --- Loss: 0.80597, Accuracy: 0.73360, Precision: 0.65521, Recall: 0.60155, F1: 0.62127, AUROC: 0.89877, AUPRC: 0.67451
+Test results --- Loss: 0.84384, Accuracy: 0.72483, Precision: 0.64145, Recall: 0.58433 F1: 0.60338, AUROC: 0.89154, AUPRC: 0.65128
+
+Metric score decreased (-0.620322 --> -0.621266).  Saving model ...
+
+	iters: 100, epoch: 26 | loss: 0.5681722
+	speed: 0.5471s/iter; left time: 18001.3389s
+	iters: 200, epoch: 26 | loss: 0.5079600
+	speed: 0.2112s/iter; left time: 6927.7642s
+	iters: 300, epoch: 26 | loss: 0.5350283
+	speed: 0.2101s/iter; left time: 6870.0893s
+	iters: 400, epoch: 26 | loss: 0.5836118
+	speed: 0.2094s/iter; left time: 6826.7941s
+Epoch: 26 cost time: 92.645987033844
+Epoch: 26, Steps: 440, | Train Loss: 0.54217
+Validation results --- Loss: 0.80017, Accuracy: 0.73409, Precision: 0.65280, Recall: 0.60581, F1: 0.62397, AUROC: 0.89938, AUPRC: 0.67624
+Test results --- Loss: 0.83817, Accuracy: 0.72394, Precision: 0.63515, Recall: 0.58754 F1: 0.60514, AUROC: 0.89217, AUPRC: 0.65248
+
+Metric score decreased (-0.621266 --> -0.623973).  Saving model ...
+
+	iters: 100, epoch: 27 | loss: 0.5827187
+	speed: 0.5485s/iter; left time: 17805.1443s
+	iters: 200, epoch: 27 | loss: 0.6333627
+	speed: 0.2110s/iter; left time: 6828.7053s
+	iters: 300, epoch: 27 | loss: 0.6028569
+	speed: 0.2106s/iter; left time: 6794.0942s
+	iters: 400, epoch: 27 | loss: 0.4091476
+	speed: 0.2085s/iter; left time: 6704.8024s
+Epoch: 27 cost time: 92.62372303009033
+Epoch: 27, Steps: 440, | Train Loss: 0.53207
+Validation results --- Loss: 0.79971, Accuracy: 0.73493, Precision: 0.65717, Recall: 0.60467, F1: 0.62396, AUROC: 0.89975, AUPRC: 0.67723
+Test results --- Loss: 0.84016, Accuracy: 0.72475, Precision: 0.63738, Recall: 0.58497 F1: 0.60303, AUROC: 0.89233, AUPRC: 0.65153
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 28 | loss: 0.5330371
+	speed: 0.5440s/iter; left time: 17418.9417s
+	iters: 200, epoch: 28 | loss: 0.5411673
+	speed: 0.2100s/iter; left time: 6703.8949s
+	iters: 300, epoch: 28 | loss: 0.5300254
+	speed: 0.2108s/iter; left time: 6709.0791s
+	iters: 400, epoch: 28 | loss: 0.5593291
+	speed: 0.2096s/iter; left time: 6649.1388s
+Epoch: 28 cost time: 92.45460367202759
+Epoch: 28, Steps: 440, | Train Loss: 0.52819
+Validation results --- Loss: 0.81060, Accuracy: 0.73574, Precision: 0.65768, Recall: 0.60193, F1: 0.62234, AUROC: 0.89971, AUPRC: 0.67714
+Test results --- Loss: 0.85071, Accuracy: 0.72518, Precision: 0.64089, Recall: 0.58301 F1: 0.60274, AUROC: 0.89245, AUPRC: 0.65161
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 29 | loss: 0.6063323
+	speed: 0.5454s/iter; left time: 17223.7086s
+	iters: 200, epoch: 29 | loss: 0.6169836
+	speed: 0.2107s/iter; left time: 6632.4434s
+	iters: 300, epoch: 29 | loss: 0.6347633
+	speed: 0.2105s/iter; left time: 6605.2288s
+	iters: 400, epoch: 29 | loss: 0.5491480
+	speed: 0.2116s/iter; left time: 6619.0678s
+Epoch: 29 cost time: 92.83858370780945
+Epoch: 29, Steps: 440, | Train Loss: 0.51930
+Validation results --- Loss: 0.80846, Accuracy: 0.73572, Precision: 0.65963, Recall: 0.60431, F1: 0.62500, AUROC: 0.90043, AUPRC: 0.67892
+Test results --- Loss: 0.85013, Accuracy: 0.72571, Precision: 0.64394, Recall: 0.58626 F1: 0.60689, AUROC: 0.89293, AUPRC: 0.65447
+
+Metric score decreased (-0.623973 --> -0.624998).  Saving model ...
+
+	iters: 100, epoch: 30 | loss: 0.5511408
+	speed: 0.5464s/iter; left time: 17014.2720s
+	iters: 200, epoch: 30 | loss: 0.4024437
+	speed: 0.2106s/iter; left time: 6536.1181s
+	iters: 300, epoch: 30 | loss: 0.4543311
+	speed: 0.2120s/iter; left time: 6558.5971s
+	iters: 400, epoch: 30 | loss: 0.5303881
+	speed: 0.2111s/iter; left time: 6509.1245s
+Epoch: 30 cost time: 92.9059579372406
+Epoch: 30, Steps: 440, | Train Loss: 0.51307
+Validation results --- Loss: 0.81576, Accuracy: 0.73587, Precision: 0.66020, Recall: 0.60148, F1: 0.62255, AUROC: 0.89992, AUPRC: 0.67658
+Test results --- Loss: 0.85575, Accuracy: 0.72662, Precision: 0.64571, Recall: 0.58635 F1: 0.60680, AUROC: 0.89316, AUPRC: 0.65504
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 31 | loss: 0.4879299
+	speed: 0.5473s/iter; left time: 16801.1994s
+	iters: 200, epoch: 31 | loss: 0.4077544
+	speed: 0.2100s/iter; left time: 6427.6791s
+	iters: 300, epoch: 31 | loss: 0.5044304
+	speed: 0.2105s/iter; left time: 6420.8373s
+	iters: 400, epoch: 31 | loss: 0.4455483
+	speed: 0.2120s/iter; left time: 6444.6663s
+Epoch: 31 cost time: 92.84843158721924
+Epoch: 31, Steps: 440, | Train Loss: 0.50371
+Validation results --- Loss: 0.81570, Accuracy: 0.73585, Precision: 0.65980, Recall: 0.60361, F1: 0.62447, AUROC: 0.90063, AUPRC: 0.67929
+Test results --- Loss: 0.85695, Accuracy: 0.72458, Precision: 0.64172, Recall: 0.58334 F1: 0.60415, AUROC: 0.89322, AUPRC: 0.65454
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 32 | loss: 0.4225578
+	speed: 0.5437s/iter; left time: 16453.7310s
+	iters: 200, epoch: 32 | loss: 0.4562956
+	speed: 0.2091s/iter; left time: 6307.8443s
+	iters: 300, epoch: 32 | loss: 0.5525066
+	speed: 0.2110s/iter; left time: 6342.7687s
+	iters: 400, epoch: 32 | loss: 0.4445740
+	speed: 0.2104s/iter; left time: 6304.7509s
+Epoch: 32 cost time: 92.63238048553467
+Epoch: 32, Steps: 440, | Train Loss: 0.49530
+Validation results --- Loss: 0.81631, Accuracy: 0.73602, Precision: 0.65966, Recall: 0.60418, F1: 0.62495, AUROC: 0.90078, AUPRC: 0.67907
+Test results --- Loss: 0.85392, Accuracy: 0.72713, Precision: 0.64581, Recall: 0.58799 F1: 0.60869, AUROC: 0.89385, AUPRC: 0.65700
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 33 | loss: 0.4222899
+	speed: 0.5483s/iter; left time: 16351.4384s
+	iters: 200, epoch: 33 | loss: 0.4461381
+	speed: 0.2117s/iter; left time: 6291.2286s
+	iters: 300, epoch: 33 | loss: 0.4503624
+	speed: 0.2121s/iter; left time: 6283.4912s
+	iters: 400, epoch: 33 | loss: 0.4216344
+	speed: 0.2064s/iter; left time: 6091.8002s
+Epoch: 33 cost time: 92.3882188796997
+Epoch: 33, Steps: 440, | Train Loss: 0.48829
+Validation results --- Loss: 0.81627, Accuracy: 0.73725, Precision: 0.66431, Recall: 0.60381, F1: 0.62557, AUROC: 0.90117, AUPRC: 0.68045
+Test results --- Loss: 0.85526, Accuracy: 0.72799, Precision: 0.64981, Recall: 0.58925 F1: 0.61034, AUROC: 0.89435, AUPRC: 0.65783
+
+Metric score decreased (-0.624998 --> -0.625567).  Saving model ...
+
+	iters: 100, epoch: 34 | loss: 0.3916595
+	speed: 0.5381s/iter; left time: 15810.9506s
+	iters: 200, epoch: 34 | loss: 0.4321223
+	speed: 0.2055s/iter; left time: 6016.7197s
+	iters: 300, epoch: 34 | loss: 0.4294230
+	speed: 0.2067s/iter; left time: 6031.5706s
+	iters: 400, epoch: 34 | loss: 0.4827568
+	speed: 0.2057s/iter; left time: 5982.9652s
+Epoch: 34 cost time: 90.61037516593933
+Epoch: 34, Steps: 440, | Train Loss: 0.47831
+Validation results --- Loss: 0.81207, Accuracy: 0.73737, Precision: 0.65971, Recall: 0.60730, F1: 0.62720, AUROC: 0.90136, AUPRC: 0.68047
+Test results --- Loss: 0.85137, Accuracy: 0.72723, Precision: 0.64491, Recall: 0.59072 F1: 0.61055, AUROC: 0.89427, AUPRC: 0.65721
+
+Metric score decreased (-0.625567 --> -0.627203).  Saving model ...
+
+	iters: 100, epoch: 35 | loss: 0.4552387
+	speed: 0.5388s/iter; left time: 15593.8996s
+	iters: 200, epoch: 35 | loss: 0.4844680
+	speed: 0.2055s/iter; left time: 5928.1180s
+	iters: 300, epoch: 35 | loss: 0.3902989
+	speed: 0.2052s/iter; left time: 5899.0440s
+	iters: 400, epoch: 35 | loss: 0.4433162
+	speed: 0.2066s/iter; left time: 5917.0839s
+Epoch: 35 cost time: 90.55558013916016
+Epoch: 35, Steps: 440, | Train Loss: 0.46958
+Validation results --- Loss: 0.81606, Accuracy: 0.73740, Precision: 0.66119, Recall: 0.60535, F1: 0.62619, AUROC: 0.90170, AUPRC: 0.68094
+Test results --- Loss: 0.85787, Accuracy: 0.72673, Precision: 0.64993, Recall: 0.59089 F1: 0.61248, AUROC: 0.89449, AUPRC: 0.65801
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 36 | loss: 0.4595110
+	speed: 0.5374s/iter; left time: 15315.3924s
+	iters: 200, epoch: 36 | loss: 0.5596856
+	speed: 0.2050s/iter; left time: 5820.8483s
+	iters: 300, epoch: 36 | loss: 0.4848988
+	speed: 0.2058s/iter; left time: 5823.9741s
+	iters: 400, epoch: 36 | loss: 0.4908725
+	speed: 0.2049s/iter; left time: 5778.7511s
+Epoch: 36 cost time: 90.35225582122803
+Epoch: 36, Steps: 440, | Train Loss: 0.46380
+Validation results --- Loss: 0.81811, Accuracy: 0.73877, Precision: 0.66343, Recall: 0.60763, F1: 0.62827, AUROC: 0.90158, AUPRC: 0.68114
+Test results --- Loss: 0.85822, Accuracy: 0.72579, Precision: 0.64249, Recall: 0.58748 F1: 0.60769, AUROC: 0.89437, AUPRC: 0.65704
+
+Metric score decreased (-0.627203 --> -0.628274).  Saving model ...
+
+	iters: 100, epoch: 37 | loss: 0.4226166
+	speed: 0.5384s/iter; left time: 15107.6428s
+	iters: 200, epoch: 37 | loss: 0.3940313
+	speed: 0.2063s/iter; left time: 5767.5936s
+	iters: 300, epoch: 37 | loss: 0.4696050
+	speed: 0.2052s/iter; left time: 5717.0206s
+	iters: 400, epoch: 37 | loss: 0.4761775
+	speed: 0.2060s/iter; left time: 5719.9645s
+Epoch: 37 cost time: 90.46461153030396
+Epoch: 37, Steps: 440, | Train Loss: 0.45842
+Validation results --- Loss: 0.82076, Accuracy: 0.73913, Precision: 0.66594, Recall: 0.60856, F1: 0.62969, AUROC: 0.90146, AUPRC: 0.68109
+Test results --- Loss: 0.86278, Accuracy: 0.72498, Precision: 0.64264, Recall: 0.58783 F1: 0.60822, AUROC: 0.89408, AUPRC: 0.65613
+
+Metric score decreased (-0.628274 --> -0.629695).  Saving model ...
+
+	iters: 100, epoch: 38 | loss: 0.4432276
+	speed: 0.5384s/iter; left time: 14870.4064s
+	iters: 200, epoch: 38 | loss: 0.4472088
+	speed: 0.2054s/iter; left time: 5652.5725s
+	iters: 300, epoch: 38 | loss: 0.5443738
+	speed: 0.2060s/iter; left time: 5649.7497s
+	iters: 400, epoch: 38 | loss: 0.4341376
+	speed: 0.2051s/iter; left time: 5604.8238s
+Epoch: 38 cost time: 90.44027614593506
+Epoch: 38, Steps: 440, | Train Loss: 0.44698
+Validation results --- Loss: 0.82415, Accuracy: 0.73597, Precision: 0.66019, Recall: 0.60737, F1: 0.62755, AUROC: 0.90126, AUPRC: 0.68077
+Test results --- Loss: 0.86572, Accuracy: 0.72523, Precision: 0.64325, Recall: 0.58851 F1: 0.60911, AUROC: 0.89393, AUPRC: 0.65656
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 39 | loss: 0.4488572
+	speed: 0.5385s/iter; left time: 14637.9044s
+	iters: 200, epoch: 39 | loss: 0.4296401
+	speed: 0.2054s/iter; left time: 5562.4816s
+	iters: 300, epoch: 39 | loss: 0.4022411
+	speed: 0.2054s/iter; left time: 5543.0721s
+	iters: 400, epoch: 39 | loss: 0.3882461
+	speed: 0.2062s/iter; left time: 5543.8576s
+Epoch: 39 cost time: 90.53496146202087
+Epoch: 39, Steps: 440, | Train Loss: 0.44247
+Validation results --- Loss: 0.82670, Accuracy: 0.73646, Precision: 0.65984, Recall: 0.60415, F1: 0.62427, AUROC: 0.90133, AUPRC: 0.67953
+Test results --- Loss: 0.86597, Accuracy: 0.72579, Precision: 0.64421, Recall: 0.58906 F1: 0.60905, AUROC: 0.89434, AUPRC: 0.65712
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 40 | loss: 0.4499947
+	speed: 0.5374s/iter; left time: 14369.8893s
+	iters: 200, epoch: 40 | loss: 0.4481466
+	speed: 0.2052s/iter; left time: 5466.4900s
+	iters: 300, epoch: 40 | loss: 0.4314838
+	speed: 0.2065s/iter; left time: 5480.8721s
+	iters: 400, epoch: 40 | loss: 0.4917028
+	speed: 0.2054s/iter; left time: 5430.9688s
+Epoch: 40 cost time: 90.51386094093323
+Epoch: 40, Steps: 440, | Train Loss: 0.43954
+Validation results --- Loss: 0.82913, Accuracy: 0.73686, Precision: 0.66270, Recall: 0.60433, F1: 0.62486, AUROC: 0.90145, AUPRC: 0.68179
+Test results --- Loss: 0.86954, Accuracy: 0.72503, Precision: 0.64489, Recall: 0.58724 F1: 0.60765, AUROC: 0.89404, AUPRC: 0.65780
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 41 | loss: 0.3875192
+	speed: 0.5403s/iter; left time: 14209.2383s
+	iters: 200, epoch: 41 | loss: 0.5461944
+	speed: 0.2054s/iter; left time: 5380.7947s
+	iters: 300, epoch: 41 | loss: 0.4902203
+	speed: 0.2053s/iter; left time: 5358.2587s
+	iters: 400, epoch: 41 | loss: 0.5092123
+	speed: 0.2065s/iter; left time: 5370.1069s
+Epoch: 41 cost time: 90.54930591583252
+Epoch: 41, Steps: 440, | Train Loss: 0.42946
+Validation results --- Loss: 0.82718, Accuracy: 0.73740, Precision: 0.66347, Recall: 0.60659, F1: 0.62684, AUROC: 0.90184, AUPRC: 0.68180
+Test results --- Loss: 0.86789, Accuracy: 0.72647, Precision: 0.64644, Recall: 0.58959 F1: 0.60963, AUROC: 0.89468, AUPRC: 0.65873
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 42 | loss: 0.4018885
+	speed: 0.5374s/iter; left time: 13896.5627s
+	iters: 200, epoch: 42 | loss: 0.4603564
+	speed: 0.2054s/iter; left time: 5290.6534s
+	iters: 300, epoch: 42 | loss: 0.4199199
+	speed: 0.2063s/iter; left time: 5292.9878s
+	iters: 400, epoch: 42 | loss: 0.4464699
+	speed: 0.2052s/iter; left time: 5245.6882s
+Epoch: 42 cost time: 90.47721838951111
+Epoch: 42, Steps: 440, | Train Loss: 0.42061
+Validation results --- Loss: 0.83483, Accuracy: 0.73572, Precision: 0.66152, Recall: 0.60149, F1: 0.62258, AUROC: 0.90191, AUPRC: 0.68141
+Test results --- Loss: 0.87877, Accuracy: 0.72468, Precision: 0.64357, Recall: 0.58433 F1: 0.60506, AUROC: 0.89452, AUPRC: 0.65779
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 43 | loss: 0.4460266
+	speed: 0.5380s/iter; left time: 13676.0579s
+	iters: 200, epoch: 43 | loss: 0.5389314
+	speed: 0.2064s/iter; left time: 5225.1505s
+	iters: 300, epoch: 43 | loss: 0.4045645
+	speed: 0.2054s/iter; left time: 5179.6301s
+	iters: 400, epoch: 43 | loss: 0.4688922
+	speed: 0.2062s/iter; left time: 5178.9223s
+Epoch: 43 cost time: 90.49677586555481
+Epoch: 43, Steps: 440, | Train Loss: 0.41765
+Validation results --- Loss: 0.84006, Accuracy: 0.73788, Precision: 0.66389, Recall: 0.60266, F1: 0.62387, AUROC: 0.90200, AUPRC: 0.68122
+Test results --- Loss: 0.88427, Accuracy: 0.72546, Precision: 0.64614, Recall: 0.58612 F1: 0.60718, AUROC: 0.89465, AUPRC: 0.65798
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 44 | loss: 0.4381896
+	speed: 0.5378s/iter; left time: 13435.6623s
+	iters: 200, epoch: 44 | loss: 0.4783208
+	speed: 0.2052s/iter; left time: 5106.2770s
+	iters: 300, epoch: 44 | loss: 0.4240834
+	speed: 0.2060s/iter; left time: 5104.9115s
+	iters: 400, epoch: 44 | loss: 0.4027333
+	speed: 0.2052s/iter; left time: 5065.5150s
+Epoch: 44 cost time: 90.42908596992493
+Epoch: 44, Steps: 440, | Train Loss: 0.40694
+Validation results --- Loss: 0.83912, Accuracy: 0.73964, Precision: 0.66615, Recall: 0.60624, F1: 0.62727, AUROC: 0.90240, AUPRC: 0.68197
+Test results --- Loss: 0.88544, Accuracy: 0.72726, Precision: 0.64793, Recall: 0.58783 F1: 0.60876, AUROC: 0.89522, AUPRC: 0.65878
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 45 | loss: 0.4496817
+	speed: 0.5372s/iter; left time: 13182.5607s
+	iters: 200, epoch: 45 | loss: 0.3684361
+	speed: 0.2063s/iter; left time: 5041.9564s
+	iters: 300, epoch: 45 | loss: 0.4357803
+	speed: 0.2052s/iter; left time: 4994.2446s
+	iters: 400, epoch: 45 | loss: 0.3849322
+	speed: 0.2061s/iter; left time: 4995.8525s
+Epoch: 45 cost time: 90.48441219329834
+Epoch: 45, Steps: 440, | Train Loss: 0.40499
+Validation results --- Loss: 0.84088, Accuracy: 0.73847, Precision: 0.66139, Recall: 0.60303, F1: 0.62336, AUROC: 0.90197, AUPRC: 0.68022
+Test results --- Loss: 0.88756, Accuracy: 0.72766, Precision: 0.64966, Recall: 0.58863 F1: 0.60955, AUROC: 0.89501, AUPRC: 0.65849
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 46 | loss: 0.3809162
+	speed: 0.5384s/iter; left time: 12974.7864s
+	iters: 200, epoch: 46 | loss: 0.3748890
+	speed: 0.2055s/iter; left time: 4932.4786s
+	iters: 300, epoch: 46 | loss: 0.4432363
+	speed: 0.2060s/iter; left time: 4924.0813s
+	iters: 400, epoch: 46 | loss: 0.3895341
+	speed: 0.2052s/iter; left time: 4883.3771s
+Epoch: 46 cost time: 90.47665929794312
+Epoch: 46, Steps: 440, | Train Loss: 0.39728
+Validation results --- Loss: 0.84742, Accuracy: 0.73959, Precision: 0.66498, Recall: 0.60493, F1: 0.62583, AUROC: 0.90175, AUPRC: 0.68044
+Test results --- Loss: 0.89283, Accuracy: 0.72668, Precision: 0.64618, Recall: 0.58636 F1: 0.60697, AUROC: 0.89514, AUPRC: 0.65803
+
+EarlyStopping counter: 9 out of 10
+	iters: 100, epoch: 47 | loss: 0.4046957
+	speed: 0.5379s/iter; left time: 12726.0784s
+	iters: 200, epoch: 47 | loss: 0.3559904
+	speed: 0.2077s/iter; left time: 4892.5566s
+	iters: 300, epoch: 47 | loss: 0.4660103
+	speed: 0.2058s/iter; left time: 4828.4336s
+	iters: 400, epoch: 47 | loss: 0.5207134
+	speed: 0.2052s/iter; left time: 4793.4334s
+Epoch: 47 cost time: 90.78775477409363
+Epoch: 47, Steps: 440, | Train Loss: 0.39247
+Validation results --- Loss: 0.84853, Accuracy: 0.73992, Precision: 0.66527, Recall: 0.60439, F1: 0.62508, AUROC: 0.90214, AUPRC: 0.68210
+Test results --- Loss: 0.89499, Accuracy: 0.72632, Precision: 0.64829, Recall: 0.58653 F1: 0.60724, AUROC: 0.89495, AUPRC: 0.65847
+
+EarlyStopping counter: 10 out of 10
+Early stopping
+>>>>>>>testing : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed45<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Validation results --- Loss: 0.82105, Accuracy: 0.73913, Precision: 0.66594, Recall: 0.60856, F1: 0.62969, AUROC: 0.90146, AUPRC: 0.68109
+Test results --- Loss: 0.86291, Accuracy: 0.72498, Precision: 0.64264, Recall: 0.58783, F1: 0.60822, AUROC: 0.89408, AUPRC: 0.65613
+
+Use GPU: cuda:0
+>>>>>>>start training : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed46>>>>>>>>>>>>>>>>>>>>>>>>>>
+(112570, 250, 12)
+(112570,)
+(39280, 250, 12)
+(39280,)
+(39550, 250, 12)
+(39550,)
+	iters: 100, epoch: 1 | loss: 1.2053808
+	speed: 0.2092s/iter; left time: 9185.4220s
+	iters: 200, epoch: 1 | loss: 1.0047152
+	speed: 0.2067s/iter; left time: 9054.6346s
+	iters: 300, epoch: 1 | loss: 0.9116092
+	speed: 0.2064s/iter; left time: 9020.0671s
+	iters: 400, epoch: 1 | loss: 0.8457707
+	speed: 0.2077s/iter; left time: 9056.7610s
+Epoch: 1 cost time: 91.42135548591614
+Epoch: 1, Steps: 440, | Train Loss: 0.99490
+Validation results --- Loss: 0.87262, Accuracy: 0.69226, Precision: 0.60181, Recall: 0.53333, F1: 0.54817, AUROC: 0.86584, AUPRC: 0.60229
+Test results --- Loss: 0.89351, Accuracy: 0.68614, Precision: 0.57083, Recall: 0.51720 F1: 0.52690, AUROC: 0.85844, AUPRC: 0.58356
+
+Metric score decreased (inf --> -0.548172).  Saving model ...
+
+	iters: 100, epoch: 2 | loss: 0.8679335
+	speed: 0.5416s/iter; left time: 23537.3408s
+	iters: 200, epoch: 2 | loss: 0.8012294
+	speed: 0.2063s/iter; left time: 8947.4443s
+	iters: 300, epoch: 2 | loss: 0.8722489
+	speed: 0.2073s/iter; left time: 8966.1404s
+	iters: 400, epoch: 2 | loss: 0.9512196
+	speed: 0.2064s/iter; left time: 8907.7038s
+Epoch: 2 cost time: 90.98572587966919
+Epoch: 2, Steps: 440, | Train Loss: 0.86879
+Validation results --- Loss: 0.86722, Accuracy: 0.69638, Precision: 0.61022, Recall: 0.54449, F1: 0.55474, AUROC: 0.87179, AUPRC: 0.61569
+Test results --- Loss: 0.89048, Accuracy: 0.69221, Precision: 0.58864, Recall: 0.53194 F1: 0.53730, AUROC: 0.86578, AUPRC: 0.59804
+
+Metric score decreased (-0.548172 --> -0.554744).  Saving model ...
+
+	iters: 100, epoch: 3 | loss: 0.7570621
+	speed: 0.5405s/iter; left time: 23254.3398s
+	iters: 200, epoch: 3 | loss: 0.7915958
+	speed: 0.2068s/iter; left time: 8874.2494s
+	iters: 300, epoch: 3 | loss: 0.8830211
+	speed: 0.2066s/iter; left time: 8845.5280s
+	iters: 400, epoch: 3 | loss: 0.9644940
+	speed: 0.2074s/iter; left time: 8859.1358s
+Epoch: 3 cost time: 91.17037463188171
+Epoch: 3, Steps: 440, | Train Loss: 0.82643
+Validation results --- Loss: 0.83951, Accuracy: 0.70759, Precision: 0.61997, Recall: 0.55740, F1: 0.57074, AUROC: 0.87755, AUPRC: 0.62765
+Test results --- Loss: 0.86118, Accuracy: 0.70440, Precision: 0.60529, Recall: 0.54691 F1: 0.55735, AUROC: 0.87163, AUPRC: 0.61001
+
+Metric score decreased (-0.554744 --> -0.570736).  Saving model ...
+
+	iters: 100, epoch: 4 | loss: 0.8511331
+	speed: 0.5424s/iter; left time: 23097.8806s
+	iters: 200, epoch: 4 | loss: 0.7900863
+	speed: 0.2064s/iter; left time: 8770.0583s
+	iters: 300, epoch: 4 | loss: 0.8050137
+	speed: 0.2074s/iter; left time: 8790.0462s
+	iters: 400, epoch: 4 | loss: 0.7672889
+	speed: 0.2066s/iter; left time: 8734.2071s
+Epoch: 4 cost time: 90.99783849716187
+Epoch: 4, Steps: 440, | Train Loss: 0.79869
+Validation results --- Loss: 0.83347, Accuracy: 0.71184, Precision: 0.63500, Recall: 0.55771, F1: 0.57491, AUROC: 0.88062, AUPRC: 0.63505
+Test results --- Loss: 0.85425, Accuracy: 0.70728, Precision: 0.61919, Recall: 0.54555 F1: 0.55987, AUROC: 0.87513, AUPRC: 0.61671
+
+Metric score decreased (-0.570736 --> -0.574912).  Saving model ...
+
+	iters: 100, epoch: 5 | loss: 0.7837546
+	speed: 0.5444s/iter; left time: 22942.2885s
+	iters: 200, epoch: 5 | loss: 0.7405967
+	speed: 0.2067s/iter; left time: 8687.9185s
+	iters: 300, epoch: 5 | loss: 0.7401440
+	speed: 0.2067s/iter; left time: 8668.1534s
+	iters: 400, epoch: 5 | loss: 0.7983807
+	speed: 0.2076s/iter; left time: 8687.9591s
+Epoch: 5 cost time: 91.17919182777405
+Epoch: 5, Steps: 440, | Train Loss: 0.77789
+Validation results --- Loss: 0.82270, Accuracy: 0.71629, Precision: 0.63859, Recall: 0.56318, F1: 0.58102, AUROC: 0.88324, AUPRC: 0.64114
+Test results --- Loss: 0.84501, Accuracy: 0.70834, Precision: 0.61924, Recall: 0.54803 F1: 0.56289, AUROC: 0.87740, AUPRC: 0.62026
+
+Metric score decreased (-0.574912 --> -0.581019).  Saving model ...
+
+	iters: 100, epoch: 6 | loss: 0.6775076
+	speed: 0.5434s/iter; left time: 22662.0378s
+	iters: 200, epoch: 6 | loss: 0.7143014
+	speed: 0.2075s/iter; left time: 8631.3596s
+	iters: 300, epoch: 6 | loss: 0.8175083
+	speed: 0.2065s/iter; left time: 8569.7671s
+	iters: 400, epoch: 6 | loss: 0.7950897
+	speed: 0.2067s/iter; left time: 8559.0607s
+Epoch: 6 cost time: 91.0555260181427
+Epoch: 6, Steps: 440, | Train Loss: 0.76083
+Validation results --- Loss: 0.81254, Accuracy: 0.72067, Precision: 0.64475, Recall: 0.57222, F1: 0.59030, AUROC: 0.88563, AUPRC: 0.64643
+Test results --- Loss: 0.83648, Accuracy: 0.71201, Precision: 0.62525, Recall: 0.55553 F1: 0.57043, AUROC: 0.88008, AUPRC: 0.62584
+
+Metric score decreased (-0.581019 --> -0.590304).  Saving model ...
+
+	iters: 100, epoch: 7 | loss: 0.6583042
+	speed: 0.5431s/iter; left time: 22408.1811s
+	iters: 200, epoch: 7 | loss: 0.6399269
+	speed: 0.2065s/iter; left time: 8498.6057s
+	iters: 300, epoch: 7 | loss: 0.7701296
+	speed: 0.2065s/iter; left time: 8478.8346s
+	iters: 400, epoch: 7 | loss: 0.7138599
+	speed: 0.2075s/iter; left time: 8497.6846s
+Epoch: 7 cost time: 91.1567816734314
+Epoch: 7, Steps: 440, | Train Loss: 0.73999
+Validation results --- Loss: 0.80970, Accuracy: 0.72207, Precision: 0.65063, Recall: 0.56937, F1: 0.58645, AUROC: 0.88757, AUPRC: 0.65205
+Test results --- Loss: 0.83918, Accuracy: 0.71279, Precision: 0.62873, Recall: 0.55308 F1: 0.56623, AUROC: 0.88103, AUPRC: 0.62843
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 8 | loss: 0.6473826
+	speed: 0.5430s/iter; left time: 22165.0245s
+	iters: 200, epoch: 8 | loss: 0.6171004
+	speed: 0.2067s/iter; left time: 8417.9197s
+	iters: 300, epoch: 8 | loss: 0.6513683
+	speed: 0.2075s/iter; left time: 8430.7820s
+	iters: 400, epoch: 8 | loss: 0.6552535
+	speed: 0.2066s/iter; left time: 8373.1476s
+Epoch: 8 cost time: 91.069091796875
+Epoch: 8, Steps: 440, | Train Loss: 0.72695
+Validation results --- Loss: 0.80096, Accuracy: 0.72436, Precision: 0.65080, Recall: 0.57564, F1: 0.58832, AUROC: 0.88883, AUPRC: 0.65459
+Test results --- Loss: 0.82905, Accuracy: 0.71545, Precision: 0.63138, Recall: 0.56052 F1: 0.57033, AUROC: 0.88241, AUPRC: 0.63243
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 9 | loss: 0.7043171
+	speed: 0.5435s/iter; left time: 21946.9274s
+	iters: 200, epoch: 9 | loss: 0.7519771
+	speed: 0.2064s/iter; left time: 8315.1241s
+	iters: 300, epoch: 9 | loss: 0.7283781
+	speed: 0.2065s/iter; left time: 8299.2560s
+	iters: 400, epoch: 9 | loss: 0.6775221
+	speed: 0.2074s/iter; left time: 8314.5275s
+Epoch: 9 cost time: 91.12392377853394
+Epoch: 9, Steps: 440, | Train Loss: 0.71215
+Validation results --- Loss: 0.79791, Accuracy: 0.72772, Precision: 0.66081, Recall: 0.57957, F1: 0.59467, AUROC: 0.89054, AUPRC: 0.65952
+Test results --- Loss: 0.82845, Accuracy: 0.71775, Precision: 0.63271, Recall: 0.56227 F1: 0.57395, AUROC: 0.88380, AUPRC: 0.63455
+
+Metric score decreased (-0.590304 --> -0.594669).  Saving model ...
+
+	iters: 100, epoch: 10 | loss: 0.7032372
+	speed: 0.5424s/iter; left time: 21663.8109s
+	iters: 200, epoch: 10 | loss: 0.6824891
+	speed: 0.2074s/iter; left time: 8261.3981s
+	iters: 300, epoch: 10 | loss: 0.6124370
+	speed: 0.2064s/iter; left time: 8202.9509s
+	iters: 400, epoch: 10 | loss: 0.6869310
+	speed: 0.2065s/iter; left time: 8186.8639s
+Epoch: 10 cost time: 90.99779033660889
+Epoch: 10, Steps: 440, | Train Loss: 0.69801
+Validation results --- Loss: 0.79576, Accuracy: 0.72818, Precision: 0.65935, Recall: 0.58101, F1: 0.59740, AUROC: 0.89215, AUPRC: 0.66260
+Test results --- Loss: 0.82724, Accuracy: 0.71681, Precision: 0.63512, Recall: 0.56242 F1: 0.57549, AUROC: 0.88517, AUPRC: 0.63678
+
+Metric score decreased (-0.594669 --> -0.597403).  Saving model ...
+
+	iters: 100, epoch: 11 | loss: 0.6759751
+	speed: 0.5433s/iter; left time: 21461.2050s
+	iters: 200, epoch: 11 | loss: 0.6145360
+	speed: 0.2065s/iter; left time: 8137.2043s
+	iters: 300, epoch: 11 | loss: 0.7924170
+	speed: 0.2067s/iter; left time: 8124.2342s
+	iters: 400, epoch: 11 | loss: 0.8132861
+	speed: 0.2075s/iter; left time: 8135.1500s
+Epoch: 11 cost time: 91.19062566757202
+Epoch: 11, Steps: 440, | Train Loss: 0.68367
+Validation results --- Loss: 0.79341, Accuracy: 0.72907, Precision: 0.65899, Recall: 0.58663, F1: 0.60512, AUROC: 0.89292, AUPRC: 0.66609
+Test results --- Loss: 0.82665, Accuracy: 0.71745, Precision: 0.63280, Recall: 0.56691 F1: 0.58239, AUROC: 0.88583, AUPRC: 0.63862
+
+Metric score decreased (-0.597403 --> -0.605120).  Saving model ...
+
+	iters: 100, epoch: 12 | loss: 0.7194244
+	speed: 0.5438s/iter; left time: 21240.4839s
+	iters: 200, epoch: 12 | loss: 0.6401740
+	speed: 0.2076s/iter; left time: 8088.9957s
+	iters: 300, epoch: 12 | loss: 0.7045144
+	speed: 0.2065s/iter; left time: 8025.6820s
+	iters: 400, epoch: 12 | loss: 0.7688743
+	speed: 0.2063s/iter; left time: 7997.5103s
+Epoch: 12 cost time: 91.04812836647034
+Epoch: 12, Steps: 440, | Train Loss: 0.67050
+Validation results --- Loss: 0.79169, Accuracy: 0.72961, Precision: 0.65914, Recall: 0.58687, F1: 0.60543, AUROC: 0.89401, AUPRC: 0.66800
+Test results --- Loss: 0.82503, Accuracy: 0.71937, Precision: 0.63752, Recall: 0.57019 F1: 0.58632, AUROC: 0.88669, AUPRC: 0.64132
+
+Metric score decreased (-0.605120 --> -0.605434).  Saving model ...
+
+	iters: 100, epoch: 13 | loss: 0.7363068
+	speed: 0.5440s/iter; left time: 21011.2454s
+	iters: 200, epoch: 13 | loss: 0.6593035
+	speed: 0.2067s/iter; left time: 7963.9913s
+	iters: 300, epoch: 13 | loss: 0.8336053
+	speed: 0.2079s/iter; left time: 7988.8544s
+	iters: 400, epoch: 13 | loss: 0.6841399
+	speed: 0.2066s/iter; left time: 7916.4768s
+Epoch: 13 cost time: 91.2104549407959
+Epoch: 13, Steps: 440, | Train Loss: 0.66407
+Validation results --- Loss: 0.78879, Accuracy: 0.73177, Precision: 0.65660, Recall: 0.59087, F1: 0.60829, AUROC: 0.89431, AUPRC: 0.66786
+Test results --- Loss: 0.82363, Accuracy: 0.71881, Precision: 0.63351, Recall: 0.57139 F1: 0.58693, AUROC: 0.88718, AUPRC: 0.64205
+
+Metric score decreased (-0.605434 --> -0.608294).  Saving model ...
+
+	iters: 100, epoch: 14 | loss: 0.7801540
+	speed: 0.5440s/iter; left time: 20772.0317s
+	iters: 200, epoch: 14 | loss: 0.6417459
+	speed: 0.2075s/iter; left time: 7900.2359s
+	iters: 300, epoch: 14 | loss: 0.6675256
+	speed: 0.2063s/iter; left time: 7835.3384s
+	iters: 400, epoch: 14 | loss: 0.7675300
+	speed: 0.2065s/iter; left time: 7822.9878s
+Epoch: 14 cost time: 90.98860287666321
+Epoch: 14, Steps: 440, | Train Loss: 0.65447
+Validation results --- Loss: 0.79334, Accuracy: 0.73101, Precision: 0.65675, Recall: 0.58764, F1: 0.60469, AUROC: 0.89399, AUPRC: 0.66691
+Test results --- Loss: 0.82633, Accuracy: 0.72076, Precision: 0.63786, Recall: 0.57243 F1: 0.58778, AUROC: 0.88737, AUPRC: 0.64209
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 15 | loss: 0.6669375
+	speed: 0.5436s/iter; left time: 20517.4375s
+	iters: 200, epoch: 15 | loss: 0.5864158
+	speed: 0.2060s/iter; left time: 7755.6995s
+	iters: 300, epoch: 15 | loss: 0.6047105
+	speed: 0.2063s/iter; left time: 7746.3669s
+	iters: 400, epoch: 15 | loss: 0.6845068
+	speed: 0.2073s/iter; left time: 7762.3085s
+Epoch: 15 cost time: 91.02474474906921
+Epoch: 15, Steps: 440, | Train Loss: 0.64263
+Validation results --- Loss: 0.79009, Accuracy: 0.73220, Precision: 0.65737, Recall: 0.59030, F1: 0.60740, AUROC: 0.89543, AUPRC: 0.66856
+Test results --- Loss: 0.82410, Accuracy: 0.72202, Precision: 0.63904, Recall: 0.57485 F1: 0.59042, AUROC: 0.88844, AUPRC: 0.64523
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 16 | loss: 0.6387452
+	speed: 0.5416s/iter; left time: 20201.4288s
+	iters: 200, epoch: 16 | loss: 0.6055919
+	speed: 0.2075s/iter; left time: 7718.9232s
+	iters: 300, epoch: 16 | loss: 0.5812973
+	speed: 0.2065s/iter; left time: 7659.5721s
+	iters: 400, epoch: 16 | loss: 0.6371202
+	speed: 0.2063s/iter; left time: 7635.0234s
+Epoch: 16 cost time: 90.99592900276184
+Epoch: 16, Steps: 440, | Train Loss: 0.63372
+Validation results --- Loss: 0.79001, Accuracy: 0.73254, Precision: 0.65645, Recall: 0.59218, F1: 0.60921, AUROC: 0.89552, AUPRC: 0.66900
+Test results --- Loss: 0.82343, Accuracy: 0.72344, Precision: 0.64160, Recall: 0.57855 F1: 0.59462, AUROC: 0.88921, AUPRC: 0.64735
+
+Metric score decreased (-0.608294 --> -0.609211).  Saving model ...
+
+	iters: 100, epoch: 17 | loss: 0.5782225
+	speed: 0.5432s/iter; left time: 20022.0983s
+	iters: 200, epoch: 17 | loss: 0.6250299
+	speed: 0.2070s/iter; left time: 7609.5684s
+	iters: 300, epoch: 17 | loss: 0.6601496
+	speed: 0.2078s/iter; left time: 7617.7192s
+	iters: 400, epoch: 17 | loss: 0.6732646
+	speed: 0.2063s/iter; left time: 7544.3568s
+Epoch: 17 cost time: 91.22820258140564
+Epoch: 17, Steps: 440, | Train Loss: 0.62083
+Validation results --- Loss: 0.79212, Accuracy: 0.73226, Precision: 0.65645, Recall: 0.59140, F1: 0.60858, AUROC: 0.89612, AUPRC: 0.67026
+Test results --- Loss: 0.82641, Accuracy: 0.72298, Precision: 0.64051, Recall: 0.57776 F1: 0.59381, AUROC: 0.88920, AUPRC: 0.64678
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 18 | loss: 0.6893564
+	speed: 0.5418s/iter; left time: 19731.1667s
+	iters: 200, epoch: 18 | loss: 0.6238399
+	speed: 0.2073s/iter; left time: 7528.3526s
+	iters: 300, epoch: 18 | loss: 0.5834779
+	speed: 0.2066s/iter; left time: 7482.1274s
+	iters: 400, epoch: 18 | loss: 0.7371495
+	speed: 0.2065s/iter; left time: 7458.5186s
+Epoch: 18 cost time: 91.01179099082947
+Epoch: 18, Steps: 440, | Train Loss: 0.61140
+Validation results --- Loss: 0.79219, Accuracy: 0.73363, Precision: 0.65877, Recall: 0.59324, F1: 0.61010, AUROC: 0.89618, AUPRC: 0.67096
+Test results --- Loss: 0.82455, Accuracy: 0.72427, Precision: 0.64065, Recall: 0.57863 F1: 0.59414, AUROC: 0.88982, AUPRC: 0.64898
+
+Metric score decreased (-0.609211 --> -0.610096).  Saving model ...
+
+	iters: 100, epoch: 19 | loss: 0.6420037
+	speed: 0.5438s/iter; left time: 19566.1228s
+	iters: 200, epoch: 19 | loss: 0.5547464
+	speed: 0.2065s/iter; left time: 7409.8024s
+	iters: 300, epoch: 19 | loss: 0.6412939
+	speed: 0.2072s/iter; left time: 7414.7761s
+	iters: 400, epoch: 19 | loss: 0.6284975
+	speed: 0.2061s/iter; left time: 7353.0737s
+Epoch: 19 cost time: 90.91753339767456
+Epoch: 19, Steps: 440, | Train Loss: 0.60515
+Validation results --- Loss: 0.79444, Accuracy: 0.73332, Precision: 0.66094, Recall: 0.59110, F1: 0.60817, AUROC: 0.89698, AUPRC: 0.67272
+Test results --- Loss: 0.82715, Accuracy: 0.72584, Precision: 0.64626, Recall: 0.57814 F1: 0.59372, AUROC: 0.89036, AUPRC: 0.65012
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 20 | loss: 0.6181505
+	speed: 0.5429s/iter; left time: 19293.5593s
+	iters: 200, epoch: 20 | loss: 0.7018722
+	speed: 0.2072s/iter; left time: 7344.4345s
+	iters: 300, epoch: 20 | loss: 0.6563669
+	speed: 0.2065s/iter; left time: 7298.4149s
+	iters: 400, epoch: 20 | loss: 0.5240545
+	speed: 0.2064s/iter; left time: 7273.4209s
+Epoch: 20 cost time: 90.99556875228882
+Epoch: 20, Steps: 440, | Train Loss: 0.59186
+Validation results --- Loss: 0.79679, Accuracy: 0.73439, Precision: 0.66187, Recall: 0.59262, F1: 0.61157, AUROC: 0.89752, AUPRC: 0.67412
+Test results --- Loss: 0.83075, Accuracy: 0.72680, Precision: 0.64869, Recall: 0.58065 F1: 0.59848, AUROC: 0.89073, AUPRC: 0.65196
+
+Metric score decreased (-0.610096 --> -0.611568).  Saving model ...
+
+	iters: 100, epoch: 21 | loss: 0.5472840
+	speed: 0.5438s/iter; left time: 19086.6951s
+	iters: 200, epoch: 21 | loss: 0.5252904
+	speed: 0.2064s/iter; left time: 7223.0788s
+	iters: 300, epoch: 21 | loss: 0.4715971
+	speed: 0.2078s/iter; left time: 7250.9312s
+	iters: 400, epoch: 21 | loss: 0.5725628
+	speed: 0.2065s/iter; left time: 7185.3149s
+Epoch: 21 cost time: 91.02777624130249
+Epoch: 21, Steps: 440, | Train Loss: 0.58222
+Validation results --- Loss: 0.80074, Accuracy: 0.73587, Precision: 0.66506, Recall: 0.59526, F1: 0.61404, AUROC: 0.89782, AUPRC: 0.67471
+Test results --- Loss: 0.83607, Accuracy: 0.72488, Precision: 0.64677, Recall: 0.57738 F1: 0.59489, AUROC: 0.89066, AUPRC: 0.65205
+
+Metric score decreased (-0.611568 --> -0.614036).  Saving model ...
+
+	iters: 100, epoch: 22 | loss: 0.5791841
+	speed: 0.5433s/iter; left time: 18830.3999s
+	iters: 200, epoch: 22 | loss: 0.5692912
+	speed: 0.2078s/iter; left time: 7180.9131s
+	iters: 300, epoch: 22 | loss: 0.5246052
+	speed: 0.2067s/iter; left time: 7122.5138s
+	iters: 400, epoch: 22 | loss: 0.6522192
+	speed: 0.2067s/iter; left time: 7101.0856s
+Epoch: 22 cost time: 91.07650351524353
+Epoch: 22, Steps: 440, | Train Loss: 0.57460
+Validation results --- Loss: 0.80410, Accuracy: 0.73602, Precision: 0.66915, Recall: 0.59164, F1: 0.61144, AUROC: 0.89798, AUPRC: 0.67598
+Test results --- Loss: 0.84045, Accuracy: 0.72670, Precision: 0.64980, Recall: 0.57693 F1: 0.59503, AUROC: 0.89083, AUPRC: 0.65292
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 23 | loss: 0.5597709
+	speed: 0.5419s/iter; left time: 18543.5750s
+	iters: 200, epoch: 23 | loss: 0.5803276
+	speed: 0.2064s/iter; left time: 7041.1222s
+	iters: 300, epoch: 23 | loss: 0.5602189
+	speed: 0.2073s/iter; left time: 7051.4327s
+	iters: 400, epoch: 23 | loss: 0.6409273
+	speed: 0.2061s/iter; left time: 6992.0254s
+Epoch: 23 cost time: 90.95030283927917
+Epoch: 23, Steps: 440, | Train Loss: 0.56624
+Validation results --- Loss: 0.80450, Accuracy: 0.73434, Precision: 0.66256, Recall: 0.59202, F1: 0.61152, AUROC: 0.89807, AUPRC: 0.67424
+Test results --- Loss: 0.84072, Accuracy: 0.72685, Precision: 0.64838, Recall: 0.57983 F1: 0.59794, AUROC: 0.89099, AUPRC: 0.65354
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 24 | loss: 0.5951717
+	speed: 0.5425s/iter; left time: 18325.3422s
+	iters: 200, epoch: 24 | loss: 0.5269440
+	speed: 0.2072s/iter; left time: 6978.8613s
+	iters: 300, epoch: 24 | loss: 0.5321271
+	speed: 0.2062s/iter; left time: 6925.3256s
+	iters: 400, epoch: 24 | loss: 0.5386760
+	speed: 0.2064s/iter; left time: 6911.8792s
+Epoch: 24 cost time: 90.94099116325378
+Epoch: 24, Steps: 440, | Train Loss: 0.55902
+Validation results --- Loss: 0.80246, Accuracy: 0.73577, Precision: 0.66033, Recall: 0.59482, F1: 0.61359, AUROC: 0.89838, AUPRC: 0.67415
+Test results --- Loss: 0.83761, Accuracy: 0.72632, Precision: 0.64574, Recall: 0.58132 F1: 0.59941, AUROC: 0.89129, AUPRC: 0.65326
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 25 | loss: 0.5547003
+	speed: 0.5430s/iter; left time: 18105.4999s
+	iters: 200, epoch: 25 | loss: 0.6120608
+	speed: 0.2063s/iter; left time: 6857.8752s
+	iters: 300, epoch: 25 | loss: 0.6141381
+	speed: 0.2071s/iter; left time: 6863.8817s
+	iters: 400, epoch: 25 | loss: 0.5376383
+	speed: 0.2062s/iter; left time: 6813.6219s
+Epoch: 25 cost time: 90.91776895523071
+Epoch: 25, Steps: 440, | Train Loss: 0.55018
+Validation results --- Loss: 0.80553, Accuracy: 0.73577, Precision: 0.65972, Recall: 0.59581, F1: 0.61497, AUROC: 0.89877, AUPRC: 0.67439
+Test results --- Loss: 0.83998, Accuracy: 0.72736, Precision: 0.64838, Recall: 0.58274 F1: 0.60179, AUROC: 0.89194, AUPRC: 0.65447
+
+Metric score decreased (-0.614036 --> -0.614971).  Saving model ...
+
+	iters: 100, epoch: 26 | loss: 0.4923579
+	speed: 0.5423s/iter; left time: 17842.0720s
+	iters: 200, epoch: 26 | loss: 0.5634795
+	speed: 0.2073s/iter; left time: 6800.1353s
+	iters: 300, epoch: 26 | loss: 0.5171850
+	speed: 0.2065s/iter; left time: 6753.8332s
+	iters: 400, epoch: 26 | loss: 0.6501744
+	speed: 0.2063s/iter; left time: 6724.0757s
+Epoch: 26 cost time: 91.02037167549133
+Epoch: 26, Steps: 440, | Train Loss: 0.53674
+Validation results --- Loss: 0.80988, Accuracy: 0.73457, Precision: 0.66204, Recall: 0.59092, F1: 0.61070, AUROC: 0.89866, AUPRC: 0.67452
+Test results --- Loss: 0.84424, Accuracy: 0.72619, Precision: 0.64713, Recall: 0.57786 F1: 0.59677, AUROC: 0.89190, AUPRC: 0.65430
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 27 | loss: 0.5326011
+	speed: 0.5430s/iter; left time: 17627.1557s
+	iters: 200, epoch: 27 | loss: 0.5041404
+	speed: 0.2064s/iter; left time: 6680.4529s
+	iters: 300, epoch: 27 | loss: 0.5725452
+	speed: 0.2079s/iter; left time: 6706.3797s
+	iters: 400, epoch: 27 | loss: 0.5889705
+	speed: 0.2070s/iter; left time: 6656.8725s
+Epoch: 27 cost time: 91.12057065963745
+Epoch: 27, Steps: 440, | Train Loss: 0.53101
+Validation results --- Loss: 0.80763, Accuracy: 0.73546, Precision: 0.65706, Recall: 0.59324, F1: 0.61185, AUROC: 0.89923, AUPRC: 0.67362
+Test results --- Loss: 0.84350, Accuracy: 0.72703, Precision: 0.64511, Recall: 0.58056 F1: 0.59919, AUROC: 0.89196, AUPRC: 0.65401
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 28 | loss: 0.4185174
+	speed: 0.5420s/iter; left time: 17354.1804s
+	iters: 200, epoch: 28 | loss: 0.4751846
+	speed: 0.2074s/iter; left time: 6619.7481s
+	iters: 300, epoch: 28 | loss: 0.6074045
+	speed: 0.2065s/iter; left time: 6570.2489s
+	iters: 400, epoch: 28 | loss: 0.6123816
+	speed: 0.2063s/iter; left time: 6545.5259s
+Epoch: 28 cost time: 90.9765977859497
+Epoch: 28, Steps: 440, | Train Loss: 0.52200
+Validation results --- Loss: 0.80675, Accuracy: 0.73623, Precision: 0.66014, Recall: 0.59533, F1: 0.61444, AUROC: 0.89969, AUPRC: 0.67565
+Test results --- Loss: 0.84190, Accuracy: 0.72665, Precision: 0.64653, Recall: 0.58159 F1: 0.60074, AUROC: 0.89232, AUPRC: 0.65514
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 29 | loss: 0.5846080
+	speed: 0.5432s/iter; left time: 17155.6425s
+	iters: 200, epoch: 29 | loss: 0.4755482
+	speed: 0.2066s/iter; left time: 6503.6352s
+	iters: 300, epoch: 29 | loss: 0.5355942
+	speed: 0.2072s/iter; left time: 6500.8887s
+	iters: 400, epoch: 29 | loss: 0.4654786
+	speed: 0.2069s/iter; left time: 6472.3586s
+Epoch: 29 cost time: 91.03062152862549
+Epoch: 29, Steps: 440, | Train Loss: 0.51695
+Validation results --- Loss: 0.80268, Accuracy: 0.73595, Precision: 0.65786, Recall: 0.59990, F1: 0.61827, AUROC: 0.90005, AUPRC: 0.67806
+Test results --- Loss: 0.83765, Accuracy: 0.72817, Precision: 0.64682, Recall: 0.58701 F1: 0.60522, AUROC: 0.89296, AUPRC: 0.65640
+
+Metric score decreased (-0.614971 --> -0.618271).  Saving model ...
+
+	iters: 100, epoch: 30 | loss: 0.4747092
+	speed: 0.5434s/iter; left time: 16922.9148s
+	iters: 200, epoch: 30 | loss: 0.4567454
+	speed: 0.2071s/iter; left time: 6428.5252s
+	iters: 300, epoch: 30 | loss: 0.5428938
+	speed: 0.2064s/iter; left time: 6386.7058s
+	iters: 400, epoch: 30 | loss: 0.4898115
+	speed: 0.2063s/iter; left time: 6362.5370s
+Epoch: 30 cost time: 90.96930646896362
+Epoch: 30, Steps: 440, | Train Loss: 0.50830
+Validation results --- Loss: 0.80618, Accuracy: 0.73592, Precision: 0.65820, Recall: 0.59771, F1: 0.61609, AUROC: 0.90001, AUPRC: 0.67707
+Test results --- Loss: 0.84194, Accuracy: 0.72882, Precision: 0.64958, Recall: 0.58702 F1: 0.60534, AUROC: 0.89332, AUPRC: 0.65724
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 31 | loss: 0.3997120
+	speed: 0.5424s/iter; left time: 16653.0178s
+	iters: 200, epoch: 31 | loss: 0.5467280
+	speed: 0.2075s/iter; left time: 6349.4630s
+	iters: 300, epoch: 31 | loss: 0.5863240
+	speed: 0.2076s/iter; left time: 6332.4570s
+	iters: 400, epoch: 31 | loss: 0.4714167
+	speed: 0.2066s/iter; left time: 6280.5705s
+Epoch: 31 cost time: 91.1322546005249
+Epoch: 31, Steps: 440, | Train Loss: 0.49917
+Validation results --- Loss: 0.80714, Accuracy: 0.73816, Precision: 0.65870, Recall: 0.60390, F1: 0.62244, AUROC: 0.89994, AUPRC: 0.67672
+Test results --- Loss: 0.84437, Accuracy: 0.72834, Precision: 0.64552, Recall: 0.58902 F1: 0.60745, AUROC: 0.89269, AUPRC: 0.65593
+
+Metric score decreased (-0.618271 --> -0.622441).  Saving model ...
+
+	iters: 100, epoch: 32 | loss: 0.5635126
+	speed: 0.5418s/iter; left time: 16395.3831s
+	iters: 200, epoch: 32 | loss: 0.4618983
+	speed: 0.2065s/iter; left time: 6228.6165s
+	iters: 300, epoch: 32 | loss: 0.5014907
+	speed: 0.2062s/iter; left time: 6198.6595s
+	iters: 400, epoch: 32 | loss: 0.6166949
+	speed: 0.2069s/iter; left time: 6199.6502s
+Epoch: 32 cost time: 91.00520324707031
+Epoch: 32, Steps: 440, | Train Loss: 0.49602
+Validation results --- Loss: 0.80905, Accuracy: 0.73704, Precision: 0.65720, Recall: 0.60198, F1: 0.62017, AUROC: 0.89989, AUPRC: 0.67573
+Test results --- Loss: 0.84499, Accuracy: 0.72698, Precision: 0.64280, Recall: 0.58698 F1: 0.60474, AUROC: 0.89307, AUPRC: 0.65582
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 33 | loss: 0.5341953
+	speed: 0.5429s/iter; left time: 16189.8650s
+	iters: 200, epoch: 33 | loss: 0.5233309
+	speed: 0.2064s/iter; left time: 6135.5174s
+	iters: 300, epoch: 33 | loss: 0.4305067
+	speed: 0.2072s/iter; left time: 6137.4627s
+	iters: 400, epoch: 33 | loss: 0.5820268
+	speed: 0.2065s/iter; left time: 6096.2966s
+Epoch: 33 cost time: 90.99592089653015
+Epoch: 33, Steps: 440, | Train Loss: 0.48423
+Validation results --- Loss: 0.81238, Accuracy: 0.73750, Precision: 0.65636, Recall: 0.60192, F1: 0.61929, AUROC: 0.89972, AUPRC: 0.67587
+Test results --- Loss: 0.85062, Accuracy: 0.72587, Precision: 0.63927, Recall: 0.58453 F1: 0.60116, AUROC: 0.89254, AUPRC: 0.65492
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 34 | loss: 0.6091276
+	speed: 0.5413s/iter; left time: 15902.6244s
+	iters: 200, epoch: 34 | loss: 0.4985884
+	speed: 0.2063s/iter; left time: 6040.4125s
+	iters: 300, epoch: 34 | loss: 0.4476802
+	speed: 0.2078s/iter; left time: 6062.3755s
+	iters: 400, epoch: 34 | loss: 0.5163649
+	speed: 0.2054s/iter; left time: 5973.0338s
+Epoch: 34 cost time: 90.93691492080688
+Epoch: 34, Steps: 440, | Train Loss: 0.47888
+Validation results --- Loss: 0.81715, Accuracy: 0.73824, Precision: 0.65906, Recall: 0.60195, F1: 0.62029, AUROC: 0.89981, AUPRC: 0.67602
+Test results --- Loss: 0.85523, Accuracy: 0.72774, Precision: 0.64422, Recall: 0.58640 F1: 0.60411, AUROC: 0.89296, AUPRC: 0.65537
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 35 | loss: 0.4447315
+	speed: 0.5372s/iter; left time: 15548.5162s
+	iters: 200, epoch: 35 | loss: 0.3472266
+	speed: 0.2048s/iter; left time: 5905.8874s
+	iters: 300, epoch: 35 | loss: 0.4281867
+	speed: 0.2057s/iter; left time: 5910.8714s
+	iters: 400, epoch: 35 | loss: 0.4564141
+	speed: 0.2054s/iter; left time: 5883.4732s
+Epoch: 35 cost time: 90.29013800621033
+Epoch: 35, Steps: 440, | Train Loss: 0.47109
+Validation results --- Loss: 0.81928, Accuracy: 0.73798, Precision: 0.65808, Recall: 0.60241, F1: 0.61984, AUROC: 0.89994, AUPRC: 0.67699
+Test results --- Loss: 0.85416, Accuracy: 0.72812, Precision: 0.64333, Recall: 0.58745 F1: 0.60410, AUROC: 0.89345, AUPRC: 0.65729
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 36 | loss: 0.4306542
+	speed: 0.5369s/iter; left time: 15301.8266s
+	iters: 200, epoch: 36 | loss: 0.5326133
+	speed: 0.2045s/iter; left time: 5807.4412s
+	iters: 300, epoch: 36 | loss: 0.4548971
+	speed: 0.2043s/iter; left time: 5782.5135s
+	iters: 400, epoch: 36 | loss: 0.5431281
+	speed: 0.2048s/iter; left time: 5774.2212s
+Epoch: 36 cost time: 90.13359570503235
+Epoch: 36, Steps: 440, | Train Loss: 0.46358
+Validation results --- Loss: 0.81964, Accuracy: 0.73844, Precision: 0.65624, Recall: 0.60584, F1: 0.62253, AUROC: 0.90058, AUPRC: 0.67838
+Test results --- Loss: 0.85784, Accuracy: 0.72688, Precision: 0.64270, Recall: 0.58969 F1: 0.60635, AUROC: 0.89332, AUPRC: 0.65660
+
+Metric score decreased (-0.622441 --> -0.622530).  Saving model ...
+
+	iters: 100, epoch: 37 | loss: 0.3400660
+	speed: 0.5378s/iter; left time: 15090.3365s
+	iters: 200, epoch: 37 | loss: 0.3794172
+	speed: 0.2053s/iter; left time: 5740.7289s
+	iters: 300, epoch: 37 | loss: 0.3554961
+	speed: 0.2046s/iter; left time: 5701.2519s
+	iters: 400, epoch: 37 | loss: 0.5016880
+	speed: 0.2043s/iter; left time: 5671.6827s
+Epoch: 37 cost time: 90.13626265525818
+Epoch: 37, Steps: 440, | Train Loss: 0.45740
+Validation results --- Loss: 0.82306, Accuracy: 0.73837, Precision: 0.65697, Recall: 0.60768, F1: 0.62442, AUROC: 0.90043, AUPRC: 0.67794
+Test results --- Loss: 0.85874, Accuracy: 0.72741, Precision: 0.64138, Recall: 0.59141 F1: 0.60775, AUROC: 0.89396, AUPRC: 0.65820
+
+Metric score decreased (-0.622530 --> -0.624422).  Saving model ...
+
+	iters: 100, epoch: 38 | loss: 0.4684475
+	speed: 0.5378s/iter; left time: 14854.0541s
+	iters: 200, epoch: 38 | loss: 0.3804311
+	speed: 0.2047s/iter; left time: 5632.9223s
+	iters: 300, epoch: 38 | loss: 0.4816199
+	speed: 0.2046s/iter; left time: 5610.6419s
+	iters: 400, epoch: 38 | loss: 0.3986728
+	speed: 0.2052s/iter; left time: 5607.5965s
+Epoch: 38 cost time: 90.2856273651123
+Epoch: 38, Steps: 440, | Train Loss: 0.44947
+Validation results --- Loss: 0.82192, Accuracy: 0.73842, Precision: 0.65759, Recall: 0.60899, F1: 0.62587, AUROC: 0.90094, AUPRC: 0.67958
+Test results --- Loss: 0.85921, Accuracy: 0.72824, Precision: 0.64449, Recall: 0.59402 F1: 0.61065, AUROC: 0.89408, AUPRC: 0.65925
+
+Metric score decreased (-0.624422 --> -0.625872).  Saving model ...
+
+	iters: 100, epoch: 39 | loss: 0.4462782
+	speed: 0.5381s/iter; left time: 14625.5058s
+	iters: 200, epoch: 39 | loss: 0.5160372
+	speed: 0.2049s/iter; left time: 5549.7503s
+	iters: 300, epoch: 39 | loss: 0.4296793
+	speed: 0.2053s/iter; left time: 5539.1567s
+	iters: 400, epoch: 39 | loss: 0.4644830
+	speed: 0.2044s/iter; left time: 5494.7366s
+Epoch: 39 cost time: 90.15146613121033
+Epoch: 39, Steps: 440, | Train Loss: 0.44358
+Validation results --- Loss: 0.82769, Accuracy: 0.73809, Precision: 0.65748, Recall: 0.60861, F1: 0.62562, AUROC: 0.90067, AUPRC: 0.67945
+Test results --- Loss: 0.86525, Accuracy: 0.72842, Precision: 0.64418, Recall: 0.59376 F1: 0.61032, AUROC: 0.89396, AUPRC: 0.65871
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 40 | loss: 0.4246306
+	speed: 0.5373s/iter; left time: 14368.1400s
+	iters: 200, epoch: 40 | loss: 0.3672565
+	speed: 0.2044s/iter; left time: 5444.7980s
+	iters: 300, epoch: 40 | loss: 0.3558538
+	speed: 0.2047s/iter; left time: 5432.1787s
+	iters: 400, epoch: 40 | loss: 0.5681654
+	speed: 0.2055s/iter; left time: 5433.0554s
+Epoch: 40 cost time: 90.2507598400116
+Epoch: 40, Steps: 440, | Train Loss: 0.43482
+Validation results --- Loss: 0.82729, Accuracy: 0.73837, Precision: 0.65848, Recall: 0.61163, F1: 0.62869, AUROC: 0.90119, AUPRC: 0.68111
+Test results --- Loss: 0.86721, Accuracy: 0.72721, Precision: 0.64178, Recall: 0.59308 F1: 0.60981, AUROC: 0.89380, AUPRC: 0.65967
+
+Metric score decreased (-0.625872 --> -0.628689).  Saving model ...
+
+	iters: 100, epoch: 41 | loss: 0.4864647
+	speed: 0.5359s/iter; left time: 14094.8815s
+	iters: 200, epoch: 41 | loss: 0.5231070
+	speed: 0.2054s/iter; left time: 5380.8729s
+	iters: 300, epoch: 41 | loss: 0.4433010
+	speed: 0.2046s/iter; left time: 5339.2897s
+	iters: 400, epoch: 41 | loss: 0.4099997
+	speed: 0.2044s/iter; left time: 5315.4626s
+Epoch: 41 cost time: 90.15890431404114
+Epoch: 41, Steps: 440, | Train Loss: 0.42809
+Validation results --- Loss: 0.83027, Accuracy: 0.73641, Precision: 0.65491, Recall: 0.61144, F1: 0.62753, AUROC: 0.90073, AUPRC: 0.67990
+Test results --- Loss: 0.86743, Accuracy: 0.72693, Precision: 0.64092, Recall: 0.59672 F1: 0.61266, AUROC: 0.89368, AUPRC: 0.65871
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 42 | loss: 0.4485861
+	speed: 0.5374s/iter; left time: 13896.7337s
+	iters: 200, epoch: 42 | loss: 0.3558049
+	speed: 0.2048s/iter; left time: 5276.0360s
+	iters: 300, epoch: 42 | loss: 0.4733905
+	speed: 0.2048s/iter; left time: 5256.1957s
+	iters: 400, epoch: 42 | loss: 0.4131636
+	speed: 0.2057s/iter; left time: 5258.0443s
+Epoch: 42 cost time: 90.34446573257446
+Epoch: 42, Steps: 440, | Train Loss: 0.41942
+Validation results --- Loss: 0.83852, Accuracy: 0.73722, Precision: 0.65544, Recall: 0.61270, F1: 0.62869, AUROC: 0.90047, AUPRC: 0.67891
+Test results --- Loss: 0.87380, Accuracy: 0.72516, Precision: 0.63742, Recall: 0.59367 F1: 0.60964, AUROC: 0.89376, AUPRC: 0.65820
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 43 | loss: 0.3986174
+	speed: 0.5362s/iter; left time: 13630.8073s
+	iters: 200, epoch: 43 | loss: 0.4642971
+	speed: 0.2051s/iter; left time: 5194.5790s
+	iters: 300, epoch: 43 | loss: 0.4173776
+	speed: 0.2057s/iter; left time: 5189.0494s
+	iters: 400, epoch: 43 | loss: 0.4228727
+	speed: 0.2047s/iter; left time: 5142.2910s
+Epoch: 43 cost time: 90.30505156517029
+Epoch: 43, Steps: 440, | Train Loss: 0.41479
+Validation results --- Loss: 0.83737, Accuracy: 0.73702, Precision: 0.65445, Recall: 0.61373, F1: 0.62917, AUROC: 0.90090, AUPRC: 0.67924
+Test results --- Loss: 0.87725, Accuracy: 0.72534, Precision: 0.63886, Recall: 0.59612 F1: 0.61185, AUROC: 0.89367, AUPRC: 0.65903
+
+Metric score decreased (-0.628689 --> -0.629165).  Saving model ...
+
+	iters: 100, epoch: 44 | loss: 0.4253859
+	speed: 0.5378s/iter; left time: 13433.6669s
+	iters: 200, epoch: 44 | loss: 0.4530157
+	speed: 0.2046s/iter; left time: 5089.7092s
+	iters: 300, epoch: 44 | loss: 0.2878748
+	speed: 0.2047s/iter; left time: 5071.8189s
+	iters: 400, epoch: 44 | loss: 0.4230466
+	speed: 0.2059s/iter; left time: 5082.3687s
+Epoch: 44 cost time: 90.31374979019165
+Epoch: 44, Steps: 440, | Train Loss: 0.40555
+Validation results --- Loss: 0.83714, Accuracy: 0.73837, Precision: 0.65519, Recall: 0.61580, F1: 0.63048, AUROC: 0.90059, AUPRC: 0.67944
+Test results --- Loss: 0.87646, Accuracy: 0.72673, Precision: 0.63994, Recall: 0.59888 F1: 0.61371, AUROC: 0.89382, AUPRC: 0.65989
+
+Metric score decreased (-0.629165 --> -0.630478).  Saving model ...
+
+	iters: 100, epoch: 45 | loss: 0.3412102
+	speed: 0.5367s/iter; left time: 13170.3775s
+	iters: 200, epoch: 45 | loss: 0.4732134
+	speed: 0.2053s/iter; left time: 5017.1217s
+	iters: 300, epoch: 45 | loss: 0.3637676
+	speed: 0.2048s/iter; left time: 4984.8604s
+	iters: 400, epoch: 45 | loss: 0.2969496
+	speed: 0.2046s/iter; left time: 4958.8031s
+Epoch: 45 cost time: 90.1985912322998
+Epoch: 45, Steps: 440, | Train Loss: 0.40364
+Validation results --- Loss: 0.83885, Accuracy: 0.73781, Precision: 0.65398, Recall: 0.61453, F1: 0.62916, AUROC: 0.90089, AUPRC: 0.67995
+Test results --- Loss: 0.87655, Accuracy: 0.72647, Precision: 0.63914, Recall: 0.59892 F1: 0.61337, AUROC: 0.89412, AUPRC: 0.65929
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 46 | loss: 0.3883319
+	speed: 0.5380s/iter; left time: 12965.3904s
+	iters: 200, epoch: 46 | loss: 0.3972708
+	speed: 0.2045s/iter; left time: 4907.5515s
+	iters: 300, epoch: 46 | loss: 0.4014109
+	speed: 0.2046s/iter; left time: 4890.9880s
+	iters: 400, epoch: 46 | loss: 0.5430084
+	speed: 0.2055s/iter; left time: 4890.9909s
+Epoch: 46 cost time: 90.28386163711548
+Epoch: 46, Steps: 440, | Train Loss: 0.39167
+Validation results --- Loss: 0.83873, Accuracy: 0.73740, Precision: 0.65404, Recall: 0.61360, F1: 0.62819, AUROC: 0.90071, AUPRC: 0.68022
+Test results --- Loss: 0.87764, Accuracy: 0.72531, Precision: 0.63639, Recall: 0.59624 F1: 0.61011, AUROC: 0.89386, AUPRC: 0.65933
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 47 | loss: 0.3720433
+	speed: 0.5396s/iter; left time: 12768.4359s
+	iters: 200, epoch: 47 | loss: 0.4233494
+	speed: 0.2071s/iter; left time: 4880.3052s
+	iters: 300, epoch: 47 | loss: 0.4583422
+	speed: 0.2064s/iter; left time: 4841.4905s
+	iters: 400, epoch: 47 | loss: 0.3834406
+	speed: 0.2060s/iter; left time: 4812.6405s
+Epoch: 47 cost time: 90.89761114120483
+Epoch: 47, Steps: 440, | Train Loss: 0.38858
+Validation results --- Loss: 0.84060, Accuracy: 0.73674, Precision: 0.65315, Recall: 0.61780, F1: 0.63172, AUROC: 0.90117, AUPRC: 0.68148
+Test results --- Loss: 0.88014, Accuracy: 0.72625, Precision: 0.63872, Recall: 0.60113 F1: 0.61540, AUROC: 0.89419, AUPRC: 0.66030
+
+Metric score decreased (-0.630478 --> -0.631723).  Saving model ...
+
+	iters: 100, epoch: 48 | loss: 0.4449179
+	speed: 0.5413s/iter; left time: 12569.5026s
+	iters: 200, epoch: 48 | loss: 0.3141798
+	speed: 0.2066s/iter; left time: 4776.8012s
+	iters: 300, epoch: 48 | loss: 0.4321657
+	speed: 0.2062s/iter; left time: 4748.0214s
+	iters: 400, epoch: 48 | loss: 0.2604856
+	speed: 0.2071s/iter; left time: 4747.8910s
+Epoch: 48 cost time: 91.03013825416565
+Epoch: 48, Steps: 440, | Train Loss: 0.38181
+Validation results --- Loss: 0.84267, Accuracy: 0.73638, Precision: 0.65035, Recall: 0.61758, F1: 0.63087, AUROC: 0.90158, AUPRC: 0.68147
+Test results --- Loss: 0.88058, Accuracy: 0.72480, Precision: 0.63513, Recall: 0.60102 F1: 0.61451, AUROC: 0.89456, AUPRC: 0.66093
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 49 | loss: 0.4466936
+	speed: 0.5398s/iter; left time: 12296.6312s
+	iters: 200, epoch: 49 | loss: 0.4117908
+	speed: 0.2070s/iter; left time: 4694.6015s
+	iters: 300, epoch: 49 | loss: 0.4661699
+	speed: 0.2063s/iter; left time: 4657.5535s
+	iters: 400, epoch: 49 | loss: 0.3691507
+	speed: 0.2060s/iter; left time: 4631.7037s
+Epoch: 49 cost time: 90.82908964157104
+Epoch: 49, Steps: 440, | Train Loss: 0.37148
+Validation results --- Loss: 0.84607, Accuracy: 0.73648, Precision: 0.65101, Recall: 0.61871, F1: 0.63203, AUROC: 0.90184, AUPRC: 0.68133
+Test results --- Loss: 0.88868, Accuracy: 0.72399, Precision: 0.63587, Recall: 0.60166 F1: 0.61549, AUROC: 0.89421, AUPRC: 0.65986
+
+Metric score decreased (-0.631723 --> -0.632028).  Saving model ...
+
+	iters: 100, epoch: 50 | loss: 0.3581755
+	speed: 0.5420s/iter; left time: 12107.9247s
+	iters: 200, epoch: 50 | loss: 0.3656875
+	speed: 0.2059s/iter; left time: 4580.0854s
+	iters: 300, epoch: 50 | loss: 0.3628956
+	speed: 0.2061s/iter; left time: 4563.7780s
+	iters: 400, epoch: 50 | loss: 0.4826580
+	speed: 0.2069s/iter; left time: 4560.5410s
+Epoch: 50 cost time: 90.91927170753479
+Epoch: 50, Steps: 440, | Train Loss: 0.37204
+Validation results --- Loss: 0.85285, Accuracy: 0.73730, Precision: 0.65253, Recall: 0.61790, F1: 0.63208, AUROC: 0.90145, AUPRC: 0.68000
+Test results --- Loss: 0.89266, Accuracy: 0.72569, Precision: 0.63763, Recall: 0.60086 F1: 0.61556, AUROC: 0.89457, AUPRC: 0.66021
+
+Metric score decreased (-0.632028 --> -0.632080).  Saving model ...
+
+	iters: 100, epoch: 51 | loss: 0.3012869
+	speed: 0.5407s/iter; left time: 11842.0297s
+	iters: 200, epoch: 51 | loss: 0.3304151
+	speed: 0.2058s/iter; left time: 4487.3184s
+	iters: 300, epoch: 51 | loss: 0.3971423
+	speed: 0.2071s/iter; left time: 4493.3503s
+	iters: 400, epoch: 51 | loss: 0.3795259
+	speed: 0.2059s/iter; left time: 4448.1128s
+Epoch: 51 cost time: 90.77434849739075
+Epoch: 51, Steps: 440, | Train Loss: 0.36149
+Validation results --- Loss: 0.85693, Accuracy: 0.73557, Precision: 0.65017, Recall: 0.61686, F1: 0.63072, AUROC: 0.90103, AUPRC: 0.67914
+Test results --- Loss: 0.89319, Accuracy: 0.72582, Precision: 0.63737, Recall: 0.60189 F1: 0.61644, AUROC: 0.89456, AUPRC: 0.66010
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 52 | loss: 0.4579233
+	speed: 0.5399s/iter; left time: 11587.6327s
+	iters: 200, epoch: 52 | loss: 0.3121522
+	speed: 0.2060s/iter; left time: 4400.5774s
+	iters: 300, epoch: 52 | loss: 0.3281238
+	speed: 0.2062s/iter; left time: 4383.1544s
+	iters: 400, epoch: 52 | loss: 0.2984558
+	speed: 0.2071s/iter; left time: 4382.5531s
+Epoch: 52 cost time: 90.9254379272461
+Epoch: 52, Steps: 440, | Train Loss: 0.35753
+Validation results --- Loss: 0.86306, Accuracy: 0.73546, Precision: 0.65056, Recall: 0.61825, F1: 0.63187, AUROC: 0.90097, AUPRC: 0.67861
+Test results --- Loss: 0.89534, Accuracy: 0.72336, Precision: 0.63467, Recall: 0.59927 F1: 0.61396, AUROC: 0.89492, AUPRC: 0.66111
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 53 | loss: 0.4185535
+	speed: 0.5397s/iter; left time: 11343.9896s
+	iters: 200, epoch: 53 | loss: 0.4245111
+	speed: 0.2071s/iter; left time: 4332.0815s
+	iters: 300, epoch: 53 | loss: 0.2943510
+	speed: 0.2063s/iter; left time: 4294.4032s
+	iters: 400, epoch: 53 | loss: 0.2950135
+	speed: 0.2063s/iter; left time: 4275.2819s
+Epoch: 53 cost time: 90.83880615234375
+Epoch: 53, Steps: 440, | Train Loss: 0.35121
+Validation results --- Loss: 0.86169, Accuracy: 0.73457, Precision: 0.64983, Recall: 0.61672, F1: 0.63066, AUROC: 0.90141, AUPRC: 0.67977
+Test results --- Loss: 0.89931, Accuracy: 0.72536, Precision: 0.63990, Recall: 0.60213 F1: 0.61786, AUROC: 0.89500, AUPRC: 0.66015
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 54 | loss: 0.2992271
+	speed: 0.5405s/iter; left time: 11124.2267s
+	iters: 200, epoch: 54 | loss: 0.2543117
+	speed: 0.2059s/iter; left time: 4217.9317s
+	iters: 300, epoch: 54 | loss: 0.3474761
+	speed: 0.2062s/iter; left time: 4202.0230s
+	iters: 400, epoch: 54 | loss: 0.3184945
+	speed: 0.2072s/iter; left time: 4202.2461s
+Epoch: 54 cost time: 90.95482516288757
+Epoch: 54, Steps: 440, | Train Loss: 0.34260
+Validation results --- Loss: 0.86888, Accuracy: 0.73485, Precision: 0.65046, Recall: 0.61796, F1: 0.63168, AUROC: 0.90099, AUPRC: 0.67907
+Test results --- Loss: 0.90405, Accuracy: 0.72465, Precision: 0.63912, Recall: 0.60219 F1: 0.61771, AUROC: 0.89495, AUPRC: 0.66079
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 55 | loss: 0.3415320
+	speed: 0.5404s/iter; left time: 10884.2695s
+	iters: 200, epoch: 55 | loss: 0.3509811
+	speed: 0.2058s/iter; left time: 4123.6641s
+	iters: 300, epoch: 55 | loss: 0.3385214
+	speed: 0.2072s/iter; left time: 4131.1817s
+	iters: 400, epoch: 55 | loss: 0.4286011
+	speed: 0.2061s/iter; left time: 4088.4979s
+Epoch: 55 cost time: 90.80394673347473
+Epoch: 55, Steps: 440, | Train Loss: 0.34181
+Validation results --- Loss: 0.87394, Accuracy: 0.73332, Precision: 0.64751, Recall: 0.61704, F1: 0.62998, AUROC: 0.90060, AUPRC: 0.67741
+Test results --- Loss: 0.90773, Accuracy: 0.72372, Precision: 0.63663, Recall: 0.60235 F1: 0.61691, AUROC: 0.89451, AUPRC: 0.66011
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 56 | loss: 0.3037749
+	speed: 0.5413s/iter; left time: 10665.0228s
+	iters: 200, epoch: 56 | loss: 0.2404586
+	speed: 0.2061s/iter; left time: 4038.8273s
+	iters: 300, epoch: 56 | loss: 0.4066633
+	speed: 0.2061s/iter; left time: 4019.5790s
+	iters: 400, epoch: 56 | loss: 0.4223207
+	speed: 0.2070s/iter; left time: 4016.8581s
+Epoch: 56 cost time: 90.84280109405518
+Epoch: 56, Steps: 440, | Train Loss: 0.33382
+Validation results --- Loss: 0.87704, Accuracy: 0.73378, Precision: 0.64727, Recall: 0.61762, F1: 0.63026, AUROC: 0.90091, AUPRC: 0.67827
+Test results --- Loss: 0.91371, Accuracy: 0.72311, Precision: 0.63338, Recall: 0.60055 F1: 0.61440, AUROC: 0.89449, AUPRC: 0.66066
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 57 | loss: 0.3180415
+	speed: 0.5402s/iter; left time: 10403.8402s
+	iters: 200, epoch: 57 | loss: 0.3585222
+	speed: 0.2059s/iter; left time: 3946.0326s
+	iters: 300, epoch: 57 | loss: 0.3572101
+	speed: 0.2070s/iter; left time: 3944.7061s
+	iters: 400, epoch: 57 | loss: 0.4249614
+	speed: 0.2061s/iter; left time: 3906.9302s
+Epoch: 57 cost time: 90.77838778495789
+Epoch: 57, Steps: 440, | Train Loss: 0.33016
+Validation results --- Loss: 0.88254, Accuracy: 0.73437, Precision: 0.64753, Recall: 0.61655, F1: 0.62986, AUROC: 0.90088, AUPRC: 0.67750
+Test results --- Loss: 0.92232, Accuracy: 0.72334, Precision: 0.63437, Recall: 0.59967 F1: 0.61415, AUROC: 0.89422, AUPRC: 0.65868
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 58 | loss: 0.3464297
+	speed: 0.5402s/iter; left time: 10167.2580s
+	iters: 200, epoch: 58 | loss: 0.3933225
+	speed: 0.2072s/iter; left time: 3878.7000s
+	iters: 300, epoch: 58 | loss: 0.3101921
+	speed: 0.2063s/iter; left time: 3841.6420s
+	iters: 400, epoch: 58 | loss: 0.3343847
+	speed: 0.2074s/iter; left time: 3842.1005s
+Epoch: 58 cost time: 90.91994976997375
+Epoch: 58, Steps: 440, | Train Loss: 0.32330
+Validation results --- Loss: 0.88989, Accuracy: 0.73427, Precision: 0.64854, Recall: 0.61607, F1: 0.62989, AUROC: 0.90068, AUPRC: 0.67807
+Test results --- Loss: 0.92887, Accuracy: 0.72544, Precision: 0.63791, Recall: 0.60267 F1: 0.61749, AUROC: 0.89415, AUPRC: 0.65901
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 59 | loss: 0.3690774
+	speed: 0.5396s/iter; left time: 9918.4043s
+	iters: 200, epoch: 59 | loss: 0.3944076
+	speed: 0.2058s/iter; left time: 3762.7682s
+	iters: 300, epoch: 59 | loss: 0.2945207
+	speed: 0.2068s/iter; left time: 3759.7577s
+	iters: 400, epoch: 59 | loss: 0.3960986
+	speed: 0.2058s/iter; left time: 3721.8672s
+Epoch: 59 cost time: 90.7442135810852
+Epoch: 59, Steps: 440, | Train Loss: 0.31439
+Validation results --- Loss: 0.89274, Accuracy: 0.73445, Precision: 0.64820, Recall: 0.61704, F1: 0.63043, AUROC: 0.90042, AUPRC: 0.67625
+Test results --- Loss: 0.93661, Accuracy: 0.72437, Precision: 0.63731, Recall: 0.60253 F1: 0.61723, AUROC: 0.89389, AUPRC: 0.65867
+
+EarlyStopping counter: 9 out of 10
+	iters: 100, epoch: 60 | loss: 0.3171008
+	speed: 0.5394s/iter; left time: 9676.6572s
+	iters: 200, epoch: 60 | loss: 0.4424389
+	speed: 0.2072s/iter; left time: 3697.4407s
+	iters: 300, epoch: 60 | loss: 0.3498667
+	speed: 0.2061s/iter; left time: 3656.1073s
+	iters: 400, epoch: 60 | loss: 0.3263475
+	speed: 0.2068s/iter; left time: 3648.4803s
+Epoch: 60 cost time: 90.86089611053467
+Epoch: 60, Steps: 440, | Train Loss: 0.31199
+Validation results --- Loss: 0.89905, Accuracy: 0.73294, Precision: 0.64510, Recall: 0.61178, F1: 0.62594, AUROC: 0.90073, AUPRC: 0.67548
+Test results --- Loss: 0.94381, Accuracy: 0.72402, Precision: 0.63798, Recall: 0.60007 F1: 0.61589, AUROC: 0.89376, AUPRC: 0.65820
+
+EarlyStopping counter: 10 out of 10
+Early stopping
+>>>>>>>testing : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed46<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Validation results --- Loss: 0.85256, Accuracy: 0.73730, Precision: 0.65253, Recall: 0.61790, F1: 0.63208, AUROC: 0.90145, AUPRC: 0.68000
+Test results --- Loss: 0.89198, Accuracy: 0.72569, Precision: 0.63763, Recall: 0.60086, F1: 0.61556, AUROC: 0.89457, AUPRC: 0.66021
+
+Use GPU: cuda:0
+>>>>>>>start training : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed47>>>>>>>>>>>>>>>>>>>>>>>>>>
+(112570, 250, 12)
+(112570,)
+(39280, 250, 12)
+(39280,)
+(39550, 250, 12)
+(39550,)
+	iters: 100, epoch: 1 | loss: 0.9761869
+	speed: 0.2078s/iter; left time: 9122.2274s
+	iters: 200, epoch: 1 | loss: 1.0069146
+	speed: 0.2069s/iter; left time: 9062.7407s
+	iters: 300, epoch: 1 | loss: 0.8594151
+	speed: 0.2068s/iter; left time: 9037.0474s
+	iters: 400, epoch: 1 | loss: 1.0025293
+	speed: 0.2074s/iter; left time: 9041.2089s
+Epoch: 1 cost time: 91.27184844017029
+Epoch: 1, Steps: 440, | Train Loss: 0.99664
+Validation results --- Loss: 0.88153, Accuracy: 0.69058, Precision: 0.60626, Recall: 0.52948, F1: 0.54902, AUROC: 0.86350, AUPRC: 0.60252
+Test results --- Loss: 0.89511, Accuracy: 0.68582, Precision: 0.58937, Recall: 0.51646 F1: 0.53395, AUROC: 0.85834, AUPRC: 0.58708
+
+Metric score decreased (inf --> -0.549021).  Saving model ...
+
+	iters: 100, epoch: 2 | loss: 0.8094956
+	speed: 0.5418s/iter; left time: 23546.4637s
+	iters: 200, epoch: 2 | loss: 0.8310868
+	speed: 0.2071s/iter; left time: 8979.4213s
+	iters: 300, epoch: 2 | loss: 0.7724401
+	speed: 0.2071s/iter; left time: 8957.3167s
+	iters: 400, epoch: 2 | loss: 0.9219818
+	speed: 0.2065s/iter; left time: 8913.9548s
+Epoch: 2 cost time: 91.01113891601562
+Epoch: 2, Steps: 440, | Train Loss: 0.87192
+Validation results --- Loss: 0.85076, Accuracy: 0.70125, Precision: 0.61416, Recall: 0.55933, F1: 0.57760, AUROC: 0.87303, AUPRC: 0.62264
+Test results --- Loss: 0.87007, Accuracy: 0.69747, Precision: 0.60094, Recall: 0.54541 F1: 0.56266, AUROC: 0.86689, AUPRC: 0.60298
+
+Metric score decreased (-0.549021 --> -0.577602).  Saving model ...
+
+	iters: 100, epoch: 3 | loss: 0.8777248
+	speed: 0.5438s/iter; left time: 23394.5498s
+	iters: 200, epoch: 3 | loss: 0.7594029
+	speed: 0.2061s/iter; left time: 8844.7430s
+	iters: 300, epoch: 3 | loss: 0.7881498
+	speed: 0.2062s/iter; left time: 8830.3382s
+	iters: 400, epoch: 3 | loss: 0.7440519
+	speed: 0.2071s/iter; left time: 8848.7841s
+Epoch: 3 cost time: 90.86816263198853
+Epoch: 3, Steps: 440, | Train Loss: 0.82481
+Validation results --- Loss: 0.83636, Accuracy: 0.70759, Precision: 0.62135, Recall: 0.56299, F1: 0.58294, AUROC: 0.87735, AUPRC: 0.63252
+Test results --- Loss: 0.85733, Accuracy: 0.70114, Precision: 0.60584, Recall: 0.54780 F1: 0.56633, AUROC: 0.87140, AUPRC: 0.61354
+
+Metric score decreased (-0.577602 --> -0.582942).  Saving model ...
+
+	iters: 100, epoch: 4 | loss: 0.7397949
+	speed: 0.5415s/iter; left time: 23059.6726s
+	iters: 200, epoch: 4 | loss: 0.8443602
+	speed: 0.2072s/iter; left time: 8801.8463s
+	iters: 300, epoch: 4 | loss: 0.8518928
+	speed: 0.2062s/iter; left time: 8737.3822s
+	iters: 400, epoch: 4 | loss: 0.7598789
+	speed: 0.2064s/iter; left time: 8726.5233s
+Epoch: 4 cost time: 90.91583847999573
+Epoch: 4, Steps: 440, | Train Loss: 0.80182
+Validation results --- Loss: 0.82930, Accuracy: 0.71247, Precision: 0.63890, Recall: 0.56544, F1: 0.58746, AUROC: 0.88166, AUPRC: 0.64097
+Test results --- Loss: 0.85378, Accuracy: 0.70362, Precision: 0.61717, Recall: 0.54739 F1: 0.56610, AUROC: 0.87514, AUPRC: 0.62161
+
+Metric score decreased (-0.582942 --> -0.587461).  Saving model ...
+
+	iters: 100, epoch: 5 | loss: 0.9530117
+	speed: 0.5423s/iter; left time: 22854.5450s
+	iters: 200, epoch: 5 | loss: 0.8465790
+	speed: 0.2062s/iter; left time: 8670.0238s
+	iters: 300, epoch: 5 | loss: 0.7643706
+	speed: 0.2060s/iter; left time: 8640.4892s
+	iters: 400, epoch: 5 | loss: 0.8269184
+	speed: 0.2070s/iter; left time: 8660.2825s
+Epoch: 5 cost time: 90.94734477996826
+Epoch: 5, Steps: 440, | Train Loss: 0.77518
+Validation results --- Loss: 0.81932, Accuracy: 0.71533, Precision: 0.64137, Recall: 0.56703, F1: 0.58640, AUROC: 0.88432, AUPRC: 0.64618
+Test results --- Loss: 0.84344, Accuracy: 0.70963, Precision: 0.62560, Recall: 0.55372 F1: 0.56972, AUROC: 0.87839, AUPRC: 0.62748
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 6 | loss: 0.7905488
+	speed: 0.5425s/iter; left time: 22620.7649s
+	iters: 200, epoch: 6 | loss: 0.7963740
+	speed: 0.2074s/iter; left time: 8627.7073s
+	iters: 300, epoch: 6 | loss: 0.7775473
+	speed: 0.2068s/iter; left time: 8580.8142s
+	iters: 400, epoch: 6 | loss: 0.6742945
+	speed: 0.2065s/iter; left time: 8547.3473s
+Epoch: 6 cost time: 91.03239750862122
+Epoch: 6, Steps: 440, | Train Loss: 0.75447
+Validation results --- Loss: 0.80700, Accuracy: 0.72044, Precision: 0.64552, Recall: 0.57980, F1: 0.59938, AUROC: 0.88698, AUPRC: 0.65210
+Test results --- Loss: 0.83192, Accuracy: 0.71274, Precision: 0.63017, Recall: 0.56382 F1: 0.58155, AUROC: 0.88087, AUPRC: 0.63484
+
+Metric score decreased (-0.587461 --> -0.599377).  Saving model ...
+
+	iters: 100, epoch: 7 | loss: 0.7594759
+	speed: 0.5432s/iter; left time: 22414.8387s
+	iters: 200, epoch: 7 | loss: 0.6420351
+	speed: 0.2061s/iter; left time: 8483.9772s
+	iters: 300, epoch: 7 | loss: 0.7209896
+	speed: 0.2062s/iter; left time: 8468.5260s
+	iters: 400, epoch: 7 | loss: 0.6065679
+	speed: 0.2074s/iter; left time: 8495.7949s
+Epoch: 7 cost time: 91.02629899978638
+Epoch: 7, Steps: 440, | Train Loss: 0.74031
+Validation results --- Loss: 0.80777, Accuracy: 0.72202, Precision: 0.64834, Recall: 0.58309, F1: 0.60252, AUROC: 0.88877, AUPRC: 0.65654
+Test results --- Loss: 0.83343, Accuracy: 0.71416, Precision: 0.63345, Recall: 0.56603 F1: 0.58356, AUROC: 0.88278, AUPRC: 0.63755
+
+Metric score decreased (-0.599377 --> -0.602524).  Saving model ...
+
+	iters: 100, epoch: 8 | loss: 0.6984258
+	speed: 0.5418s/iter; left time: 22118.0788s
+	iters: 200, epoch: 8 | loss: 0.7464452
+	speed: 0.2073s/iter; left time: 8443.4250s
+	iters: 300, epoch: 8 | loss: 0.7547701
+	speed: 0.2063s/iter; left time: 8378.7871s
+	iters: 400, epoch: 8 | loss: 0.7788756
+	speed: 0.2064s/iter; left time: 8363.7830s
+Epoch: 8 cost time: 90.95104646682739
+Epoch: 8, Steps: 440, | Train Loss: 0.72267
+Validation results --- Loss: 0.80222, Accuracy: 0.72380, Precision: 0.65173, Recall: 0.58069, F1: 0.59949, AUROC: 0.88996, AUPRC: 0.65733
+Test results --- Loss: 0.82847, Accuracy: 0.71803, Precision: 0.64271, Recall: 0.56903 F1: 0.58673, AUROC: 0.88427, AUPRC: 0.64050
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 9 | loss: 0.6820238
+	speed: 0.5423s/iter; left time: 21899.8211s
+	iters: 200, epoch: 9 | loss: 0.7793084
+	speed: 0.2063s/iter; left time: 8309.3977s
+	iters: 300, epoch: 9 | loss: 0.7065648
+	speed: 0.2064s/iter; left time: 8293.1389s
+	iters: 400, epoch: 9 | loss: 0.6115014
+	speed: 0.2072s/iter; left time: 8305.7107s
+Epoch: 9 cost time: 91.064945936203
+Epoch: 9, Steps: 440, | Train Loss: 0.71055
+Validation results --- Loss: 0.79689, Accuracy: 0.72490, Precision: 0.65008, Recall: 0.58261, F1: 0.60091, AUROC: 0.89142, AUPRC: 0.66015
+Test results --- Loss: 0.82416, Accuracy: 0.71722, Precision: 0.63548, Recall: 0.56927 F1: 0.58609, AUROC: 0.88547, AUPRC: 0.64176
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 10 | loss: 0.8294030
+	speed: 0.5418s/iter; left time: 21639.5766s
+	iters: 200, epoch: 10 | loss: 0.6002703
+	speed: 0.2074s/iter; left time: 8261.6157s
+	iters: 300, epoch: 10 | loss: 0.7129177
+	speed: 0.2068s/iter; left time: 8217.9687s
+	iters: 400, epoch: 10 | loss: 0.6687012
+	speed: 0.2064s/iter; left time: 8183.7595s
+Epoch: 10 cost time: 91.00664901733398
+Epoch: 10, Steps: 440, | Train Loss: 0.69508
+Validation results --- Loss: 0.79750, Accuracy: 0.72818, Precision: 0.65512, Recall: 0.58870, F1: 0.60971, AUROC: 0.89237, AUPRC: 0.66291
+Test results --- Loss: 0.82727, Accuracy: 0.71896, Precision: 0.63795, Recall: 0.57203 F1: 0.59146, AUROC: 0.88632, AUPRC: 0.64342
+
+Metric score decreased (-0.602524 --> -0.609707).  Saving model ...
+
+	iters: 100, epoch: 11 | loss: 0.6659387
+	speed: 0.5442s/iter; left time: 21495.4771s
+	iters: 200, epoch: 11 | loss: 0.5761743
+	speed: 0.2064s/iter; left time: 8133.9497s
+	iters: 300, epoch: 11 | loss: 0.6594912
+	speed: 0.2065s/iter; left time: 8115.4307s
+	iters: 400, epoch: 11 | loss: 0.7778641
+	speed: 0.2078s/iter; left time: 8145.5986s
+Epoch: 11 cost time: 91.18731117248535
+Epoch: 11, Steps: 440, | Train Loss: 0.68395
+Validation results --- Loss: 0.79380, Accuracy: 0.72925, Precision: 0.65387, Recall: 0.59255, F1: 0.61171, AUROC: 0.89341, AUPRC: 0.66446
+Test results --- Loss: 0.82480, Accuracy: 0.71886, Precision: 0.63777, Recall: 0.57543 F1: 0.59295, AUROC: 0.88732, AUPRC: 0.64534
+
+Metric score decreased (-0.609707 --> -0.611715).  Saving model ...
+
+	iters: 100, epoch: 12 | loss: 0.6659122
+	speed: 0.5432s/iter; left time: 21217.2644s
+	iters: 200, epoch: 12 | loss: 0.7219429
+	speed: 0.2071s/iter; left time: 8070.2676s
+	iters: 300, epoch: 12 | loss: 0.6919409
+	speed: 0.2062s/iter; left time: 8013.1106s
+	iters: 400, epoch: 12 | loss: 0.7781232
+	speed: 0.2063s/iter; left time: 7997.6425s
+Epoch: 12 cost time: 90.9071352481842
+Epoch: 12, Steps: 440, | Train Loss: 0.67040
+Validation results --- Loss: 0.79214, Accuracy: 0.73007, Precision: 0.65440, Recall: 0.59477, F1: 0.61443, AUROC: 0.89485, AUPRC: 0.66714
+Test results --- Loss: 0.82486, Accuracy: 0.72018, Precision: 0.63888, Recall: 0.57737 F1: 0.59569, AUROC: 0.88814, AUPRC: 0.64720
+
+Metric score decreased (-0.611715 --> -0.614433).  Saving model ...
+
+	iters: 100, epoch: 13 | loss: 0.6232216
+	speed: 0.5440s/iter; left time: 21008.6389s
+	iters: 200, epoch: 13 | loss: 0.6683038
+	speed: 0.2062s/iter; left time: 7944.9290s
+	iters: 300, epoch: 13 | loss: 0.7053278
+	speed: 0.2063s/iter; left time: 7928.1367s
+	iters: 400, epoch: 13 | loss: 0.7447880
+	speed: 0.2073s/iter; left time: 7945.7728s
+Epoch: 13 cost time: 90.97317910194397
+Epoch: 13, Steps: 440, | Train Loss: 0.66190
+Validation results --- Loss: 0.78881, Accuracy: 0.73261, Precision: 0.65855, Recall: 0.60199, F1: 0.62283, AUROC: 0.89597, AUPRC: 0.67190
+Test results --- Loss: 0.82259, Accuracy: 0.72187, Precision: 0.64267, Recall: 0.58314 F1: 0.60334, AUROC: 0.88860, AUPRC: 0.64993
+
+Metric score decreased (-0.614433 --> -0.622827).  Saving model ...
+
+	iters: 100, epoch: 14 | loss: 0.5702068
+	speed: 0.5433s/iter; left time: 20744.4105s
+	iters: 200, epoch: 14 | loss: 0.6226506
+	speed: 0.2071s/iter; left time: 7887.3449s
+	iters: 300, epoch: 14 | loss: 0.5971955
+	speed: 0.2063s/iter; left time: 7833.6206s
+	iters: 400, epoch: 14 | loss: 0.6064366
+	speed: 0.2061s/iter; left time: 7807.6558s
+Epoch: 14 cost time: 90.90968251228333
+Epoch: 14, Steps: 440, | Train Loss: 0.65242
+Validation results --- Loss: 0.79130, Accuracy: 0.73116, Precision: 0.65726, Recall: 0.59522, F1: 0.61625, AUROC: 0.89596, AUPRC: 0.67168
+Test results --- Loss: 0.82439, Accuracy: 0.72217, Precision: 0.64477, Recall: 0.58023 F1: 0.60089, AUROC: 0.88862, AUPRC: 0.64972
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 15 | loss: 0.6695173
+	speed: 0.5438s/iter; left time: 20523.7932s
+	iters: 200, epoch: 15 | loss: 0.7001297
+	speed: 0.2061s/iter; left time: 7758.4512s
+	iters: 300, epoch: 15 | loss: 0.5848702
+	speed: 0.2064s/iter; left time: 7747.1175s
+	iters: 400, epoch: 15 | loss: 0.7770282
+	speed: 0.2073s/iter; left time: 7760.6988s
+Epoch: 15 cost time: 91.02442121505737
+Epoch: 15, Steps: 440, | Train Loss: 0.64130
+Validation results --- Loss: 0.79727, Accuracy: 0.73182, Precision: 0.65981, Recall: 0.59871, F1: 0.62075, AUROC: 0.89620, AUPRC: 0.67152
+Test results --- Loss: 0.82876, Accuracy: 0.72096, Precision: 0.64274, Recall: 0.58034 F1: 0.60196, AUROC: 0.88916, AUPRC: 0.65085
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 16 | loss: 0.6499892
+	speed: 0.5429s/iter; left time: 20252.2986s
+	iters: 200, epoch: 16 | loss: 0.6287383
+	speed: 0.2073s/iter; left time: 7711.5127s
+	iters: 300, epoch: 16 | loss: 0.6213498
+	speed: 0.2064s/iter; left time: 7657.7319s
+	iters: 400, epoch: 16 | loss: 0.6157960
+	speed: 0.2065s/iter; left time: 7641.0676s
+Epoch: 16 cost time: 90.98915600776672
+Epoch: 16, Steps: 440, | Train Loss: 0.62779
+Validation results --- Loss: 0.78891, Accuracy: 0.73432, Precision: 0.66258, Recall: 0.60149, F1: 0.62263, AUROC: 0.89728, AUPRC: 0.67522
+Test results --- Loss: 0.82491, Accuracy: 0.72273, Precision: 0.64099, Recall: 0.58029 F1: 0.59978, AUROC: 0.88972, AUPRC: 0.65092
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 17 | loss: 0.6557012
+	speed: 0.5427s/iter; left time: 20005.5460s
+	iters: 200, epoch: 17 | loss: 0.6582134
+	speed: 0.2061s/iter; left time: 7575.5105s
+	iters: 300, epoch: 17 | loss: 0.6619634
+	speed: 0.2063s/iter; left time: 7564.3256s
+	iters: 400, epoch: 17 | loss: 0.6349471
+	speed: 0.2071s/iter; left time: 7570.0580s
+Epoch: 17 cost time: 91.00071120262146
+Epoch: 17, Steps: 440, | Train Loss: 0.62396
+Validation results --- Loss: 0.78648, Accuracy: 0.73506, Precision: 0.66137, Recall: 0.60456, F1: 0.62439, AUROC: 0.89802, AUPRC: 0.67611
+Test results --- Loss: 0.82138, Accuracy: 0.72321, Precision: 0.64204, Recall: 0.58485 F1: 0.60416, AUROC: 0.89012, AUPRC: 0.65244
+
+Metric score decreased (-0.622827 --> -0.624387).  Saving model ...
+
+	iters: 100, epoch: 18 | loss: 0.5326223
+	speed: 0.5444s/iter; left time: 19826.4403s
+	iters: 200, epoch: 18 | loss: 0.6652150
+	speed: 0.2079s/iter; left time: 7552.8262s
+	iters: 300, epoch: 18 | loss: 0.5736161
+	speed: 0.2068s/iter; left time: 7489.5432s
+	iters: 400, epoch: 18 | loss: 0.6585404
+	speed: 0.2064s/iter; left time: 7456.7273s
+Epoch: 18 cost time: 91.11845469474792
+Epoch: 18, Steps: 440, | Train Loss: 0.60966
+Validation results --- Loss: 0.78451, Accuracy: 0.73572, Precision: 0.66051, Recall: 0.60892, F1: 0.62772, AUROC: 0.89852, AUPRC: 0.67814
+Test results --- Loss: 0.81990, Accuracy: 0.72412, Precision: 0.64173, Recall: 0.58856 F1: 0.60716, AUROC: 0.89080, AUPRC: 0.65241
+
+Metric score decreased (-0.624387 --> -0.627723).  Saving model ...
+
+	iters: 100, epoch: 19 | loss: 0.5961984
+	speed: 0.5441s/iter; left time: 19576.2452s
+	iters: 200, epoch: 19 | loss: 0.6765090
+	speed: 0.2063s/iter; left time: 7403.3054s
+	iters: 300, epoch: 19 | loss: 0.6607827
+	speed: 0.2063s/iter; left time: 7382.3528s
+	iters: 400, epoch: 19 | loss: 0.6096754
+	speed: 0.2072s/iter; left time: 7394.3626s
+Epoch: 19 cost time: 90.95260000228882
+Epoch: 19, Steps: 440, | Train Loss: 0.60397
+Validation results --- Loss: 0.78466, Accuracy: 0.73666, Precision: 0.66393, Recall: 0.60737, F1: 0.62659, AUROC: 0.89933, AUPRC: 0.67895
+Test results --- Loss: 0.82002, Accuracy: 0.72475, Precision: 0.64258, Recall: 0.58774 F1: 0.60579, AUROC: 0.89104, AUPRC: 0.65303
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 20 | loss: 0.5567834
+	speed: 0.5394s/iter; left time: 19172.4526s
+	iters: 200, epoch: 20 | loss: 0.7138048
+	speed: 0.2073s/iter; left time: 7348.3620s
+	iters: 300, epoch: 20 | loss: 0.5809713
+	speed: 0.2065s/iter; left time: 7296.3601s
+	iters: 400, epoch: 20 | loss: 0.5899965
+	speed: 0.2063s/iter; left time: 7271.3372s
+Epoch: 20 cost time: 90.9608736038208
+Epoch: 20, Steps: 440, | Train Loss: 0.59546
+Validation results --- Loss: 0.78665, Accuracy: 0.73735, Precision: 0.66182, Recall: 0.60478, F1: 0.62318, AUROC: 0.89888, AUPRC: 0.67750
+Test results --- Loss: 0.82300, Accuracy: 0.72569, Precision: 0.64550, Recall: 0.58728 F1: 0.60566, AUROC: 0.89091, AUPRC: 0.65317
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 21 | loss: 0.6173899
+	speed: 0.5428s/iter; left time: 19054.0245s
+	iters: 200, epoch: 21 | loss: 0.5042006
+	speed: 0.2063s/iter; left time: 7221.9885s
+	iters: 300, epoch: 21 | loss: 0.5834659
+	speed: 0.2065s/iter; left time: 7206.5453s
+	iters: 400, epoch: 21 | loss: 0.5928376
+	speed: 0.2074s/iter; left time: 7217.7549s
+Epoch: 21 cost time: 90.99030780792236
+Epoch: 21, Steps: 440, | Train Loss: 0.58422
+Validation results --- Loss: 0.78589, Accuracy: 0.73803, Precision: 0.66345, Recall: 0.60653, F1: 0.62632, AUROC: 0.89985, AUPRC: 0.67889
+Test results --- Loss: 0.82656, Accuracy: 0.72483, Precision: 0.64355, Recall: 0.58661 F1: 0.60616, AUROC: 0.89074, AUPRC: 0.65358
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 22 | loss: 0.6165041
+	speed: 0.5423s/iter; left time: 18796.4330s
+	iters: 200, epoch: 22 | loss: 0.6837898
+	speed: 0.2078s/iter; left time: 7180.3980s
+	iters: 300, epoch: 22 | loss: 0.7038108
+	speed: 0.2063s/iter; left time: 7107.9343s
+	iters: 400, epoch: 22 | loss: 0.4255893
+	speed: 0.2064s/iter; left time: 7091.9907s
+Epoch: 22 cost time: 91.02415060997009
+Epoch: 22, Steps: 440, | Train Loss: 0.57736
+Validation results --- Loss: 0.78662, Accuracy: 0.73796, Precision: 0.66308, Recall: 0.60962, F1: 0.62961, AUROC: 0.89986, AUPRC: 0.67953
+Test results --- Loss: 0.82609, Accuracy: 0.72546, Precision: 0.64266, Recall: 0.58898 F1: 0.60857, AUROC: 0.89089, AUPRC: 0.65417
+
+Metric score decreased (-0.627723 --> -0.629605).  Saving model ...
+
+	iters: 100, epoch: 23 | loss: 0.5237491
+	speed: 0.5436s/iter; left time: 18601.0947s
+	iters: 200, epoch: 23 | loss: 0.5840588
+	speed: 0.2066s/iter; left time: 7049.8723s
+	iters: 300, epoch: 23 | loss: 0.5263638
+	speed: 0.2065s/iter; left time: 7025.0652s
+	iters: 400, epoch: 23 | loss: 0.5168601
+	speed: 0.2073s/iter; left time: 7030.7658s
+Epoch: 23 cost time: 90.97169923782349
+Epoch: 23, Steps: 440, | Train Loss: 0.56742
+Validation results --- Loss: 0.78799, Accuracy: 0.73674, Precision: 0.66161, Recall: 0.60575, F1: 0.62608, AUROC: 0.89994, AUPRC: 0.67808
+Test results --- Loss: 0.82873, Accuracy: 0.72678, Precision: 0.64578, Recall: 0.58916 F1: 0.60936, AUROC: 0.89127, AUPRC: 0.65409
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 24 | loss: 0.6578580
+	speed: 0.5408s/iter; left time: 18268.1703s
+	iters: 200, epoch: 24 | loss: 0.6425502
+	speed: 0.2074s/iter; left time: 6985.5322s
+	iters: 300, epoch: 24 | loss: 0.5955972
+	speed: 0.2065s/iter; left time: 6934.5988s
+	iters: 400, epoch: 24 | loss: 0.6067771
+	speed: 0.2066s/iter; left time: 6916.6512s
+Epoch: 24 cost time: 91.01581740379333
+Epoch: 24, Steps: 440, | Train Loss: 0.55762
+Validation results --- Loss: 0.78869, Accuracy: 0.73735, Precision: 0.66051, Recall: 0.60878, F1: 0.62861, AUROC: 0.90032, AUPRC: 0.67743
+Test results --- Loss: 0.82910, Accuracy: 0.72559, Precision: 0.64486, Recall: 0.59130 F1: 0.61134, AUROC: 0.89180, AUPRC: 0.65561
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 25 | loss: 0.4390621
+	speed: 0.5424s/iter; left time: 18083.9125s
+	iters: 200, epoch: 25 | loss: 0.5992660
+	speed: 0.2063s/iter; left time: 6857.7196s
+	iters: 300, epoch: 25 | loss: 0.4904500
+	speed: 0.2064s/iter; left time: 6838.9469s
+	iters: 400, epoch: 25 | loss: 0.4426062
+	speed: 0.2074s/iter; left time: 6851.2636s
+Epoch: 25 cost time: 90.91955327987671
+Epoch: 25, Steps: 440, | Train Loss: 0.55069
+Validation results --- Loss: 0.78961, Accuracy: 0.73760, Precision: 0.66038, Recall: 0.61046, F1: 0.62928, AUROC: 0.90003, AUPRC: 0.67803
+Test results --- Loss: 0.82816, Accuracy: 0.72640, Precision: 0.64387, Recall: 0.59275 F1: 0.61174, AUROC: 0.89182, AUPRC: 0.65629
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 26 | loss: 0.5028491
+	speed: 0.5408s/iter; left time: 17792.8457s
+	iters: 200, epoch: 26 | loss: 0.5903505
+	speed: 0.2075s/iter; left time: 6804.7625s
+	iters: 300, epoch: 26 | loss: 0.5505137
+	speed: 0.2062s/iter; left time: 6742.9848s
+	iters: 400, epoch: 26 | loss: 0.5297675
+	speed: 0.2065s/iter; left time: 6732.6663s
+Epoch: 26 cost time: 90.97445154190063
+Epoch: 26, Steps: 440, | Train Loss: 0.54419
+Validation results --- Loss: 0.78983, Accuracy: 0.73745, Precision: 0.65889, Recall: 0.60976, F1: 0.62800, AUROC: 0.90033, AUPRC: 0.67906
+Test results --- Loss: 0.82928, Accuracy: 0.72726, Precision: 0.64488, Recall: 0.59296 F1: 0.61168, AUROC: 0.89199, AUPRC: 0.65585
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 27 | loss: 0.5788867
+	speed: 0.5435s/iter; left time: 17643.8104s
+	iters: 200, epoch: 27 | loss: 0.5425452
+	speed: 0.2069s/iter; left time: 6696.5053s
+	iters: 300, epoch: 27 | loss: 0.5395679
+	speed: 0.2064s/iter; left time: 6657.5041s
+	iters: 400, epoch: 27 | loss: 0.6282685
+	speed: 0.2073s/iter; left time: 6665.9841s
+Epoch: 27 cost time: 91.04073810577393
+Epoch: 27, Steps: 440, | Train Loss: 0.53609
+Validation results --- Loss: 0.79017, Accuracy: 0.73633, Precision: 0.65716, Recall: 0.60796, F1: 0.62566, AUROC: 0.90014, AUPRC: 0.67871
+Test results --- Loss: 0.82961, Accuracy: 0.72503, Precision: 0.64090, Recall: 0.59175 F1: 0.60950, AUROC: 0.89196, AUPRC: 0.65498
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 28 | loss: 0.5003857
+	speed: 0.5420s/iter; left time: 17354.1906s
+	iters: 200, epoch: 28 | loss: 0.4434279
+	speed: 0.2075s/iter; left time: 6623.5510s
+	iters: 300, epoch: 28 | loss: 0.5225658
+	speed: 0.2065s/iter; left time: 6570.6536s
+	iters: 400, epoch: 28 | loss: 0.4792827
+	speed: 0.2066s/iter; left time: 6553.4950s
+Epoch: 28 cost time: 91.0306978225708
+Epoch: 28, Steps: 440, | Train Loss: 0.52607
+Validation results --- Loss: 0.79199, Accuracy: 0.73707, Precision: 0.65803, Recall: 0.60853, F1: 0.62615, AUROC: 0.90021, AUPRC: 0.67845
+Test results --- Loss: 0.83025, Accuracy: 0.72508, Precision: 0.63986, Recall: 0.59059 F1: 0.60812, AUROC: 0.89184, AUPRC: 0.65537
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 29 | loss: 0.6009868
+	speed: 0.5446s/iter; left time: 17199.4599s
+	iters: 200, epoch: 29 | loss: 0.4744055
+	speed: 0.2062s/iter; left time: 6491.2609s
+	iters: 300, epoch: 29 | loss: 0.4656016
+	speed: 0.2062s/iter; left time: 6471.9215s
+	iters: 400, epoch: 29 | loss: 0.5803559
+	speed: 0.2075s/iter; left time: 6492.2925s
+Epoch: 29 cost time: 91.19453358650208
+Epoch: 29, Steps: 440, | Train Loss: 0.51414
+Validation results --- Loss: 0.79313, Accuracy: 0.73679, Precision: 0.65763, Recall: 0.61065, F1: 0.62766, AUROC: 0.89996, AUPRC: 0.67733
+Test results --- Loss: 0.83008, Accuracy: 0.72498, Precision: 0.64040, Recall: 0.59265 F1: 0.61003, AUROC: 0.89209, AUPRC: 0.65575
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 30 | loss: 0.4020076
+	speed: 0.5423s/iter; left time: 16888.1316s
+	iters: 200, epoch: 30 | loss: 0.4498614
+	speed: 0.2078s/iter; left time: 6449.8100s
+	iters: 300, epoch: 30 | loss: 0.4771688
+	speed: 0.2066s/iter; left time: 6392.1067s
+	iters: 400, epoch: 30 | loss: 0.4833367
+	speed: 0.2064s/iter; left time: 6364.8964s
+Epoch: 30 cost time: 91.0608549118042
+Epoch: 30, Steps: 440, | Train Loss: 0.50995
+Validation results --- Loss: 0.79791, Accuracy: 0.73793, Precision: 0.66111, Recall: 0.61066, F1: 0.62895, AUROC: 0.89990, AUPRC: 0.67784
+Test results --- Loss: 0.83712, Accuracy: 0.72549, Precision: 0.64341, Recall: 0.59310 F1: 0.61167, AUROC: 0.89212, AUPRC: 0.65656
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 31 | loss: 0.4300446
+	speed: 0.5430s/iter; left time: 16671.7069s
+	iters: 200, epoch: 31 | loss: 0.5462703
+	speed: 0.2064s/iter; left time: 6316.9015s
+	iters: 300, epoch: 31 | loss: 0.6029961
+	speed: 0.2063s/iter; left time: 6292.6630s
+	iters: 400, epoch: 31 | loss: 0.4717954
+	speed: 0.2074s/iter; left time: 6304.7580s
+Epoch: 31 cost time: 91.07152819633484
+Epoch: 31, Steps: 440, | Train Loss: 0.50228
+Validation results --- Loss: 0.80165, Accuracy: 0.73638, Precision: 0.66052, Recall: 0.61192, F1: 0.63001, AUROC: 0.90005, AUPRC: 0.67912
+Test results --- Loss: 0.84045, Accuracy: 0.72405, Precision: 0.64082, Recall: 0.59283 F1: 0.61090, AUROC: 0.89184, AUPRC: 0.65573
+
+Metric score decreased (-0.629605 --> -0.630005).  Saving model ...
+
+	iters: 100, epoch: 32 | loss: 0.4947262
+	speed: 0.5424s/iter; left time: 16413.1143s
+	iters: 200, epoch: 32 | loss: 0.5502275
+	speed: 0.2078s/iter; left time: 6267.5757s
+	iters: 300, epoch: 32 | loss: 0.4598423
+	speed: 0.2068s/iter; left time: 6215.7470s
+	iters: 400, epoch: 32 | loss: 0.4773914
+	speed: 0.2064s/iter; left time: 6185.0708s
+Epoch: 32 cost time: 91.0820415019989
+Epoch: 32, Steps: 440, | Train Loss: 0.49410
+Validation results --- Loss: 0.80041, Accuracy: 0.73732, Precision: 0.66223, Recall: 0.61038, F1: 0.62898, AUROC: 0.90088, AUPRC: 0.68079
+Test results --- Loss: 0.84611, Accuracy: 0.72372, Precision: 0.64062, Recall: 0.58944 F1: 0.60784, AUROC: 0.89188, AUPRC: 0.65546
+
+EarlyStopping counter: 1 out of 10
+	iters: 100, epoch: 33 | loss: 0.5553913
+	speed: 0.5407s/iter; left time: 16124.7498s
+	iters: 200, epoch: 33 | loss: 0.3972450
+	speed: 0.2064s/iter; left time: 6134.4141s
+	iters: 300, epoch: 33 | loss: 0.5213071
+	speed: 0.2075s/iter; left time: 6146.3333s
+	iters: 400, epoch: 33 | loss: 0.6109087
+	speed: 0.2065s/iter; left time: 6094.8248s
+Epoch: 33 cost time: 91.1148829460144
+Epoch: 33, Steps: 440, | Train Loss: 0.48340
+Validation results --- Loss: 0.80361, Accuracy: 0.73669, Precision: 0.65912, Recall: 0.61199, F1: 0.62974, AUROC: 0.90098, AUPRC: 0.67966
+Test results --- Loss: 0.84415, Accuracy: 0.72437, Precision: 0.64135, Recall: 0.59310 F1: 0.61129, AUROC: 0.89310, AUPRC: 0.65645
+
+EarlyStopping counter: 2 out of 10
+	iters: 100, epoch: 34 | loss: 0.4504675
+	speed: 0.5415s/iter; left time: 15909.3757s
+	iters: 200, epoch: 34 | loss: 0.4718335
+	speed: 0.2073s/iter; left time: 6071.2492s
+	iters: 300, epoch: 34 | loss: 0.4451425
+	speed: 0.2084s/iter; left time: 6080.8208s
+	iters: 400, epoch: 34 | loss: 0.4756500
+	speed: 0.2064s/iter; left time: 6001.0676s
+Epoch: 34 cost time: 91.15905165672302
+Epoch: 34, Steps: 440, | Train Loss: 0.48159
+Validation results --- Loss: 0.80127, Accuracy: 0.73704, Precision: 0.65653, Recall: 0.61257, F1: 0.62912, AUROC: 0.90079, AUPRC: 0.67863
+Test results --- Loss: 0.84368, Accuracy: 0.72455, Precision: 0.63931, Recall: 0.59446 F1: 0.61136, AUROC: 0.89264, AUPRC: 0.65646
+
+EarlyStopping counter: 3 out of 10
+	iters: 100, epoch: 35 | loss: 0.4828226
+	speed: 0.5418s/iter; left time: 15680.5842s
+	iters: 200, epoch: 35 | loss: 0.3988573
+	speed: 0.2064s/iter; left time: 5953.5491s
+	iters: 300, epoch: 35 | loss: 0.4462436
+	speed: 0.2065s/iter; left time: 5935.8146s
+	iters: 400, epoch: 35 | loss: 0.5200966
+	speed: 0.2084s/iter; left time: 5967.9153s
+Epoch: 35 cost time: 91.21097373962402
+Epoch: 35, Steps: 440, | Train Loss: 0.46910
+Validation results --- Loss: 0.81027, Accuracy: 0.73610, Precision: 0.65681, Recall: 0.61130, F1: 0.62839, AUROC: 0.90094, AUPRC: 0.67933
+Test results --- Loss: 0.85247, Accuracy: 0.72306, Precision: 0.63980, Recall: 0.59372 F1: 0.61134, AUROC: 0.89317, AUPRC: 0.65674
+
+EarlyStopping counter: 4 out of 10
+	iters: 100, epoch: 36 | loss: 0.4360859
+	speed: 0.5401s/iter; left time: 15392.6039s
+	iters: 200, epoch: 36 | loss: 0.5006035
+	speed: 0.2073s/iter; left time: 5887.1137s
+	iters: 300, epoch: 36 | loss: 0.4007574
+	speed: 0.2063s/iter; left time: 5838.5719s
+	iters: 400, epoch: 36 | loss: 0.5582077
+	speed: 0.2061s/iter; left time: 5811.9626s
+Epoch: 36 cost time: 90.9407160282135
+Epoch: 36, Steps: 440, | Train Loss: 0.46457
+Validation results --- Loss: 0.81466, Accuracy: 0.73607, Precision: 0.65670, Recall: 0.60846, F1: 0.62636, AUROC: 0.90059, AUPRC: 0.67755
+Test results --- Loss: 0.85497, Accuracy: 0.72397, Precision: 0.64142, Recall: 0.59223 F1: 0.61080, AUROC: 0.89332, AUPRC: 0.65701
+
+EarlyStopping counter: 5 out of 10
+	iters: 100, epoch: 37 | loss: 0.4577496
+	speed: 0.5421s/iter; left time: 15212.0046s
+	iters: 200, epoch: 37 | loss: 0.4599001
+	speed: 0.2063s/iter; left time: 5767.3478s
+	iters: 300, epoch: 37 | loss: 0.4576610
+	speed: 0.2078s/iter; left time: 5788.9375s
+	iters: 400, epoch: 37 | loss: 0.4689735
+	speed: 0.2068s/iter; left time: 5740.4784s
+Epoch: 37 cost time: 91.11534881591797
+Epoch: 37, Steps: 440, | Train Loss: 0.45519
+Validation results --- Loss: 0.81492, Accuracy: 0.73529, Precision: 0.65763, Recall: 0.60798, F1: 0.62603, AUROC: 0.90147, AUPRC: 0.67946
+Test results --- Loss: 0.85597, Accuracy: 0.72399, Precision: 0.64093, Recall: 0.59120 F1: 0.60961, AUROC: 0.89364, AUPRC: 0.65767
+
+EarlyStopping counter: 6 out of 10
+	iters: 100, epoch: 38 | loss: 0.3695231
+	speed: 0.5405s/iter; left time: 14930.4118s
+	iters: 200, epoch: 38 | loss: 0.3977694
+	speed: 0.2069s/iter; left time: 5693.2115s
+	iters: 300, epoch: 38 | loss: 0.4006175
+	speed: 0.2061s/iter; left time: 5651.6570s
+	iters: 400, epoch: 38 | loss: 0.4676147
+	speed: 0.2059s/iter; left time: 5625.4053s
+Epoch: 38 cost time: 90.82800149917603
+Epoch: 38, Steps: 440, | Train Loss: 0.44311
+Validation results --- Loss: 0.81497, Accuracy: 0.73803, Precision: 0.65935, Recall: 0.61224, F1: 0.62965, AUROC: 0.90103, AUPRC: 0.67816
+Test results --- Loss: 0.85438, Accuracy: 0.72455, Precision: 0.63858, Recall: 0.59290 F1: 0.60996, AUROC: 0.89364, AUPRC: 0.65706
+
+EarlyStopping counter: 7 out of 10
+	iters: 100, epoch: 39 | loss: 0.2789133
+	speed: 0.5429s/iter; left time: 14755.9397s
+	iters: 200, epoch: 39 | loss: 0.5225272
+	speed: 0.2062s/iter; left time: 5584.7537s
+	iters: 300, epoch: 39 | loss: 0.3709419
+	speed: 0.2061s/iter; left time: 5560.7881s
+	iters: 400, epoch: 39 | loss: 0.4955733
+	speed: 0.2072s/iter; left time: 5570.6100s
+Epoch: 39 cost time: 90.98233723640442
+Epoch: 39, Steps: 440, | Train Loss: 0.44095
+Validation results --- Loss: 0.82046, Accuracy: 0.73551, Precision: 0.65642, Recall: 0.60951, F1: 0.62673, AUROC: 0.90171, AUPRC: 0.67942
+Test results --- Loss: 0.86206, Accuracy: 0.72346, Precision: 0.63995, Recall: 0.59155 F1: 0.60949, AUROC: 0.89396, AUPRC: 0.65747
+
+EarlyStopping counter: 8 out of 10
+	iters: 100, epoch: 40 | loss: 0.3812161
+	speed: 0.5395s/iter; left time: 14427.7445s
+	iters: 200, epoch: 40 | loss: 0.4436164
+	speed: 0.2069s/iter; left time: 5511.6580s
+	iters: 300, epoch: 40 | loss: 0.4885033
+	speed: 0.2061s/iter; left time: 5470.7383s
+	iters: 400, epoch: 40 | loss: 0.4509487
+	speed: 0.2060s/iter; left time: 5445.7326s
+Epoch: 40 cost time: 90.80789732933044
+Epoch: 40, Steps: 440, | Train Loss: 0.43758
+Validation results --- Loss: 0.82327, Accuracy: 0.73630, Precision: 0.65813, Recall: 0.61231, F1: 0.62918, AUROC: 0.90143, AUPRC: 0.67910
+Test results --- Loss: 0.86470, Accuracy: 0.72336, Precision: 0.63818, Recall: 0.59231 F1: 0.60942, AUROC: 0.89412, AUPRC: 0.65814
+
+EarlyStopping counter: 9 out of 10
+	iters: 100, epoch: 41 | loss: 0.3717986
+	speed: 0.5395s/iter; left time: 14188.2952s
+	iters: 200, epoch: 41 | loss: 0.3726128
+	speed: 0.2061s/iter; left time: 5399.8865s
+	iters: 300, epoch: 41 | loss: 0.3548068
+	speed: 0.2061s/iter; left time: 5379.6708s
+	iters: 400, epoch: 41 | loss: 0.3647995
+	speed: 0.2069s/iter; left time: 5380.7013s
+Epoch: 41 cost time: 90.96070837974548
+Epoch: 41, Steps: 440, | Train Loss: 0.42253
+Validation results --- Loss: 0.82634, Accuracy: 0.73633, Precision: 0.65663, Recall: 0.61166, F1: 0.62817, AUROC: 0.90114, AUPRC: 0.67767
+Test results --- Loss: 0.86451, Accuracy: 0.72359, Precision: 0.63887, Recall: 0.59376 F1: 0.61080, AUROC: 0.89409, AUPRC: 0.65719
+
+EarlyStopping counter: 10 out of 10
+Early stopping
+>>>>>>>testing : classification_PTB-XL-Indep-dorefa_Medformer_PTB-XL_ftM_sl250_ll48_pl0_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed47<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Validation results --- Loss: 0.80029, Accuracy: 0.73638, Precision: 0.66052, Recall: 0.61192, F1: 0.63001, AUROC: 0.90005, AUPRC: 0.67912
+Test results --- Loss: 0.84064, Accuracy: 0.72405, Precision: 0.64082, Recall: 0.59283, F1: 0.61090, AUROC: 0.89184, AUPRC: 0.65573
+

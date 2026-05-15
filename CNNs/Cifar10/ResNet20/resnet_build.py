@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import torch
 import torch.nn as nn
 
-from conv2dggd import Conv2dGGD
+from conv2dggm import Conv2dGGM
 
 
 RESNET_CONFIGS = {
@@ -20,7 +20,7 @@ class ResNetConfig:
     channels: list[int]
     num_classes: int = 10
     in_chans: int = 3
-    use_ggd: bool = True
+    use_ggm: bool = True
     N_scale: float = 1.0
     prelu_init: float = 0.25
 
@@ -32,11 +32,11 @@ def _swap_conv(
     stride: int,
     padding: int,
     bias: bool = True,
-    use_ggd: bool = True,
+    use_ggm: bool = True,
     N_scale: float = 1.0,
 ):
-    if use_ggd:
-        return Conv2dGGD(
+    if use_ggm:
+        return Conv2dGGM(
             in_planes,
             planes,
             kernel_size=kernel_size,
@@ -64,7 +64,7 @@ class CIFARBasicBlock(nn.Module):
         in_planes: int,
         planes: int,
         stride: int = 1,
-        use_ggd: bool = True,
+        use_ggm: bool = True,
         N_scale: float = 1.0,
         prelu_init: float = 0.25,
     ):
@@ -77,7 +77,7 @@ class CIFARBasicBlock(nn.Module):
             stride=stride,
             padding=1,
             bias=False,
-            use_ggd=use_ggd,
+            use_ggm=use_ggm,
             N_scale=N_scale,
         )
         self.bn1 = nn.BatchNorm2d(planes)
@@ -90,7 +90,7 @@ class CIFARBasicBlock(nn.Module):
             stride=1,
             padding=1,
             bias=False,
-            use_ggd=use_ggd,
+            use_ggm=use_ggm,
             N_scale=N_scale,
         )
         self.bn2 = nn.BatchNorm2d(planes)
@@ -106,7 +106,7 @@ class CIFARBasicBlock(nn.Module):
                     stride=stride,
                     padding=0,
                     bias=False,
-                    use_ggd=use_ggd,
+                    use_ggm=use_ggm,
                     N_scale=N_scale,
                 ),
                 nn.BatchNorm2d(planes),
@@ -152,7 +152,7 @@ class ResNetCIFAR(nn.Module):
                 planes=planes,
                 blocks=num_blocks,
                 stride=stride,
-                use_ggd=config.use_ggd,
+                use_ggm=config.use_ggm,
                 N_scale=config.N_scale,
                 prelu_init=config.prelu_init,
             )
@@ -169,7 +169,7 @@ class ResNetCIFAR(nn.Module):
         planes: int,
         blocks: int,
         stride: int,
-        use_ggd: bool,
+        use_ggm: bool,
         N_scale: float,
         prelu_init: float,
     ) -> nn.Sequential:
@@ -178,7 +178,7 @@ class ResNetCIFAR(nn.Module):
                 in_planes=self.in_planes,
                 planes=planes,
                 stride=stride,
-                use_ggd=use_ggd,
+                use_ggm=use_ggm,
                 N_scale=N_scale,
                 prelu_init=prelu_init,
             )
@@ -191,7 +191,7 @@ class ResNetCIFAR(nn.Module):
                     in_planes=self.in_planes,
                     planes=planes,
                     stride=1,
-                    use_ggd=use_ggd,
+                    use_ggm=use_ggm,
                     N_scale=N_scale,
                     prelu_init=prelu_init,
                 )
@@ -216,7 +216,7 @@ def build_resnet_cifar(
     model_name: str = "18",
     num_classes: int = 10,
     in_chans: int = 3,
-    use_ggd: bool = True,
+    use_ggm: bool = True,
     N_scale: float = 1.0,
     prelu_init: float = 0.25,
 ) -> nn.Module:
@@ -227,7 +227,7 @@ def build_resnet_cifar(
         **RESNET_CONFIGS[model_name],
         num_classes=num_classes,
         in_chans=in_chans,
-        use_ggd=use_ggd,
+        use_ggm=use_ggm,
         N_scale=N_scale,
         prelu_init=prelu_init,
     )
