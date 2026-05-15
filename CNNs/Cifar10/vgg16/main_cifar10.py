@@ -85,8 +85,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--compile", action="store_true", default=True)
     p.add_argument("--no-compile", dest="compile", action="store_false")
 
-    p.add_argument("--use_ggd", action="store_true", default=True)
-    p.add_argument("--no-ggd", dest="use_ggd", action="store_false")
+    p.add_argument("--use_ggm", action="store_true", default=True)
+    p.add_argument("--no-ggm", dest="use_ggm", action="store_false")
 
     return p
 
@@ -186,7 +186,7 @@ def build_model(args, device: torch.device) -> nn.Module:
             model_name="vgg16",
             num_classes=10,
             in_chans=3,
-            use_ggd=args.use_ggd,
+            use_ggm=args.use_ggm,
             N_scale=args.N_scale,
         )
     else:
@@ -194,7 +194,7 @@ def build_model(args, device: torch.device) -> nn.Module:
             model_name=args.size,
             num_classes=10,
             in_chans=3,
-            use_ggd=args.use_ggd,
+            use_ggm=args.use_ggm,
             N_scale=args.N_scale,
         )
 

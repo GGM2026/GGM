@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -euo pipefail
 
 DATA_ROOT="../../data/cifar10_download"
@@ -13,7 +14,6 @@ mkdir -p "$CHECKPOINT_DIR" "$RESULTS_DIR" "$STDOUT_DIR"
 N_SCALE=2.5
 
 RESULTS_FILE="${RESULTS_DIR}/nscale_${N_SCALE}.csv"
-
 
 SEED=$((BASE_SEED))
 RUN_NAME="${BASE_RUN}_N${N_SCALE}_seed${SEED}"
@@ -34,7 +34,7 @@ python main_cifar10.py \
   --checkpoint_dir "$CHECKPOINT_DIR" \
   --no-compile \
   --amp \
-  --use_ggd \
+  --use_ggm \
   --N_scale "$N_SCALE" \
   --seed "$SEED" \
   --results_file "$RESULTS_FILE" \

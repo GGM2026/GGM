@@ -7,7 +7,7 @@ import math
 import torch
 import torch.nn as nn
 
-from conv2dggd import Conv2dGGD
+from conv2dggm import Conv2dGGM
 
 
 VGG_CONFIGS = {
@@ -22,7 +22,7 @@ class VGGConfig:
     variant: str
     num_classes: int = 10
     in_chans: int = 3
-    use_ggd: bool = True
+    use_ggm: bool = True
     N_scale: float = 1.0
     prelu_init: float = 0.25
     dropout2d_p: float = 0.1
@@ -46,13 +46,13 @@ def _make_conv(
     stride: int,
     padding: int,
     bias: bool = False,
-    use_ggd: bool = True,
+    use_ggm: bool = True,
     N_scale: float = 1.0,
     *,
     is_stem: bool = False,
 ):
-    if use_ggd and not is_stem:
-        return Conv2dGGD(
+    if use_ggm and not is_stem:
+        return Conv2dGGM(
             in_channels=in_channels,
             out_channels=out_channels,
             kernel_size=kernel_size,
@@ -83,30 +83,30 @@ class VGGSmall(nn.Module):
             stride=1,
             padding=1,
             bias=False,
-            use_ggd=config.use_ggd,
+            use_ggm=config.use_ggm,
             N_scale=config.N_scale,
             is_stem=True,
         )
         self.bn0 = nn.BatchNorm2d(128)
         self.act0 = PReLUPlus(init_neg=config.prelu_init)
 
-        self.conv1 = _make_conv(128, 128, 3, 1, 1, bias=False, use_ggd=config.use_ggd, N_scale=config.N_scale)
+        self.conv1 = _make_conv(128, 128, 3, 1, 1, bias=False, use_ggm=config.use_ggm, N_scale=config.N_scale)
         self.bn1 = nn.BatchNorm2d(128)
         self.act1 = PReLUPlus(init_neg=config.prelu_init)
 
-        self.conv2 = _make_conv(128, 256, 3, 1, 1, bias=False, use_ggd=config.use_ggd, N_scale=config.N_scale)
+        self.conv2 = _make_conv(128, 256, 3, 1, 1, bias=False, use_ggm=config.use_ggm, N_scale=config.N_scale)
         self.bn2 = nn.BatchNorm2d(256)
         self.act2 = PReLUPlus(init_neg=config.prelu_init)
 
-        self.conv3 = _make_conv(256, 256, 3, 1, 1, bias=False, use_ggd=config.use_ggd, N_scale=config.N_scale)
+        self.conv3 = _make_conv(256, 256, 3, 1, 1, bias=False, use_ggm=config.use_ggm, N_scale=config.N_scale)
         self.bn3 = nn.BatchNorm2d(256)
         self.act3 = PReLUPlus(init_neg=config.prelu_init)
 
-        self.conv4 = _make_conv(256, 512, 3, 1, 1, bias=False, use_ggd=config.use_ggd, N_scale=config.N_scale)
+        self.conv4 = _make_conv(256, 512, 3, 1, 1, bias=False, use_ggm=config.use_ggm, N_scale=config.N_scale)
         self.bn4 = nn.BatchNorm2d(512)
         self.act4 = PReLUPlus(init_neg=config.prelu_init)
 
-        self.conv5 = _make_conv(512, 512, 3, 1, 1, bias=False, use_ggd=config.use_ggd, N_scale=config.N_scale)
+        self.conv5 = _make_conv(512, 512, 3, 1, 1, bias=False, use_ggm=config.use_ggm, N_scale=config.N_scale)
         self.bn5 = nn.BatchNorm2d(512)
         self.act5 = PReLUPlus(init_neg=config.prelu_init)
 
@@ -117,7 +117,7 @@ class VGGSmall(nn.Module):
 
     def _initialize_weights(self) -> None:
         for m in self.modules():
-            if isinstance(m, (nn.Conv2d, Conv2dGGD)):
+            if isinstance(m, (nn.Conv2d, Conv2dGGM)):
                 if hasattr(m, "weight") and m.weight is not None:
                     k = m.kernel_size
                     if isinstance(k, tuple):
@@ -128,7 +128,7 @@ class VGGSmall(nn.Module):
                     m.weight.data.normal_(0, math.sqrt(2.0 / n))
                 if hasattr(m, "bias") and m.bias is not None:
                     m.bias.data.zero_()
-                if isinstance(m, Conv2dGGD) and hasattr(m, "scale"):
+                if isinstance(m, Conv2dGGM) and hasattr(m, "scale"):
                     m.scale.data.fill_(1.0)
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
@@ -163,7 +163,7 @@ class VGGSmall(nn.Module):
         return x
 
 
-class VGGGM (nn.Module):
+class VGGNet(nn.Module):
     def __init__(self, config: VGGConfig):
         super().__init__()
 
@@ -191,7 +191,7 @@ class VGGGM (nn.Module):
                 stride=1,
                 padding=1,
                 bias=False,
-                use_ggd=config.use_ggd,
+                use_ggm=config.use_ggm,
                 N_scale=config.N_scale,
                 is_stem=is_stem,
             )
@@ -211,7 +211,7 @@ class VGGGM (nn.Module):
 
     def _initialize_weights(self) -> None:
         for m in self.modules():
-            if isinstance(m, (nn.Conv2d, Conv2dGGD)):
+            if isinstance(m, (nn.Conv2d, Conv2dGGM)):
                 if hasattr(m, "weight") and m.weight is not None:
                     k = m.kernel_size
                     if isinstance(k, tuple):
@@ -222,7 +222,7 @@ class VGGGM (nn.Module):
                     m.weight.data.normal_(0, math.sqrt(2.0 / n))
                 if hasattr(m, "bias") and m.bias is not None:
                     m.bias.data.zero_()
-                if isinstance(m, Conv2dGGD) and hasattr(m, "scale"):
+                if isinstance(m, Conv2dGGM) and hasattr(m, "scale"):
                     m.scale.data.fill_(1.0)
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
@@ -243,7 +243,7 @@ def build_vgg_cifar(
     model_name: str = "16",
     num_classes: int = 10,
     in_chans: int = 3,
-    use_ggd: bool = True,
+    use_ggm: bool = True,
     N_scale: float = 1.0,
     prelu_init: float = 0.25,
     dropout2d_p: float = 0.1,
@@ -269,7 +269,7 @@ def build_vgg_cifar(
         variant=key,
         num_classes=num_classes,
         in_chans=in_chans,
-        use_ggd=use_ggd,
+        use_ggm=use_ggm,
         N_scale=N_scale,
         prelu_init=prelu_init,
         dropout2d_p=dropout2d_p,
@@ -278,7 +278,7 @@ def build_vgg_cifar(
 
     if key == "small":
         return VGGSmall(config)
-    return VGGGM (config)
+    return VGGNet(config)
 
 
 def build_model(
@@ -290,7 +290,7 @@ def build_model(
     img_size=None,
     in_chans: int = 3,
     dataset_name=None,
-    use_ggd: bool = True,
+    use_ggm: bool = True,
     prelu_init: float = 0.25,
     dropout2d_p: float = 0.1,
     dropout_p: float = 0.3,
@@ -301,7 +301,7 @@ def build_model(
         model_name=model_name,
         num_classes=num_classes,
         in_chans=in_chans,
-        use_ggd=use_ggd,
+        use_ggm=use_ggm,
         N_scale=N_scale,
         prelu_init=prelu_init,
         dropout2d_p=dropout2d_p,
