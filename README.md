@@ -20,7 +20,7 @@ conda env create -f environment.yml
   - `src/training/`: Training and evaluation loops.
   - `src/utils/`: Configuration and helper functions.
 - `CNNs/`: Convolutional Neural Network experiments. Contains subdirectories for CIFAR-10 (ResNet18, ResNet20, VGG16) and ImageNet. 
-- `ViTs/`: Vision Transformer experiments, including the main `train_cifar.py` wrapper, run scripts, and parameter defaults.
+- `ViTs/`: Vision Transformer experiments on Cifar10 and Imagenet1k
 - `Other_Experiments/`: Additional experiment tracks including:
   - `model size/`: Notebooks and scripts for analyzing varied model capacities.
   - `nlp/` & `timeseries/`: Application of our methods to specialized domains outside of standard vision tasks.
