@@ -26,4 +26,4 @@ conda env create -f environment.yml
   - `nlp/` & `timeseries/`: Application of our methods to specialized domains outside of standard vision tasks.
   - `perturbation/`: Experiments relating to weight perturbation (e.g. adabin, ggd, irnet, xnornet).
   - `projection_expansion_ratio_Gaussian_vs_Rademacher/`: Mathematical ablations comparing different projection mappings (Gaussian vs Rademacher for ResNets).
-  - `resampleg/`: Scripts testing G-matrix resampling techniques.
+  - `resampleg/`: Scripts testing G-matrix resampling.
