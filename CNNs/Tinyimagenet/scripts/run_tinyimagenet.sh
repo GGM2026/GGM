@@ -8,9 +8,9 @@ python scripts/prepare_tinyimagenet.py "${DATA_ROOT}"
 
 ulimit -l unlimited || echo "Warning: could not raise memlock (need higher hard limit / sudo / limits.conf)"
 
-NPROC_PER_NODE="2"
+NPROC_PER_NODE="4"
 
-RUN_NAME="ggd_resnet"
+RUN_NAME="ggm_resnet"
 RUN_NAME_GGD_N1="${RUN_NAME}_18_N1"
 
 EPOCHS=90
