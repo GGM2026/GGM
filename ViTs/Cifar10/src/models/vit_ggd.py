@@ -62,7 +62,7 @@ class MHA(nn.Module):
 
         q = q / (q.norm(dim=-1, keepdim=True) + 1e-6)
         k = k / (k.norm(dim=-1, keepdim=True) + 1e-6)
-        attn_score = torch.matmul(q, k.transpose(-1, -2)) * (self.head_size ** 0.5)
+        attn_score = torch.matmul(q, k.transpose(-1, -2)) * (self.head_size ** -0.5)
         attn_score = attn_score * torch.exp(self.log_tau)
 
 
