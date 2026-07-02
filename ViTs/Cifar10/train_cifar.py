@@ -138,7 +138,7 @@ if __name__ == "__main__":
     parser.add_argument("--k_bits_w", type=int, default=1, help="Weight quantization bits")
     parser.add_argument("--n_factor", type=int, default=2, help="N_factor for quantization")
     parser.add_argument("--rho_cap", type=float, default=0.99, help="rho_cap for quantization")
-    
+
     parser.add_argument("--batch_size", type=int, default=512, help="Batch size")
     parser.add_argument("--out_classes", type=int, default=10, help="Number of output classes")
     parser.add_argument("--epochs", type=int, default=450, help="Training epochs")
