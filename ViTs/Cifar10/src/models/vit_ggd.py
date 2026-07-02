@@ -1,4 +1,4 @@
-from src.layers import GGDLinear, QLinearSTE, OddGate
+from src.layers import GGMLinear, OddGate
 from src.layers.normalization import RMSNorm
 import torch
 import torch.nn as nn
@@ -37,12 +37,12 @@ class MHA(nn.Module):
         self.head_size = self.D // self.num_head
         self.all_head_size = self.D
 
-        self.query = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
-        self.key   = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
+        self.query = GGMLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
+        self.key   = GGMLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
 
-        self.value = GGDLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
+        self.value = GGMLinear(self.D, self.all_head_size, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
        
-        self.output = GGDLinear(self.D, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
+        self.output = GGMLinear(self.D, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap)
 
         self.attn_dropout = nn.Dropout(mparams.attn_dropout)
         self.proj_dropout = nn.Dropout(mparams.attn_dropout)
@@ -62,7 +62,7 @@ class MHA(nn.Module):
 
         q = q / (q.norm(dim=-1, keepdim=True) + 1e-6)
         k = k / (k.norm(dim=-1, keepdim=True) + 1e-6)
-        attn_score = torch.matmul(q, k.transpose(-1, -2)) * (self.head_size ** -0.5)
+        attn_score = torch.matmul(q, k.transpose(-1, -2)) * (self.head_size ** 0.5)
         attn_score = attn_score * torch.exp(self.log_tau)
 
 
@@ -86,10 +86,10 @@ class MLP(nn.Module):
         self.D = mparams.inner_dim
         self.hidden_dim = 4* self.D
         self.net = nn.Sequential(
-            GGDLinear(self.D, self.hidden_dim, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
+            GGMLinear(self.D, self.hidden_dim, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
             OddGate(alpha=1.0),
             nn.Dropout(mparams.mlp_dropout),
-            GGDLinear(self.hidden_dim, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
+            GGMLinear(self.hidden_dim, self.D, k_bits_x=mparams.k_bits_x, k_bits_w=mparams.k_bits_w, N_factor=mparams.n_factor, rho_cap=mparams.rho_cap),
             nn.Dropout(mparams.mlp_dropout)
         )
     def forward(self, x):

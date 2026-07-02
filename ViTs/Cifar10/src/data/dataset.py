@@ -1,129 +1,101 @@
 import torch
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
 
-# Per-dataset normalization stats and metadata
-_DATASET_STATS = {
-    "cifar10": {
-        "mean": [0.4914, 0.4822, 0.4465],
-        "std":  [0.2470, 0.2435, 0.2616],
-        "num_classes": 10,
-        "cls": datasets.CIFAR10,
-    },
-    "cifar100": {
-        "mean": [0.5071, 0.4865, 0.4409],
-        "std":  [0.2673, 0.2564, 0.2762],
-        "num_classes": 100,
-        "cls": datasets.CIFAR100,
-    },
-    "mnist": {
-        "mean": [0.1307],
-        "std":  [0.3081],
-        "num_classes": 10,
-        "cls": datasets.MNIST,
-    },
-}
-
-
 class DataHandler:
-    def __init__(
-        self,
-        image_information,
-        batch_size,
-        data_dir,
-        dataset_name="cifar10",
-        val_split=0.1,
-        num_workers=8,
-        split_seed=42,
-    ):
+    def __init__(self, image_information, batch_size, data_dir, **kwargs):
         self.img_info = image_information
         self.batch_size = batch_size
         self.data_dir = data_dir
-        self.dataset_name = dataset_name.lower()
-        self.val_split = val_split
-        self.num_workers = num_workers
-        self.split_seed = split_seed
 
-        if self.dataset_name not in _DATASET_STATS:
-            raise ValueError(
-                f"Unsupported dataset '{dataset_name}'. "
-                f"Choose from {list(_DATASET_STATS.keys())}."
-            )
-
-        stats = _DATASET_STATS[self.dataset_name]
-        self.mean = stats["mean"]
-        self.std = stats["std"]
-        self.num_classes = stats["num_classes"]
-        self._dataset_cls = stats["cls"]
-
-    # --------------------------------------------------
-    # Train transforms (standard CIFAR augmentation)
-    # --------------------------------------------------
     def _train_transform(self):
         return transforms.Compose([
-            transforms.RandomCrop(self.img_info.width, padding=4),
             transforms.RandomHorizontalFlip(p=0.5),
-            transforms.RandAugment(num_ops=2, magnitude=9),
+            transforms.RandomResizedCrop((self.img_info.width, self.img_info.height), scale=(0.8, 1.0)),
+            # num_ops = number of augmentations to apply
+            # magnitude = strength of augmentations
+            transforms.RandAugment(num_ops=2, magnitude=9), # can be tweaked after checking how similar the images are
             transforms.ToTensor(),
-            transforms.Normalize(mean=self.mean, std=self.std),
-            transforms.RandomErasing(p=0.25),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
         ])
 
-    # --------------------------------------------------
-    # Eval transforms (val / test)
-    # --------------------------------------------------
-    def _eval_transform(self):
+    def _val_test_transform(self):
         return transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize(mean=self.mean, std=self.std),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
         ])
 
-    # --------------------------------------------------
-    # Dataloaders: (train, val, test)
-    # --------------------------------------------------
     def get_dataloaders(self):
-        root = str(self.data_dir)
+        train_dataset = datasets.CIFAR10(root=self.data_dir, train=True,
+                                         download=True, transform=self._train_transform())
 
-        # Full training set with two transform "views":
-        # the train split gets augmentation, the val split gets eval transforms.
-        train_full = self._dataset_cls(
-            root=root, train=True, download=True,
-            transform=self._train_transform(),
-        )
-        val_full = self._dataset_cls(
-            root=root, train=True, download=True,
-            transform=self._eval_transform(),
-        )
-        test_dataset = self._dataset_cls(
-            root=root, train=False, download=True,
-            transform=self._eval_transform(),
-        )
+        val_dataset = datasets.CIFAR10(root=self.data_dir, train=True,
+                                       download=True, transform=self._val_test_transform())
 
-        n_total = len(train_full)
-        n_val = int(round(self.val_split * n_total))
-        n_train = n_total - n_val
+        # carve validation from train
+        num_train = len(train_dataset)
+        indices = torch.randperm(num_train).tolist()   # shuffle once before splitting
 
-        # Same generator for both splits so the val indices are exactly the
-        # complement of the train indices (no train/val leakage).
-        train_subset, _ = random_split(
-            train_full, [n_train, n_val],
-            generator=torch.Generator().manual_seed(self.split_seed),
-        )
-        _, val_subset = random_split(
-            val_full, [n_train, n_val],
-            generator=torch.Generator().manual_seed(self.split_seed),
-        )
+        split = int(0.9 * num_train)
+        train_indices, val_indices = indices[:split], indices[split:]
 
-        loader_kwargs = dict(
+        # Create subsets based on the indices
+        train_subset = Subset(train_dataset, train_indices)
+        val_subset = Subset(val_dataset, val_indices)
+
+
+        test_dataset = datasets.CIFAR10(root=self.data_dir, train=False,
+                                        download=True, transform=self._val_test_transform())
+
+        # # cutmix and mixup need to be used directly on batch, not working with transforms (ofc)
+        # mixup_cutmix = [
+        #     MixUp(alpha=1.0, num_classes=10),
+        #     CutMix(alpha=1.0, num_classes=10)
+        # ]
+        # combine_fn = lambda batch: mixup_cutmix[torch.randint(0,2,(1,)).item()](*torch.utils.data.default_collate(batch))
+
+
+        # # dataloaders
+        # train_loader = DataLoader(train_subset, batch_size=self.batch_size,
+        #                           shuffle=True, num_workers=2, collate_fn=combine_fn)
+
+        # val_loader = DataLoader(val_subset, batch_size=self.batch_size,
+        #                         shuffle=False, num_workers=2)
+
+        # test_loader = DataLoader(test_dataset, batch_size=self.batch_size,
+        #                          shuffle=False, num_workers=2)
+
+        # --------------------------------------------------
+        # DATALOADERS (NO MIXUP / CUTMIX HERE)
+        # --------------------------------------------------
+        train_loader = DataLoader(
+            train_subset,
             batch_size=self.batch_size,
-            num_workers=self.num_workers,
+            shuffle=True,
+            num_workers=2,
             pin_memory=True,
-            persistent_workers=self.num_workers > 0,
         )
 
-        train_loader = DataLoader(train_subset, shuffle=True, drop_last=True, **loader_kwargs)
-        val_loader = DataLoader(val_subset, shuffle=False, **loader_kwargs)
-        test_loader = DataLoader(test_dataset, shuffle=False, **loader_kwargs)
+        val_loader = DataLoader(
+            val_subset,
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=2,
+            pin_memory=True,
+        )
+
+        test_loader = DataLoader(
+            test_dataset,
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=2,
+            pin_memory=True,
+        )
+
+        print("DataLoaders created successfully.")
+        print(f"Training samples:   {len(train_subset)}")
+        print(f"Validation samples: {len(val_subset)}")
+        print(f"Test samples:       {len(test_dataset)}")
 
         return train_loader, val_loader, test_loader

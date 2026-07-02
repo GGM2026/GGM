@@ -15,9 +15,9 @@ python train_cifar.py \
     --embed_dropout 0.0 \
     --attn_dropout 0.0 \
     --mlp_dropout 0.0 \
-    --k_bits_x 2 \
+    --k_bits_x 1 \
     --k_bits_w 1 \
-    --n_factor 2 \
+    --n_factor 1 \
     --rho_cap 0.99 \
     --batch_size 512 \
     --out_classes 10 \
