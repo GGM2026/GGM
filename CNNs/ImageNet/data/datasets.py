@@ -15,6 +15,7 @@ def build_dataset(name: str, root: str, train: bool, transform):
 
     if name == "tinyimagenet":  
         base = os.path.join(root, "tiny-imagenet-200")
+        # train=True -> train/, train=False -> val_fixed/ (official val used as TEST)
         split_dir = "train" if train else "val_fixed"
         return ImageFolder(root=os.path.join(base, split_dir), transform=transform)
 

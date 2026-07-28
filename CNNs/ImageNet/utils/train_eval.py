@@ -13,6 +13,10 @@ from tqdm import tqdm
 from utils.ddp import is_main_process
 from utils.ddp import all_reduce_sum
 
+import sys
+
+def use_progress_bar(is_distributed: bool) -> bool:
+    return is_main_process(is_distributed) and sys.stderr.isatty()
 
 def count_params(model: nn.Module) -> Tuple[int, int, int]:
     total = 0
@@ -47,9 +51,16 @@ def train_one_epoch(
 
     optimizer.zero_grad(set_to_none=True)
 
-    it = enumerate(loader)
-    if is_main_process(is_distributed):
-        it = tqdm(it, total=len(loader), desc="Training", leave=False)
+    show_pbar = use_progress_bar(is_distributed)
+
+    it = tqdm(
+        enumerate(loader),
+        total=len(loader),
+        desc="Training",
+        leave=False,
+        dynamic_ncols=True,
+        disable=not show_pbar,
+    )
 
     ddp_wrapped = isinstance(model, nn.parallel.DistributedDataParallel)
     use_amp = scaler is not None
@@ -93,9 +104,12 @@ def train_one_epoch(
             if scheduler is not None and step_scheduler_per_update:
                 scheduler.step()
 
-        if is_main_process(is_distributed):
+        if show_pbar:
             acc = 100.0 * correct / max(total, 1)
-            it.set_postfix(loss=f"{(running_loss / max(total, 1)):.4f}", acc=f"{acc:.2f}%")
+            it.set_postfix(
+                loss=f"{(running_loss / max(total, 1)):.4f}",
+                acc=f"{acc:.2f}%",
+            )
 
     if is_distributed:
         running_loss = all_reduce_sum(running_loss, device)
@@ -114,9 +128,15 @@ def validate(model: nn.Module, loader, criterion, device: torch.device, is_distr
     correct = 0
     total = 0
 
-    it = loader
-    if is_main_process(is_distributed):
-        it = tqdm(loader, desc="Validation", leave=False)
+    show_pbar = use_progress_bar(is_distributed)
+
+    it = tqdm(
+        loader,
+        desc="Validation",
+        leave=False,
+        dynamic_ncols=True,
+        disable=not show_pbar,
+    )
 
     for images, targets in it:
         images = images.to(device, non_blocking=True).to(memory_format=torch.channels_last)
@@ -146,11 +166,13 @@ def resample_all_G(model, epoch: int, every: int = 10, is_distributed: bool = Fa
 
     base = model.module if hasattr(model, "module") else model
 
+    # 1) resample on rank0
     if (not is_distributed) or rank == 0:
         for m in base.modules():
             if hasattr(m, "resample_G"):
                 m.resample_G()
 
+    # 2) broadcast G buffers so all ranks have identical G
     if is_distributed:
         for m in base.modules():
             if hasattr(m, "G") and isinstance(getattr(m, "G"), torch.Tensor):

@@ -1,0 +1,119 @@
+ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (act1): PReLU(num_parameters=64)
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=576, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 576, 64, 3, 3))
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=64)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=576, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 576, 64, 3, 3))
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=64)
+    )
+    (1): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=576, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 576, 64, 3, 3))
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=64)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=576, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 576, 64, 3, 3))
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=64)
+    )
+  )
+  (layer2): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=64, out_channels=128, kernel_size=(3, 3), N=576, N_factor=1.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 576, 64, 3, 3))
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=128)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=1152, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 128, 3, 3))
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=128)
+      (downsample): Sequential(
+        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=1152, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 128, 3, 3))
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=128)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=1152, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 128, 3, 3))
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=128)
+    )
+  )
+  (layer3): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=128, out_channels=256, kernel_size=(3, 3), N=1152, N_factor=1.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 128, 3, 3))
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=256)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=2304, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 256, 3, 3))
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=256)
+      (downsample): Sequential(
+        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=2304, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 256, 3, 3))
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=256)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=2304, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 256, 3, 3))
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=256)
+    )
+  )
+  (layer4): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=256, out_channels=512, kernel_size=(3, 3), N=2304, N_factor=1.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 256, 3, 3))
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=512)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=4608, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 512, 3, 3))
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=512)
+      (downsample): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=4608, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 512, 3, 3))
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (drop_block): Identity()
+      (act1): PReLU(num_parameters=512)
+      (aa): Identity()
+      (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=4608, N_factor=1.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 512, 3, 3))
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): PReLU(num_parameters=512)
+    )
+  )
+  (global_pool): SelectAdaptivePool2d(pool_type=avg, flatten=Flatten(start_dim=1, end_dim=-1))
+  (fc): Linear(in_features=512, out_features=1000, bias=True)
+)
+[PARAMS] total=11,693,416 | trainable=11,693,416 | frozen=0
+
+[TEST-ONLY] Evaluating checkpoints in: checkpoints/imagenet/resnet18_ggm_nu1.0_base
+
+Evaluating checkpoints on TEST (single-process):
+[TEST] best_epoch_198.pth | loss: 2.5121, acc: 63.37%
+[TEST] best_acc_epoch_196.pth | loss: 2.5181, acc: 63.35%
+[TEST] last.pth | loss: 2.5144, acc: 63.54%
+
+[TEST][CHOSEN] last.pth | loss: 2.5144, acc: 63.54%
+[TEST-ONLY] BEST checkpoint by TEST acc: checkpoints/imagenet/resnet18_ggm_nu1.0_base/last.pth | acc: 63.54%

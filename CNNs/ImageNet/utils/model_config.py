@@ -14,11 +14,15 @@ def resolve_timm_backbone(model_family: str, size: str) -> str:
         raise ValueError(f"Invalid --size '{size}'. Allowed: {sorted(allowed)}")
 
     if sz == "20":
-        return "resnet20" 
+        return "resnet20"  # handled manually in builder
     return f"resnet{sz}"
 
 
 def validate_global_model_dataset_args(args) -> None:
+    """
+    Checks that should run once early in main(), before building loaders/models.
+    """
+    # CIFAR-style ResNet20 shouldn't be used on ImageNet
     if args.model.lower() == "resnet" and str(args.size) == "20" and args.dataset.lower() == "imagenet":
         raise ValueError(
             "Invalid config: --model resnet --size 20 is a CIFAR-style ResNet-20 and is not supported for --dataset imagenet. "

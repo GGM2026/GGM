@@ -4,6 +4,7 @@ import torch
 
 
 def configure_torch_perf() -> None:
+    # perf knobs
     torch.set_float32_matmul_precision("high")
     torch.backends.cudnn.benchmark = True
     torch.backends.cuda.matmul.allow_tf32 = True

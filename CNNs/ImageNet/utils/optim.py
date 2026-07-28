@@ -13,14 +13,19 @@ import torch.nn as nn
 class OptimSched:
     optimizer: torch.optim.Optimizer
     scheduler: Optional[Any]
-    step_scheduler_per_update: bool  
+    step_scheduler_per_update: bool  # True: scheduler.step() per optimizer update
 
 
 def _num_optimizer_updates_per_epoch(num_batches: int, accumulation_steps: int) -> int:
+    # how many optimizer.step() calls happen per epoch
     return int(math.ceil(num_batches / max(1, accumulation_steps)))
 
 
 def _get_betas_eps(args) -> Tuple[Tuple[float, float], float]:
+    """
+    Reads Adam-style betas/eps if present in args; otherwise uses safe defaults.
+    Keeps this module robust even if you don't add the optional CLI flags.
+    """
     betas = (0.9, 0.999)
     eps = 1e-8
 
@@ -36,6 +41,21 @@ def _get_betas_eps(args) -> Tuple[Tuple[float, float], float]:
 
 
 def build_optimizer(args, model: nn.Module, lr: float) -> torch.optim.Optimizer:
+    """
+    Paper-clean optimizer support: only AdamW and SGD.
+
+    Expected args:
+      --optimizer {adamw,sgd}
+      --weight_decay float
+
+    SGD extras:
+      --momentum float
+      --nesterov
+
+    AdamW extras (optional):
+      --betas b1 b2
+      --eps eps
+    """
     name = str(getattr(args, "optimizer", "adamw")).lower().strip()
     wd = float(getattr(args, "weight_decay", 0.0))
 
@@ -90,6 +110,7 @@ def build_optim_sched(
         )
         return OptimSched(opt, sched, step_scheduler_per_update=True)
 
+    # ImageNet/TinyImageNet: OneCycleLR, step per optimizer update
     if d in ("imagenet", "tinyimagenet"):
         global_batch = args.batch_size * world_size
         lr = args.base_lr * (global_batch / 256.0)

@@ -14,7 +14,12 @@ from utils.train_eval import validate
 
 
 def strip_state_dict_prefixes(state_dict: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
-
+    """
+    Handles checkpoints saved from torch.compile and/or DDP:
+      - torch.compile adds '_orig_mod.'
+      - DDP adds 'module.'
+    Your checkpoints may have '_orig_mod.module.'.
+    """
     out: dict[str, torch.Tensor] = {}
     for k, v in state_dict.items():
         if k.startswith("_orig_mod."):
@@ -33,7 +38,12 @@ def single_process_eval_checkpoints(
     device: torch.device,
     ckpt_paths: list[Path],
 ) -> Tuple[Path, float, float]:
-   
+    """
+    Strictly single-process checkpoint evaluation:
+    - builds non-distributed test loader
+    - builds a fresh non-DDP model
+    - loads each checkpoint and evaluates
+    """
     _, _, testloader_single, _, _, _ = build_loaders(
         dataset=args.dataset,
         root=args.data_root,
@@ -45,17 +55,21 @@ def single_process_eval_checkpoints(
         split_seed=args.split_seed,
     )
 
-    eval_criterion = nn.CrossEntropyLoss(label_smoothing=0.0)
+    eval_criterion = nn.CrossEntropyLoss(label_smoothing=args.label_smoothing)
 
     def eval_one_ckpt(ckpt_path: Path) -> tuple[float, float]:
-        m = build_any_model(arch, **model_kwargs)
-        m.to(device)
+        m = build_any_model(arch, **model_kwargs).to(device)
+
+        if device.type == "cuda":
+            for p in m.parameters():
+                if p.ndim == 4:
+                    p.data = p.data.to(memory_format=torch.channels_last)
 
         ckpt = torch.load(str(ckpt_path), map_location=device)
         sd = ckpt.get("model", ckpt)
         sd = strip_state_dict_prefixes(sd)
 
-        missing, unexpected = m.load_state_dict(sd, strict=False)
+        missing, unexpected = m.load_state_dict(sd, strict=True)
         if missing or unexpected:
             print(f"[WARN] {ckpt_path.name}: missing={len(missing)} unexpected={len(unexpected)}")
             if missing:

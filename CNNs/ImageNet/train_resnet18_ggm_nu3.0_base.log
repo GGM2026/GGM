@@ -1,0 +1,804 @@
+[COMPILE] torch.compile enabled with {'fullgraph': True, 'dynamic': False}
+OptimizedModule(
+  (_orig_mod): ResNet(
+    (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (act1): PReLU(num_parameters=64)
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1728, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1728, 64, 3, 3))
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=64)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1728, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1728, 64, 3, 3))
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=64)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1728, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1728, 64, 3, 3))
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=64)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1728, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1728, 64, 3, 3))
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=64)
+      )
+    )
+    (layer2): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=128, kernel_size=(3, 3), N=1728, N_factor=3.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1728, 64, 3, 3))
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=128)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=3456, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 3456, 128, 3, 3))
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=128)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=3456, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 3456, 128, 3, 3))
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=128)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=3456, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 3456, 128, 3, 3))
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=128)
+      )
+    )
+    (layer3): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=128, out_channels=256, kernel_size=(3, 3), N=3456, N_factor=3.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 3456, 128, 3, 3))
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=256)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=6912, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 6912, 256, 3, 3))
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=256)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=6912, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 6912, 256, 3, 3))
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=256)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=6912, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 6912, 256, 3, 3))
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=256)
+      )
+    )
+    (layer4): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=256, out_channels=512, kernel_size=(3, 3), N=6912, N_factor=3.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 6912, 256, 3, 3))
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=512)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=13824, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 13824, 512, 3, 3))
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=512)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=13824, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 13824, 512, 3, 3))
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=512)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=13824, N_factor=3.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 13824, 512, 3, 3))
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=512)
+      )
+    )
+    (global_pool): SelectAdaptivePool2d(pool_type=avg, flatten=Flatten(start_dim=1, end_dim=-1))
+    (fc): Linear(in_features=512, out_features=1000, bias=True)
+  )
+)
+[PARAMS] total=11,693,416 | trainable=11,693,416 | frozen=0
+
+Epoch 1/200 (world_size=1)
+[3768.5s] LR: 0.000302 | Train loss: 5.8194, acc: 6.12% | Val loss: 4.9420, acc: 14.75%
+
+Epoch 2/200 (world_size=1)
+[669.8s] LR: 0.000307 | Train loss: 4.9330, acc: 16.29% | Val loss: 4.2961, acc: 25.08%
+
+Epoch 3/200 (world_size=1)
+[478.1s] LR: 0.000317 | Train loss: 4.4865, acc: 23.40% | Val loss: 3.9185, acc: 32.40%
+
+Epoch 4/200 (world_size=1)
+[478.0s] LR: 0.000330 | Train loss: 4.2085, acc: 28.32% | Val loss: 3.6974, acc: 36.88%
+
+Epoch 5/200 (world_size=1)
+[476.6s] LR: 0.000346 | Train loss: 4.0111, acc: 32.08% | Val loss: 3.5178, acc: 40.62%
+
+Epoch 6/200 (world_size=1)
+[478.0s] LR: 0.000366 | Train loss: 3.8720, acc: 34.84% | Val loss: 3.3723, acc: 43.68%
+
+Epoch 7/200 (world_size=1)
+[650.6s] LR: 0.000390 | Train loss: 3.7604, acc: 37.02% | Val loss: 3.2833, acc: 45.66%
+
+Epoch 8/200 (world_size=1)
+[478.9s] LR: 0.000417 | Train loss: 3.6762, acc: 38.71% | Val loss: 3.2204, acc: 47.28%
+
+Epoch 9/200 (world_size=1)
+[545.7s] LR: 0.000447 | Train loss: 3.6119, acc: 40.05% | Val loss: 3.1655, acc: 48.51%
+
+Epoch 10/200 (world_size=1)
+[521.4s] LR: 0.000481 | Train loss: 3.5535, acc: 41.22% | Val loss: 3.1349, acc: 48.85%
+
+Epoch 11/200 (world_size=1)
+[477.3s] LR: 0.000518 | Train loss: 3.5052, acc: 42.27% | Val loss: 3.1049, acc: 49.64%
+
+Epoch 12/200 (world_size=1)
+[478.8s] LR: 0.000558 | Train loss: 3.4637, acc: 43.07% | Val loss: 3.0275, acc: 51.39%
+
+Epoch 13/200 (world_size=1)
+[478.3s] LR: 0.000601 | Train loss: 3.4285, acc: 43.80% | Val loss: 3.0159, acc: 51.59%
+
+Epoch 14/200 (world_size=1)
+[1206.0s] LR: 0.000647 | Train loss: 3.3961, acc: 44.48% | Val loss: 3.0057, acc: 51.98%
+
+Epoch 15/200 (world_size=1)
+[478.9s] LR: 0.000695 | Train loss: 3.3661, acc: 45.10% | Val loss: 2.9802, acc: 52.09%
+
+Epoch 16/200 (world_size=1)
+[477.0s] LR: 0.000747 | Train loss: 3.3415, acc: 45.64% | Val loss: 2.9332, acc: 53.55%
+
+Epoch 17/200 (world_size=1)
+[669.2s] LR: 0.000800 | Train loss: 3.3167, acc: 46.14% | Val loss: 2.9270, acc: 53.57%
+
+Epoch 18/200 (world_size=1)
+[477.4s] LR: 0.000856 | Train loss: 3.2951, acc: 46.57% | Val loss: 2.9381, acc: 53.38%
+
+Epoch 19/200 (world_size=1)
+[478.4s] LR: 0.000915 | Train loss: 3.2735, acc: 47.02% | Val loss: 2.9040, acc: 54.07%
+
+Epoch 20/200 (world_size=1)
+[478.6s] LR: 0.000975 | Train loss: 3.2547, acc: 47.43% | Val loss: 2.8646, acc: 55.17%
+
+Epoch 21/200 (world_size=1)
+[476.7s] LR: 0.001037 | Train loss: 3.2376, acc: 47.76% | Val loss: 2.8724, acc: 54.91%
+
+Epoch 22/200 (world_size=1)
+[478.7s] LR: 0.001101 | Train loss: 3.2224, acc: 48.08% | Val loss: 2.8729, acc: 54.74%
+
+Epoch 23/200 (world_size=1)
+[550.0s] LR: 0.001166 | Train loss: 3.2049, acc: 48.46% | Val loss: 2.8262, acc: 55.95%
+
+Epoch 24/200 (world_size=1)
+[531.4s] LR: 0.001233 | Train loss: 3.1889, acc: 48.80% | Val loss: 2.8130, acc: 56.28%
+
+Epoch 25/200 (world_size=1)
+[477.9s] LR: 0.001301 | Train loss: 3.1747, acc: 49.13% | Val loss: 2.8349, acc: 55.66%
+
+Epoch 26/200 (world_size=1)
+[653.7s] LR: 0.001369 | Train loss: 3.1627, acc: 49.34% | Val loss: 2.7986, acc: 56.42%
+
+Epoch 27/200 (world_size=1)
+[532.3s] LR: 0.001439 | Train loss: 3.1512, acc: 49.62% | Val loss: 2.7973, acc: 56.32%
+
+Epoch 28/200 (world_size=1)
+[477.0s] LR: 0.001509 | Train loss: 3.1389, acc: 49.87% | Val loss: 2.7857, acc: 56.62%
+
+Epoch 29/200 (world_size=1)
+[477.0s] LR: 0.001579 | Train loss: 3.1270, acc: 50.11% | Val loss: 2.7636, acc: 57.36%
+
+Epoch 30/200 (world_size=1)
+[479.2s] LR: 0.001650 | Train loss: 3.1139, acc: 50.42% | Val loss: 2.7604, acc: 57.28%
+
+Epoch 31/200 (world_size=1)
+[1198.8s] LR: 0.001721 | Train loss: 3.1039, acc: 50.58% | Val loss: 2.7660, acc: 57.14%
+
+Epoch 32/200 (world_size=1)
+[477.7s] LR: 0.001791 | Train loss: 3.0951, acc: 50.71% | Val loss: 2.8035, acc: 56.28%
+
+Epoch 33/200 (world_size=1)
+[642.7s] LR: 0.001861 | Train loss: 3.0856, acc: 51.01% | Val loss: 2.7471, acc: 57.58%
+
+Epoch 34/200 (world_size=1)
+[476.9s] LR: 0.001931 | Train loss: 3.0745, acc: 51.23% | Val loss: 2.7266, acc: 58.18%
+
+Epoch 35/200 (world_size=1)
+[477.4s] LR: 0.001999 | Train loss: 3.0672, acc: 51.38% | Val loss: 2.7214, acc: 58.19%
+
+Epoch 36/200 (world_size=1)
+[477.6s] LR: 0.002067 | Train loss: 3.0578, acc: 51.61% | Val loss: 2.7080, acc: 58.65%
+
+Epoch 37/200 (world_size=1)
+[478.4s] LR: 0.002134 | Train loss: 3.0490, acc: 51.80% | Val loss: 2.7125, acc: 58.49%
+
+Epoch 38/200 (world_size=1)
+[477.7s] LR: 0.002199 | Train loss: 3.0416, acc: 51.93% | Val loss: 2.7018, acc: 58.32%
+
+Epoch 39/200 (world_size=1)
+[477.9s] LR: 0.002263 | Train loss: 3.0329, acc: 52.10% | Val loss: 2.7032, acc: 58.57%
+
+Epoch 40/200 (world_size=1)
+[477.1s] LR: 0.002325 | Train loss: 3.0251, acc: 52.27% | Val loss: 2.7149, acc: 58.15%
+
+Epoch 41/200 (world_size=1)
+[477.2s] LR: 0.002385 | Train loss: 3.0179, acc: 52.46% | Val loss: 2.6762, acc: 59.31%
+
+Epoch 42/200 (world_size=1)
+[477.1s] LR: 0.002444 | Train loss: 3.0110, acc: 52.64% | Val loss: 2.6530, acc: 59.89%
+
+Epoch 43/200 (world_size=1)
+[477.7s] LR: 0.002500 | Train loss: 3.0016, acc: 52.80% | Val loss: 2.7101, acc: 58.48%
+
+Epoch 44/200 (world_size=1)
+[477.6s] LR: 0.002553 | Train loss: 2.9944, acc: 53.03% | Val loss: 2.6657, acc: 59.28%
+
+Epoch 45/200 (world_size=1)
+[478.3s] LR: 0.002605 | Train loss: 2.9891, acc: 53.09% | Val loss: 2.6638, acc: 59.58%
+
+Epoch 46/200 (world_size=1)
+[478.0s] LR: 0.002653 | Train loss: 2.9820, acc: 53.26% | Val loss: 2.6543, acc: 59.74%
+
+Epoch 47/200 (world_size=1)
+[478.3s] LR: 0.002699 | Train loss: 2.9750, acc: 53.38% | Val loss: 2.6288, acc: 60.27%
+
+Epoch 48/200 (world_size=1)
+[478.2s] LR: 0.002742 | Train loss: 2.9650, acc: 53.63% | Val loss: 2.6292, acc: 60.59%
+
+Epoch 49/200 (world_size=1)
+[477.1s] LR: 0.002782 | Train loss: 2.9613, acc: 53.75% | Val loss: 2.6502, acc: 59.97%
+
+Epoch 50/200 (world_size=1)
+[477.7s] LR: 0.002819 | Train loss: 2.9556, acc: 53.84% | Val loss: 2.6352, acc: 60.13%
+
+Epoch 51/200 (world_size=1)
+[477.9s] LR: 0.002853 | Train loss: 2.9492, acc: 53.99% | Val loss: 2.6202, acc: 60.61%
+
+Epoch 52/200 (world_size=1)
+[477.8s] LR: 0.002883 | Train loss: 2.9416, acc: 54.14% | Val loss: 2.6151, acc: 60.70%
+
+Epoch 53/200 (world_size=1)
+[477.1s] LR: 0.002910 | Train loss: 2.9370, acc: 54.27% | Val loss: 2.6089, acc: 60.82%
+
+Epoch 54/200 (world_size=1)
+[477.5s] LR: 0.002934 | Train loss: 2.9298, acc: 54.40% | Val loss: 2.6049, acc: 61.11%
+
+Epoch 55/200 (world_size=1)
+[477.8s] LR: 0.002954 | Train loss: 2.9237, acc: 54.55% | Val loss: 2.6159, acc: 60.74%
+
+Epoch 56/200 (world_size=1)
+[478.1s] LR: 0.002971 | Train loss: 2.9179, acc: 54.72% | Val loss: 2.6034, acc: 60.83%
+
+Epoch 57/200 (world_size=1)
+[477.9s] LR: 0.002983 | Train loss: 2.9138, acc: 54.76% | Val loss: 2.6088, acc: 60.70%
+
+Epoch 58/200 (world_size=1)
+[505.9s] LR: 0.002993 | Train loss: 2.9044, acc: 55.03% | Val loss: 2.5906, acc: 61.26%
+
+Epoch 59/200 (world_size=1)
+[479.2s] LR: 0.002998 | Train loss: 2.8993, acc: 55.12% | Val loss: 2.5953, acc: 61.18%
+
+Epoch 60/200 (world_size=1)
+[477.5s] LR: 0.003000 | Train loss: 2.8921, acc: 55.28% | Val loss: 2.5936, acc: 61.42%
+
+Epoch 61/200 (world_size=1)
+[479.3s] LR: 0.003000 | Train loss: 2.8840, acc: 55.48% | Val loss: 2.5842, acc: 61.57%
+
+Epoch 62/200 (world_size=1)
+[492.0s] LR: 0.002998 | Train loss: 2.8790, acc: 55.58% | Val loss: 2.5753, acc: 61.77%
+
+Epoch 63/200 (world_size=1)
+[479.9s] LR: 0.002997 | Train loss: 2.8741, acc: 55.71% | Val loss: 2.5859, acc: 61.70%
+
+Epoch 64/200 (world_size=1)
+[477.4s] LR: 0.002994 | Train loss: 2.8722, acc: 55.76% | Val loss: 2.5585, acc: 62.14%
+
+Epoch 65/200 (world_size=1)
+[478.2s] LR: 0.002991 | Train loss: 2.8621, acc: 55.97% | Val loss: 2.5667, acc: 61.80%
+
+Epoch 66/200 (world_size=1)
+[478.0s] LR: 0.002986 | Train loss: 2.8604, acc: 56.03% | Val loss: 2.5662, acc: 61.91%
+
+Epoch 67/200 (world_size=1)
+[477.2s] LR: 0.002982 | Train loss: 2.8539, acc: 56.18% | Val loss: 2.5557, acc: 62.15%
+
+Epoch 68/200 (world_size=1)
+[478.3s] LR: 0.002976 | Train loss: 2.8473, acc: 56.33% | Val loss: 2.5567, acc: 62.19%
+
+Epoch 69/200 (world_size=1)
+[478.7s] LR: 0.002970 | Train loss: 2.8430, acc: 56.42% | Val loss: 2.5846, acc: 61.40%
+
+Epoch 70/200 (world_size=1)
+[478.3s] LR: 0.002962 | Train loss: 2.8380, acc: 56.53% | Val loss: 2.5563, acc: 62.20%
+
+Epoch 71/200 (world_size=1)
+[477.2s] LR: 0.002955 | Train loss: 2.8331, acc: 56.61% | Val loss: 2.5361, acc: 62.64%
+
+Epoch 72/200 (world_size=1)
+[478.8s] LR: 0.002946 | Train loss: 2.8308, acc: 56.74% | Val loss: 2.5457, acc: 62.46%
+
+Epoch 73/200 (world_size=1)
+[477.9s] LR: 0.002937 | Train loss: 2.8261, acc: 56.75% | Val loss: 2.5606, acc: 62.04%
+
+Epoch 74/200 (world_size=1)
+[492.3s] LR: 0.002927 | Train loss: 2.8210, acc: 56.98% | Val loss: 2.5548, acc: 62.07%
+
+Epoch 75/200 (world_size=1)
+[477.6s] LR: 0.002916 | Train loss: 2.8169, acc: 56.95% | Val loss: 2.5317, acc: 62.60%
+
+Epoch 76/200 (world_size=1)
+[477.8s] LR: 0.002904 | Train loss: 2.8146, acc: 57.05% | Val loss: 2.5233, acc: 63.10%
+
+Epoch 77/200 (world_size=1)
+[477.3s] LR: 0.002892 | Train loss: 2.8105, acc: 57.18% | Val loss: 2.5389, acc: 62.56%
+
+Epoch 78/200 (world_size=1)
+[477.2s] LR: 0.002879 | Train loss: 2.8062, acc: 57.29% | Val loss: 2.5385, acc: 62.72%
+
+Epoch 79/200 (world_size=1)
+[478.4s] LR: 0.002866 | Train loss: 2.8026, acc: 57.31% | Val loss: 2.5229, acc: 62.94%
+
+Epoch 80/200 (world_size=1)
+[481.1s] LR: 0.002851 | Train loss: 2.7954, acc: 57.53% | Val loss: 2.5314, acc: 62.78%
+
+Epoch 81/200 (world_size=1)
+[479.2s] LR: 0.002837 | Train loss: 2.7939, acc: 57.56% | Val loss: 2.5377, acc: 62.60%
+
+Epoch 82/200 (world_size=1)
+[477.8s] LR: 0.002821 | Train loss: 2.7884, acc: 57.68% | Val loss: 2.5257, acc: 62.83%
+
+Epoch 83/200 (world_size=1)
+[477.5s] LR: 0.002805 | Train loss: 2.7838, acc: 57.79% | Val loss: 2.5144, acc: 63.08%
+
+Epoch 84/200 (world_size=1)
+[477.4s] LR: 0.002788 | Train loss: 2.7822, acc: 57.79% | Val loss: 2.5398, acc: 62.42%
+
+Epoch 85/200 (world_size=1)
+[477.4s] LR: 0.002770 | Train loss: 2.7775, acc: 57.95% | Val loss: 2.5064, acc: 63.56%
+
+Epoch 86/200 (world_size=1)
+[478.4s] LR: 0.002752 | Train loss: 2.7732, acc: 58.08% | Val loss: 2.5210, acc: 63.04%
+
+Epoch 87/200 (world_size=1)
+[477.7s] LR: 0.002733 | Train loss: 2.7701, acc: 58.09% | Val loss: 2.5199, acc: 63.20%
+
+Epoch 88/200 (world_size=1)
+[478.0s] LR: 0.002714 | Train loss: 2.7678, acc: 58.14% | Val loss: 2.5136, acc: 63.34%
+
+Epoch 89/200 (world_size=1)
+[477.5s] LR: 0.002693 | Train loss: 2.7623, acc: 58.29% | Val loss: 2.4974, acc: 63.63%
+
+Epoch 90/200 (world_size=1)
+[478.3s] LR: 0.002673 | Train loss: 2.7612, acc: 58.33% | Val loss: 2.5092, acc: 63.36%
+
+Epoch 91/200 (world_size=1)
+[477.7s] LR: 0.002651 | Train loss: 2.7564, acc: 58.44% | Val loss: 2.5091, acc: 63.12%
+
+Epoch 92/200 (world_size=1)
+[477.9s] LR: 0.002630 | Train loss: 2.7548, acc: 58.48% | Val loss: 2.5050, acc: 63.37%
+
+Epoch 93/200 (world_size=1)
+[478.1s] LR: 0.002607 | Train loss: 2.7492, acc: 58.64% | Val loss: 2.4880, acc: 64.13%
+
+Epoch 94/200 (world_size=1)
+[478.2s] LR: 0.002584 | Train loss: 2.7489, acc: 58.59% | Val loss: 2.4916, acc: 63.61%
+
+Epoch 95/200 (world_size=1)
+[478.3s] LR: 0.002561 | Train loss: 2.7443, acc: 58.75% | Val loss: 2.4976, acc: 63.56%
+
+Epoch 96/200 (world_size=1)
+[477.9s] LR: 0.002537 | Train loss: 2.7401, acc: 58.84% | Val loss: 2.4920, acc: 63.63%
+
+Epoch 97/200 (world_size=1)
+[478.6s] LR: 0.002512 | Train loss: 2.7373, acc: 58.89% | Val loss: 2.5156, acc: 63.28%
+
+Epoch 98/200 (world_size=1)
+[478.1s] LR: 0.002487 | Train loss: 2.7317, acc: 59.01% | Val loss: 2.4858, acc: 63.81%
+
+Epoch 99/200 (world_size=1)
+[477.8s] LR: 0.002461 | Train loss: 2.7289, acc: 59.07% | Val loss: 2.4760, acc: 64.14%
+
+Epoch 100/200 (world_size=1)
+[478.4s] LR: 0.002435 | Train loss: 2.7264, acc: 59.14% | Val loss: 2.4857, acc: 64.19%
+
+Epoch 101/200 (world_size=1)
+[477.8s] LR: 0.002409 | Train loss: 2.7219, acc: 59.23% | Val loss: 2.4861, acc: 63.99%
+[BEST_LOSS] val_loss inf -> 2.4861  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_101.pth
+[BEST_ACC] val_acc -inf% -> 63.99%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_101.pth
+
+Epoch 102/200 (world_size=1)
+[477.4s] LR: 0.002382 | Train loss: 2.7218, acc: 59.28% | Val loss: 2.4764, acc: 64.05%
+[BEST_LOSS] val_loss 2.4861 -> 2.4764  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_102.pth
+[BEST_ACC] val_acc 63.99% -> 64.05%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_102.pth
+
+Epoch 103/200 (world_size=1)
+[478.0s] LR: 0.002354 | Train loss: 2.7198, acc: 59.32% | Val loss: 2.4764, acc: 64.06%
+[BEST_LOSS] val_loss 2.4764 -> 2.4764  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_103.pth
+[BEST_ACC] val_acc 64.05% -> 64.06%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_103.pth
+
+Epoch 104/200 (world_size=1)
+[477.4s] LR: 0.002326 | Train loss: 2.7133, acc: 59.47% | Val loss: 2.4771, acc: 63.98%
+
+Epoch 105/200 (world_size=1)
+[477.7s] LR: 0.002298 | Train loss: 2.7090, acc: 59.56% | Val loss: 2.4668, acc: 64.34%
+[BEST_LOSS] val_loss 2.4764 -> 2.4668  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_105.pth
+[BEST_ACC] val_acc 64.06% -> 64.34%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_105.pth
+
+Epoch 106/200 (world_size=1)
+[477.2s] LR: 0.002269 | Train loss: 2.7081, acc: 59.55% | Val loss: 2.4701, acc: 64.32%
+
+Epoch 107/200 (world_size=1)
+[477.5s] LR: 0.002240 | Train loss: 2.7045, acc: 59.63% | Val loss: 2.4722, acc: 64.23%
+
+Epoch 108/200 (world_size=1)
+[477.7s] LR: 0.002211 | Train loss: 2.7006, acc: 59.76% | Val loss: 2.4639, acc: 64.32%
+[BEST_LOSS] val_loss 2.4668 -> 2.4639  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_108.pth
+
+Epoch 109/200 (world_size=1)
+[477.7s] LR: 0.002181 | Train loss: 2.6979, acc: 59.83% | Val loss: 2.4617, acc: 64.68%
+[BEST_LOSS] val_loss 2.4639 -> 2.4617  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_109.pth
+[BEST_ACC] val_acc 64.34% -> 64.68%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_109.pth
+
+Epoch 110/200 (world_size=1)
+[477.9s] LR: 0.002151 | Train loss: 2.6935, acc: 59.97% | Val loss: 2.4650, acc: 64.37%
+
+Epoch 111/200 (world_size=1)
+[478.2s] LR: 0.002120 | Train loss: 2.6910, acc: 59.94% | Val loss: 2.4580, acc: 64.61%
+[BEST_LOSS] val_loss 2.4617 -> 2.4580  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_111.pth
+
+Epoch 112/200 (world_size=1)
+[477.7s] LR: 0.002090 | Train loss: 2.6878, acc: 60.07% | Val loss: 2.4565, acc: 64.52%
+[BEST_LOSS] val_loss 2.4580 -> 2.4565  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_112.pth
+
+Epoch 113/200 (world_size=1)
+[478.5s] LR: 0.002059 | Train loss: 2.6852, acc: 60.10% | Val loss: 2.4550, acc: 64.68%
+[BEST_LOSS] val_loss 2.4565 -> 2.4550  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_113.pth
+[BEST_ACC] val_acc 64.68% -> 64.68%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_113.pth
+
+Epoch 114/200 (world_size=1)
+[478.2s] LR: 0.002027 | Train loss: 2.6838, acc: 60.20% | Val loss: 2.4539, acc: 64.80%
+[BEST_LOSS] val_loss 2.4550 -> 2.4539  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_114.pth
+[BEST_ACC] val_acc 64.68% -> 64.80%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_114.pth
+
+Epoch 115/200 (world_size=1)
+[477.7s] LR: 0.001996 | Train loss: 2.6789, acc: 60.32% | Val loss: 2.4501, acc: 64.82%
+[BEST_LOSS] val_loss 2.4539 -> 2.4501  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_115.pth
+[BEST_ACC] val_acc 64.80% -> 64.82%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_115.pth
+
+Epoch 116/200 (world_size=1)
+[478.0s] LR: 0.001964 | Train loss: 2.6741, acc: 60.38% | Val loss: 2.4434, acc: 65.06%
+[BEST_LOSS] val_loss 2.4501 -> 2.4434  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_116.pth
+[BEST_ACC] val_acc 64.82% -> 65.06%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_116.pth
+
+Epoch 117/200 (world_size=1)
+[477.5s] LR: 0.001931 | Train loss: 2.6723, acc: 60.43% | Val loss: 2.4536, acc: 64.79%
+
+Epoch 118/200 (world_size=1)
+[477.6s] LR: 0.001899 | Train loss: 2.6674, acc: 60.53% | Val loss: 2.4580, acc: 64.72%
+
+Epoch 119/200 (world_size=1)
+[478.2s] LR: 0.001867 | Train loss: 2.6657, acc: 60.57% | Val loss: 2.4419, acc: 64.85%
+[BEST_LOSS] val_loss 2.4434 -> 2.4419  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_119.pth
+
+Epoch 120/200 (world_size=1)
+[477.5s] LR: 0.001834 | Train loss: 2.6616, acc: 60.69% | Val loss: 2.4361, acc: 65.09%
+[BEST_LOSS] val_loss 2.4419 -> 2.4361  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_120.pth
+[BEST_ACC] val_acc 65.06% -> 65.09%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_120.pth
+
+Epoch 121/200 (world_size=1)
+[477.0s] LR: 0.001801 | Train loss: 2.6621, acc: 60.69% | Val loss: 2.4391, acc: 65.18%
+[BEST_ACC] val_acc 65.09% -> 65.18%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_121.pth
+
+Epoch 122/200 (world_size=1)
+[478.0s] LR: 0.001768 | Train loss: 2.6563, acc: 60.82% | Val loss: 2.4468, acc: 64.81%
+
+Epoch 123/200 (world_size=1)
+[477.4s] LR: 0.001735 | Train loss: 2.6545, acc: 60.93% | Val loss: 2.4358, acc: 65.28%
+[BEST_LOSS] val_loss 2.4361 -> 2.4358  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_123.pth
+[BEST_ACC] val_acc 65.18% -> 65.28%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_123.pth
+
+Epoch 124/200 (world_size=1)
+[477.6s] LR: 0.001701 | Train loss: 2.6488, acc: 61.01% | Val loss: 2.4320, acc: 65.31%
+[BEST_LOSS] val_loss 2.4358 -> 2.4320  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_124.pth
+[BEST_ACC] val_acc 65.28% -> 65.31%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_124.pth
+
+Epoch 125/200 (world_size=1)
+[477.6s] LR: 0.001668 | Train loss: 2.6478, acc: 61.03% | Val loss: 2.4297, acc: 65.36%
+[BEST_LOSS] val_loss 2.4320 -> 2.4297  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_125.pth
+[BEST_ACC] val_acc 65.31% -> 65.36%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_125.pth
+
+Epoch 126/200 (world_size=1)
+[479.0s] LR: 0.001635 | Train loss: 2.6445, acc: 61.11% | Val loss: 2.4413, acc: 65.09%
+
+Epoch 127/200 (world_size=1)
+[479.0s] LR: 0.001601 | Train loss: 2.6405, acc: 61.21% | Val loss: 2.4254, acc: 65.51%
+[BEST_LOSS] val_loss 2.4297 -> 2.4254  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_127.pth
+[BEST_ACC] val_acc 65.36% -> 65.51%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_127.pth
+
+Epoch 128/200 (world_size=1)
+[478.5s] LR: 0.001567 | Train loss: 2.6383, acc: 61.27% | Val loss: 2.4315, acc: 65.16%
+
+Epoch 129/200 (world_size=1)
+[477.8s] LR: 0.001534 | Train loss: 2.6343, acc: 61.36% | Val loss: 2.4289, acc: 65.48%
+
+Epoch 130/200 (world_size=1)
+[478.4s] LR: 0.001500 | Train loss: 2.6296, acc: 61.45% | Val loss: 2.4282, acc: 65.54%
+[BEST_ACC] val_acc 65.51% -> 65.54%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_130.pth
+
+Epoch 131/200 (world_size=1)
+[478.2s] LR: 0.001466 | Train loss: 2.6293, acc: 61.53% | Val loss: 2.4199, acc: 65.48%
+[BEST_LOSS] val_loss 2.4254 -> 2.4199  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_131.pth
+
+Epoch 132/200 (world_size=1)
+[479.0s] LR: 0.001433 | Train loss: 2.6250, acc: 61.58% | Val loss: 2.4220, acc: 65.39%
+
+Epoch 133/200 (world_size=1)
+[477.9s] LR: 0.001399 | Train loss: 2.6224, acc: 61.67% | Val loss: 2.4215, acc: 65.41%
+
+Epoch 134/200 (world_size=1)
+[504.3s] LR: 0.001366 | Train loss: 2.6190, acc: 61.75% | Val loss: 2.4139, acc: 65.79%
+[BEST_LOSS] val_loss 2.4199 -> 2.4139  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_134.pth
+[BEST_ACC] val_acc 65.54% -> 65.79%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_134.pth
+
+Epoch 135/200 (world_size=1)
+[511.7s] LR: 0.001332 | Train loss: 2.6147, acc: 61.87% | Val loss: 2.4206, acc: 65.57%
+
+Epoch 136/200 (world_size=1)
+[477.4s] LR: 0.001299 | Train loss: 2.6132, acc: 61.81% | Val loss: 2.4139, acc: 65.60%
+
+Epoch 137/200 (world_size=1)
+[476.9s] LR: 0.001266 | Train loss: 2.6082, acc: 62.01% | Val loss: 2.4161, acc: 65.66%
+
+Epoch 138/200 (world_size=1)
+[477.6s] LR: 0.001232 | Train loss: 2.6070, acc: 61.99% | Val loss: 2.4107, acc: 65.74%
+[BEST_LOSS] val_loss 2.4139 -> 2.4107  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_138.pth
+
+Epoch 139/200 (world_size=1)
+[477.9s] LR: 0.001199 | Train loss: 2.6025, acc: 62.15% | Val loss: 2.4162, acc: 65.63%
+
+Epoch 140/200 (world_size=1)
+[785.1s] LR: 0.001166 | Train loss: 2.5998, acc: 62.23% | Val loss: 2.4087, acc: 65.95%
+[BEST_LOSS] val_loss 2.4107 -> 2.4087  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_140.pth
+[BEST_ACC] val_acc 65.79% -> 65.95%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_140.pth
+
+Epoch 141/200 (world_size=1)
+[476.5s] LR: 0.001134 | Train loss: 2.5990, acc: 62.24% | Val loss: 2.4073, acc: 65.95%
+[BEST_LOSS] val_loss 2.4087 -> 2.4073  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_141.pth
+
+Epoch 142/200 (world_size=1)
+[477.4s] LR: 0.001101 | Train loss: 2.5949, acc: 62.32% | Val loss: 2.4162, acc: 65.74%
+
+Epoch 143/200 (world_size=1)
+[476.6s] LR: 0.001069 | Train loss: 2.5930, acc: 62.38% | Val loss: 2.4088, acc: 65.83%
+
+Epoch 144/200 (world_size=1)
+[476.9s] LR: 0.001037 | Train loss: 2.5883, acc: 62.51% | Val loss: 2.4067, acc: 65.99%
+[BEST_LOSS] val_loss 2.4073 -> 2.4067  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_144.pth
+[BEST_ACC] val_acc 65.95% -> 65.99%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_144.pth
+
+Epoch 145/200 (world_size=1)
+[477.4s] LR: 0.001005 | Train loss: 2.5874, acc: 62.52% | Val loss: 2.4010, acc: 66.12%
+[BEST_LOSS] val_loss 2.4067 -> 2.4010  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_145.pth
+[BEST_ACC] val_acc 65.99% -> 66.12%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_145.pth
+
+Epoch 146/200 (world_size=1)
+[476.9s] LR: 0.000973 | Train loss: 2.5830, acc: 62.64% | Val loss: 2.4047, acc: 65.88%
+
+Epoch 147/200 (world_size=1)
+[481.1s] LR: 0.000942 | Train loss: 2.5806, acc: 62.71% | Val loss: 2.3999, acc: 66.07%
+[BEST_LOSS] val_loss 2.4010 -> 2.3999  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_147.pth
+
+Epoch 148/200 (world_size=1)
+[480.7s] LR: 0.000911 | Train loss: 2.5777, acc: 62.75% | Val loss: 2.4006, acc: 66.16%
+[BEST_ACC] val_acc 66.12% -> 66.16%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_148.pth
+
+Epoch 149/200 (world_size=1)
+[481.3s] LR: 0.000880 | Train loss: 2.5736, acc: 62.88% | Val loss: 2.3922, acc: 66.28%
+[BEST_LOSS] val_loss 2.3999 -> 2.3922  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_149.pth
+[BEST_ACC] val_acc 66.16% -> 66.28%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_149.pth
+
+Epoch 150/200 (world_size=1)
+[487.0s] LR: 0.000849 | Train loss: 2.5695, acc: 62.95% | Val loss: 2.3908, acc: 66.31%
+[BEST_LOSS] val_loss 2.3922 -> 2.3908  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_150.pth
+[BEST_ACC] val_acc 66.28% -> 66.31%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_150.pth
+
+Epoch 151/200 (world_size=1)
+[493.5s] LR: 0.000819 | Train loss: 2.5678, acc: 63.00% | Val loss: 2.3949, acc: 66.11%
+
+Epoch 152/200 (world_size=1)
+[482.1s] LR: 0.000789 | Train loss: 2.5662, acc: 63.10% | Val loss: 2.3914, acc: 66.41%
+[BEST_ACC] val_acc 66.31% -> 66.41%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_152.pth
+
+Epoch 153/200 (world_size=1)
+[481.1s] LR: 0.000760 | Train loss: 2.5612, acc: 63.16% | Val loss: 2.3941, acc: 66.27%
+
+Epoch 154/200 (world_size=1)
+[479.7s] LR: 0.000731 | Train loss: 2.5586, acc: 63.24% | Val loss: 2.3927, acc: 66.15%
+
+Epoch 155/200 (world_size=1)
+[479.0s] LR: 0.000702 | Train loss: 2.5558, acc: 63.28% | Val loss: 2.3908, acc: 66.39%
+
+Epoch 156/200 (world_size=1)
+[480.1s] LR: 0.000674 | Train loss: 2.5540, acc: 63.40% | Val loss: 2.3895, acc: 66.22%
+[BEST_LOSS] val_loss 2.3908 -> 2.3895  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_156.pth
+
+Epoch 157/200 (world_size=1)
+[479.9s] LR: 0.000646 | Train loss: 2.5504, acc: 63.43% | Val loss: 2.3845, acc: 66.47%
+[BEST_LOSS] val_loss 2.3895 -> 2.3845  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_157.pth
+[BEST_ACC] val_acc 66.41% -> 66.47%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_157.pth
+
+Epoch 158/200 (world_size=1)
+[479.9s] LR: 0.000619 | Train loss: 2.5498, acc: 63.46% | Val loss: 2.3848, acc: 66.43%
+
+Epoch 159/200 (world_size=1)
+[1663.6s] LR: 0.000592 | Train loss: 2.5453, acc: 63.58% | Val loss: 2.3833, acc: 66.39%
+[BEST_LOSS] val_loss 2.3845 -> 2.3833  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_159.pth
+
+Epoch 160/200 (world_size=1)
+[478.7s] LR: 0.000565 | Train loss: 2.5432, acc: 63.62% | Val loss: 2.3831, acc: 66.43%
+[BEST_LOSS] val_loss 2.3833 -> 2.3831  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_160.pth
+
+Epoch 161/200 (world_size=1)
+[478.1s] LR: 0.000539 | Train loss: 2.5402, acc: 63.69% | Val loss: 2.3798, acc: 66.63%
+[BEST_LOSS] val_loss 2.3831 -> 2.3798  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_161.pth
+[BEST_ACC] val_acc 66.47% -> 66.63%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_161.pth
+
+Epoch 162/200 (world_size=1)
+[477.7s] LR: 0.000513 | Train loss: 2.5383, acc: 63.72% | Val loss: 2.3776, acc: 66.77%
+[BEST_LOSS] val_loss 2.3798 -> 2.3776  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_162.pth
+[BEST_ACC] val_acc 66.63% -> 66.77%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_162.pth
+
+Epoch 163/200 (world_size=1)
+[478.1s] LR: 0.000488 | Train loss: 2.5345, acc: 63.83% | Val loss: 2.3781, acc: 66.71%
+
+Epoch 164/200 (world_size=1)
+[478.0s] LR: 0.000464 | Train loss: 2.5339, acc: 63.83% | Val loss: 2.3776, acc: 66.69%
+[BEST_LOSS] val_loss 2.3776 -> 2.3776  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_164.pth
+
+Epoch 165/200 (world_size=1)
+[688.4s] LR: 0.000440 | Train loss: 2.5301, acc: 63.93% | Val loss: 2.3734, acc: 66.68%
+[BEST_LOSS] val_loss 2.3776 -> 2.3734  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_165.pth
+
+Epoch 166/200 (world_size=1)
+[522.6s] LR: 0.000416 | Train loss: 2.5287, acc: 64.02% | Val loss: 2.3713, acc: 66.84%
+[BEST_LOSS] val_loss 2.3734 -> 2.3713  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_166.pth
+[BEST_ACC] val_acc 66.77% -> 66.84%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_166.pth
+
+Epoch 167/200 (world_size=1)
+[477.4s] LR: 0.000393 | Train loss: 2.5249, acc: 64.07% | Val loss: 2.3660, acc: 66.93%
+[BEST_LOSS] val_loss 2.3713 -> 2.3660  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_167.pth
+[BEST_ACC] val_acc 66.84% -> 66.93%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_167.pth
+
+Epoch 168/200 (world_size=1)
+[551.3s] LR: 0.000371 | Train loss: 2.5218, acc: 64.15% | Val loss: 2.3730, acc: 66.68%
+
+Epoch 169/200 (world_size=1)
+[532.9s] LR: 0.000349 | Train loss: 2.5211, acc: 64.17% | Val loss: 2.3675, acc: 66.97%
+[BEST_ACC] val_acc 66.93% -> 66.97%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_169.pth
+
+Epoch 170/200 (world_size=1)
+[476.7s] LR: 0.000328 | Train loss: 2.5157, acc: 64.30% | Val loss: 2.3681, acc: 66.93%
+
+Epoch 171/200 (world_size=1)
+[1236.6s] LR: 0.000307 | Train loss: 2.5163, acc: 64.28% | Val loss: 2.3668, acc: 66.96%
+
+Epoch 172/200 (world_size=1)
+[678.6s] LR: 0.000287 | Train loss: 2.5135, acc: 64.39% | Val loss: 2.3648, acc: 66.91%
+[BEST_LOSS] val_loss 2.3660 -> 2.3648  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_172.pth
+
+Epoch 173/200 (world_size=1)
+[478.3s] LR: 0.000267 | Train loss: 2.5106, acc: 64.43% | Val loss: 2.3657, acc: 67.02%
+[BEST_ACC] val_acc 66.97% -> 67.02%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_173.pth
+
+Epoch 174/200 (world_size=1)
+[1961.0s] LR: 0.000248 | Train loss: 2.5099, acc: 64.50% | Val loss: 2.3638, acc: 66.96%
+[BEST_LOSS] val_loss 2.3648 -> 2.3638  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_174.pth
+
+Epoch 175/200 (world_size=1)
+[476.9s] LR: 0.000230 | Train loss: 2.5064, acc: 64.57% | Val loss: 2.3627, acc: 67.01%
+[BEST_LOSS] val_loss 2.3638 -> 2.3627  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_175.pth
+
+Epoch 176/200 (world_size=1)
+[478.6s] LR: 0.000213 | Train loss: 2.5044, acc: 64.59% | Val loss: 2.3649, acc: 67.02%
+
+Epoch 177/200 (world_size=1)
+[1246.8s] LR: 0.000196 | Train loss: 2.5040, acc: 64.65% | Val loss: 2.3644, acc: 67.21%
+[BEST_ACC] val_acc 67.02% -> 67.21%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_177.pth
+
+Epoch 178/200 (world_size=1)
+[547.5s] LR: 0.000179 | Train loss: 2.5010, acc: 64.70% | Val loss: 2.3618, acc: 66.99%
+[BEST_LOSS] val_loss 2.3627 -> 2.3618  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_178.pth
+
+Epoch 179/200 (world_size=1)
+[476.6s] LR: 0.000164 | Train loss: 2.4975, acc: 64.79% | Val loss: 2.3622, acc: 66.88%
+
+Epoch 180/200 (world_size=1)
+[533.5s] LR: 0.000149 | Train loss: 2.4975, acc: 64.79% | Val loss: 2.3603, acc: 67.15%
+[BEST_LOSS] val_loss 2.3618 -> 2.3603  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_180.pth
+
+Epoch 181/200 (world_size=1)
+[1158.9s] LR: 0.000135 | Train loss: 2.4939, acc: 64.89% | Val loss: 2.3597, acc: 66.96%
+[BEST_LOSS] val_loss 2.3603 -> 2.3597  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_181.pth
+
+Epoch 182/200 (world_size=1)
+[540.2s] LR: 0.000121 | Train loss: 2.4924, acc: 64.92% | Val loss: 2.3557, acc: 67.09%
+[BEST_LOSS] val_loss 2.3597 -> 2.3557  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_182.pth
+
+Epoch 183/200 (world_size=1)
+[477.3s] LR: 0.000108 | Train loss: 2.4906, acc: 64.97% | Val loss: 2.3571, acc: 67.32%
+[BEST_ACC] val_acc 67.21% -> 67.32%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_183.pth
+
+Epoch 184/200 (world_size=1)
+[822.8s] LR: 0.000096 | Train loss: 2.4912, acc: 64.96% | Val loss: 2.3557, acc: 67.37%
+[BEST_ACC] val_acc 67.32% -> 67.37%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_184.pth
+
+Epoch 185/200 (world_size=1)
+[507.5s] LR: 0.000084 | Train loss: 2.4882, acc: 65.00% | Val loss: 2.3580, acc: 67.20%
+
+Epoch 186/200 (world_size=1)
+[485.8s] LR: 0.000074 | Train loss: 2.4862, acc: 65.04% | Val loss: 2.3559, acc: 67.10%
+
+Epoch 187/200 (world_size=1)
+[663.7s] LR: 0.000064 | Train loss: 2.4846, acc: 65.13% | Val loss: 2.3534, acc: 67.39%
+[BEST_LOSS] val_loss 2.3557 -> 2.3534  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_187.pth
+[BEST_ACC] val_acc 67.37% -> 67.39%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_187.pth
+
+Epoch 188/200 (world_size=1)
+[570.7s] LR: 0.000054 | Train loss: 2.4834, acc: 65.15% | Val loss: 2.3531, acc: 67.23%
+[BEST_LOSS] val_loss 2.3534 -> 2.3531  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_188.pth
+
+Epoch 189/200 (world_size=1)
+[575.9s] LR: 0.000046 | Train loss: 2.4821, acc: 65.15% | Val loss: 2.3534, acc: 67.27%
+
+Epoch 190/200 (world_size=1)
+[1126.8s] LR: 0.000038 | Train loss: 2.4818, acc: 65.19% | Val loss: 2.3539, acc: 67.30%
+
+Epoch 191/200 (world_size=1)
+[608.9s] LR: 0.000031 | Train loss: 2.4790, acc: 65.24% | Val loss: 2.3513, acc: 67.27%
+[BEST_LOSS] val_loss 2.3531 -> 2.3513  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_191.pth
+
+Epoch 192/200 (world_size=1)
+[758.1s] LR: 0.000024 | Train loss: 2.4779, acc: 65.24% | Val loss: 2.3542, acc: 67.27%
+
+Epoch 193/200 (world_size=1)
+[548.0s] LR: 0.000019 | Train loss: 2.4745, acc: 65.39% | Val loss: 2.3537, acc: 67.34%
+
+Epoch 194/200 (world_size=1)
+[542.7s] LR: 0.000014 | Train loss: 2.4753, acc: 65.37% | Val loss: 2.3504, acc: 67.54%
+[BEST_LOSS] val_loss 2.3513 -> 2.3504  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_194.pth
+[BEST_ACC] val_acc 67.39% -> 67.54%  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_acc_epoch_194.pth
+
+Epoch 195/200 (world_size=1)
+[541.3s] LR: 0.000010 | Train loss: 2.4746, acc: 65.40% | Val loss: 2.3500, acc: 67.48%
+[BEST_LOSS] val_loss 2.3504 -> 2.3500  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_195.pth
+
+Epoch 196/200 (world_size=1)
+[733.0s] LR: 0.000006 | Train loss: 2.4741, acc: 65.40% | Val loss: 2.3518, acc: 67.40%
+
+Epoch 197/200 (world_size=1)
+[494.7s] LR: 0.000004 | Train loss: 2.4725, acc: 65.44% | Val loss: 2.3473, acc: 67.46%
+[BEST_LOSS] val_loss 2.3500 -> 2.3473  saving checkpoints/imagenet/resnet18_ggm_nu3.0_base/best_epoch_197.pth
+
+Epoch 198/200 (world_size=1)
+[510.6s] LR: 0.000002 | Train loss: 2.4735, acc: 65.40% | Val loss: 2.3504, acc: 67.38%
+
+Epoch 199/200 (world_size=1)
+[591.9s] LR: 0.000001 | Train loss: 2.4737, acc: 65.41% | Val loss: 2.3538, acc: 67.23%
+
+Epoch 200/200 (world_size=1)
+[518.3s] LR: 0.000000 | Train loss: 2.4709, acc: 65.45% | Val loss: 2.3502, acc: 67.39%
+
+Evaluating checkpoints on TEST (single-process):
+[TEST] best_acc_epoch_194.pth | loss: 2.3507, acc: 67.42%
+
+[TEST][CHOSEN] best_acc_epoch_194.pth | loss: 2.3507, acc: 67.42%

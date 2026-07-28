@@ -1,0 +1,7 @@
+# Dependencies for ViTs/Imagenet/vit_small
+# Tested with Python 3.10, CUDA GPU. Torch 2.5.1 (repo environment.yml) and 2.12 both work.
+torch>=2.3
+torchvision>=0.18
+numpy
+tqdm
+datasets>=2.0   # imported by train_utils.py (HF ImageNet streaming) and evaluate.py

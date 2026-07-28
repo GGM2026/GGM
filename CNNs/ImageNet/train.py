@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 from typing import Optional
 
+# ---- CUDA allocator config (MUST be set before importing torch) ----
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 import torch
@@ -130,8 +131,14 @@ def main():
     torch._dynamo.config.optimize_ddp = False
     torch.set_float32_matmul_precision(args.matmul_precision)
 
+    # ---- CUDA performance tuning ----
     if device.type == "cuda":
+        # Enable cuDNN auto-tuner for static input shapes (typical for
+        # fixed-resolution training).  First iteration is slower, every
+        # subsequent iteration is faster.
         torch.backends.cudnn.benchmark = True
+        # Note: PYTORCH_CUDA_ALLOC_CONF is set at the top of the file,
+        # before `import torch`, so the CUDA allocator picks it up.
 
     if args.num_runs < 1:
         raise ValueError("--num_runs must be >= 1")
@@ -151,6 +158,7 @@ def main():
 
     try:
         for run_idx in range(args.num_runs):
+            # keep original seeding behavior
             seed_everything(args.seed + env.rank + run_idx * args.seed_step)
 
             trainloader, valloader, testloader, train_sampler, _, _ = build_loaders(
@@ -177,19 +185,19 @@ def main():
                 for p in model.parameters():
                     if p.ndim == 4:
                         p.data = p.data.to(memory_format=torch.channels_last)
-
+            
             if not getattr(args, "no_compile", False) and hasattr(torch, "compile"):
                 compile_kwargs = {
                     "fullgraph": bool(args.compile_fullgraph),
                     "dynamic": False,
                 }
-
+            
                 if args.compile_mode != "none":
                     compile_kwargs["mode"] = args.compile_mode
-
+            
                 if is_main_process(env.is_distributed):
                     print(f"[COMPILE] torch.compile enabled with {compile_kwargs}", flush=True)
-
+            
                 model = torch.compile(model, **compile_kwargs)
 
             if is_main_process(env.is_distributed):
@@ -222,7 +230,11 @@ def main():
             run_dir = get_run_dir(args, run_idx)
             run_dir.mkdir(parents=True, exist_ok=True)
 
+            # -------------------------
+            # TEST-ONLY MODE
+            # -------------------------
             if args.test:
+                # only rank0 evaluates, and no process group exists during eval
                 become_single_process_for_eval(env, device)
 
                 print(f"\n[TEST-ONLY] Evaluating checkpoints in: {run_dir}", flush=True)
@@ -254,6 +266,9 @@ def main():
                 cleanup()
                 return
 
+            # -------------------------
+            # Resume (optional)
+            # -------------------------
             start_epoch, best_loss, best_acc = maybe_autoresume(
                 args=args,
                 model=model,
@@ -270,6 +285,9 @@ def main():
             if is_main_process(env.is_distributed) and args.num_runs > 1:
                 print(f"\n========== RUN {run_idx+1}/{args.num_runs} ==========", flush=True)
 
+            # -------------------------
+            # Train loop
+            # -------------------------
             for epoch in range(start_epoch, args.epochs):
                 if env.is_distributed and train_sampler is not None:
                     train_sampler.set_epoch(epoch)
@@ -314,6 +332,7 @@ def main():
                         flush=True,
                     )
 
+                    # save best only after halfway point (same policy)
                     halfway_epoch = args.epochs // 2
                     allow_best_saving = (epoch + 1) > halfway_epoch
 
@@ -358,6 +377,7 @@ def main():
                                 flush=True,
                             )
 
+                    # always save last
                     save_last_checkpoint(
                         run_dir=run_dir,
                         epoch=epoch,
@@ -373,6 +393,9 @@ def main():
 
                 barrier(device)
 
+            # -------------------------
+            # Evaluate best checkpoints on TEST (rank0 only, single-process)
+            # -------------------------
             become_single_process_for_eval(env, device)
 
             if args.dataset == "imagenet":
@@ -404,11 +427,13 @@ def main():
                         f"run {run_idx+1:02d}: {best_test_acc:.2f}%  (chosen_ckpt={best_path.name})",
                     )
 
+            # cleanup between runs
             del model, optimizer, scheduler, trainloader, valloader, testloader, train_sampler
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             gc.collect()
 
+        # summary
         if is_main_process(env.is_distributed):
             if not test_accs:
                 print("\nNo test results collected.", flush=True)

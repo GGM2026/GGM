@@ -38,16 +38,25 @@ class CIFARBasicBlock(nn.Module):
 
 
 class ResNetCIFAR(nn.Module):
-    
+    """
+    CIFAR-style ResNet-20:
+      - 3x3 conv stem, stride 1
+      - no maxpool
+      - stages: 16, 32, 64 channels
+      - depth=20 corresponds to n=3 blocks per stage
+    Exposes conv1/bn1/act1/maxpool/fc so your GGM code can skip top-level stem/head.
+    """
     def __init__(self, num_classes: int = 10, in_chans: int = 3):
         super().__init__()
         self.in_planes = 16
 
+        # Keep naming compatible with your ggm_resnet.py expectations
         self.conv1 = nn.Conv2d(in_chans, 16, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(16)
         self.act1 = nn.ReLU(inplace=False)
-        self.maxpool = nn.Identity() 
+        self.maxpool = nn.Identity()  # exists for compatibility
 
+        # ResNet-20 => 3 blocks per stage
         self.layer1 = self._make_layer(16, blocks=3, stride=1)
         self.layer2 = self._make_layer(32, blocks=3, stride=2)
         self.layer3 = self._make_layer(64, blocks=3, stride=2)
@@ -77,4 +86,5 @@ class ResNetCIFAR(nn.Module):
 
 
 def create_resnet20(num_classes: int, in_chans: int) -> nn.Module:
+    """Factory for CIFAR-style ResNet-20."""
     return ResNetCIFAR(num_classes=num_classes, in_chans=in_chans)

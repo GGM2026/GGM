@@ -1,0 +1,255 @@
+[COMPILE] torch.compile enabled with {'fullgraph': True, 'dynamic': False}
+OptimizedModule(
+  (_orig_mod): ResNet(
+    (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (act1): PReLU(num_parameters=64)
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1152, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 64, 3, 3))
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=64)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1152, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 64, 3, 3))
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=64)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1152, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 64, 3, 3))
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=64)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=64, out_channels=64, kernel_size=(3, 3), N=1152, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 64, 3, 3))
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=64)
+      )
+    )
+    (layer2): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=64, out_channels=128, kernel_size=(3, 3), N=1152, N_factor=2.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 1152, 64, 3, 3))
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=128)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=2304, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 128, 3, 3))
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=128)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=2304, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 128, 3, 3))
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=128)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=128, out_channels=128, kernel_size=(3, 3), N=2304, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 128, 3, 3))
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=128)
+      )
+    )
+    (layer3): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=128, out_channels=256, kernel_size=(3, 3), N=2304, N_factor=2.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 2304, 128, 3, 3))
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=256)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=4608, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 256, 3, 3))
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=256)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=4608, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 256, 3, 3))
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=256)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=256, out_channels=256, kernel_size=(3, 3), N=4608, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 256, 3, 3))
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=256)
+      )
+    )
+    (layer4): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=256, out_channels=512, kernel_size=(3, 3), N=4608, N_factor=2.0, stride=(2, 2), padding=(1, 1), groups=1, bias=False, G_shape=(1, 4608, 256, 3, 3))
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=512)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=9216, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 9216, 512, 3, 3))
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=512)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=9216, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 9216, 512, 3, 3))
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (drop_block): Identity()
+        (act1): PReLU(num_parameters=512)
+        (aa): Identity()
+        (conv2): Conv2dGGD(in_channels=512, out_channels=512, kernel_size=(3, 3), N=9216, N_factor=2.0, stride=(1, 1), padding=(1, 1), groups=1, bias=False, G_shape=(1, 9216, 512, 3, 3))
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act2): PReLU(num_parameters=512)
+      )
+    )
+    (global_pool): SelectAdaptivePool2d(pool_type=avg, flatten=Flatten(start_dim=1, end_dim=-1))
+    (fc): Linear(in_features=512, out_features=1000, bias=True)
+  )
+)
+[PARAMS] total=11,693,416 | trainable=11,693,416 | frozen=0
+
+Epoch 1/200 (world_size=1)
+[466.8s] LR: 0.000302 | Train loss: 5.8354, acc: 5.99% | Val loss: 5.0075, acc: 14.08%
+
+Epoch 2/200 (world_size=1)
+[399.5s] LR: 0.000307 | Train loss: 4.9620, acc: 15.90% | Val loss: 4.3487, acc: 24.24%
+
+Epoch 3/200 (world_size=1)
+[397.3s] LR: 0.000317 | Train loss: 4.5223, acc: 22.86% | Val loss: 3.9749, acc: 31.42%
+
+Epoch 4/200 (world_size=1)
+[397.0s] LR: 0.000330 | Train loss: 4.2517, acc: 27.65% | Val loss: 3.6938, acc: 37.04%
+
+Epoch 5/200 (world_size=1)
+[396.0s] LR: 0.000346 | Train loss: 4.0608, acc: 31.15% | Val loss: 3.5794, acc: 39.50%
+
+Epoch 6/200 (world_size=1)
+[396.5s] LR: 0.000366 | Train loss: 3.9263, acc: 33.86% | Val loss: 3.4750, acc: 41.56%
+
+Epoch 7/200 (world_size=1)
+[396.8s] LR: 0.000390 | Train loss: 3.8179, acc: 35.90% | Val loss: 3.3495, acc: 44.47%
+
+Epoch 8/200 (world_size=1)
+[396.2s] LR: 0.000417 | Train loss: 3.7375, acc: 37.45% | Val loss: 3.2750, acc: 45.96%
+
+Epoch 9/200 (world_size=1)
+[395.7s] LR: 0.000447 | Train loss: 3.6729, acc: 38.87% | Val loss: 3.2168, acc: 47.33%
+
+Epoch 10/200 (world_size=1)
+[396.1s] LR: 0.000481 | Train loss: 3.6158, acc: 40.00% | Val loss: 3.1854, acc: 47.92%
+
+Epoch 11/200 (world_size=1)
+[433.9s] LR: 0.000518 | Train loss: 3.5688, acc: 40.95% | Val loss: 3.1406, acc: 48.88%
+
+Epoch 12/200 (world_size=1)
+[432.4s] LR: 0.000558 | Train loss: 3.5261, acc: 41.75% | Val loss: 3.1119, acc: 49.63%
+
+Epoch 13/200 (world_size=1)
+[479.1s] LR: 0.000601 | Train loss: 3.4907, acc: 42.50% | Val loss: 3.0563, acc: 50.93%
+
+Epoch 14/200 (world_size=1)
+[432.9s] LR: 0.000647 | Train loss: 3.4589, acc: 43.12% | Val loss: 3.0501, acc: 50.85%
+
+Epoch 15/200 (world_size=1)
+[605.0s] LR: 0.000695 | Train loss: 3.4291, acc: 43.79% | Val loss: 3.0480, acc: 50.88%
+
+Epoch 16/200 (world_size=1)
+[1008.4s] LR: 0.000747 | Train loss: 3.4066, acc: 44.23% | Val loss: 2.9999, acc: 52.10%
+
+Epoch 17/200 (world_size=1)
+[1371.8s] LR: 0.000800 | Train loss: 3.3820, acc: 44.73% | Val loss: 2.9890, acc: 52.10%
+
+Epoch 18/200 (world_size=1)
+[920.6s] LR: 0.000856 | Train loss: 3.3605, acc: 45.21% | Val loss: 2.9634, acc: 52.84%
+
+Epoch 19/200 (world_size=1)
+[743.2s] LR: 0.000915 | Train loss: 3.3383, acc: 45.64% | Val loss: 2.9562, acc: 53.08%
+
+Epoch 20/200 (world_size=1)
+[766.6s] LR: 0.000975 | Train loss: 3.3197, acc: 46.05% | Val loss: 2.9624, acc: 53.07%
+
+Epoch 21/200 (world_size=1)
+[828.1s] LR: 0.001037 | Train loss: 3.3029, acc: 46.36% | Val loss: 2.9502, acc: 52.93%
+
+Epoch 22/200 (world_size=1)
+[2305.9s] LR: 0.001101 | Train loss: 3.2888, acc: 46.65% | Val loss: 2.9114, acc: 54.12%
+
+Epoch 23/200 (world_size=1)
+[669.7s] LR: 0.001166 | Train loss: 3.2706, acc: 47.01% | Val loss: 2.9005, acc: 54.12%
+
+Epoch 24/200 (world_size=1)
+[641.2s] LR: 0.001233 | Train loss: 3.2548, acc: 47.34% | Val loss: 2.8853, acc: 54.38%
+
+Epoch 25/200 (world_size=1)
+[2138.6s] LR: 0.001301 | Train loss: 3.2414, acc: 47.68% | Val loss: 2.8632, acc: 55.07%
+
+Epoch 26/200 (world_size=1)
+[2325.9s] LR: 0.001369 | Train loss: 3.2280, acc: 47.97% | Val loss: 2.8506, acc: 55.26%
+
+Epoch 27/200 (world_size=1)
+[1075.9s] LR: 0.001439 | Train loss: 3.2167, acc: 48.15% | Val loss: 2.8393, acc: 55.36%
+
+Epoch 28/200 (world_size=1)
+[442.1s] LR: 0.001509 | Train loss: 3.2042, acc: 48.45% | Val loss: 2.8350, acc: 55.61%
+
+Epoch 29/200 (world_size=1)
+[674.4s] LR: 0.001579 | Train loss: 3.1925, acc: 48.64% | Val loss: 2.8115, acc: 56.16%
+
+Epoch 30/200 (world_size=1)
+[4537.8s] LR: 0.001650 | Train loss: 3.1798, acc: 48.90% | Val loss: 2.8001, acc: 56.53%
+
+Epoch 31/200 (world_size=1)
+[427.7s] LR: 0.001721 | Train loss: 3.1691, acc: 49.19% | Val loss: 2.8056, acc: 56.08%
+
+Epoch 32/200 (world_size=1)
+[413.8s] LR: 0.001791 | Train loss: 3.1613, acc: 49.33% | Val loss: 2.8009, acc: 56.28%
+
+Epoch 33/200 (world_size=1)
+[580.6s] LR: 0.001861 | Train loss: 3.1521, acc: 49.52% | Val loss: 2.7897, acc: 56.73%
+
+Epoch 34/200 (world_size=1)
+[1193.3s] LR: 0.001931 | Train loss: 3.1422, acc: 49.71% | Val loss: 2.7818, acc: 56.73%
+
+Epoch 35/200 (world_size=1)
+[556.9s] LR: 0.001999 | Train loss: 3.1341, acc: 49.91% | Val loss: 2.7726, acc: 56.97%
+
+Epoch 36/200 (world_size=1)
+[538.1s] LR: 0.002067 | Train loss: 3.1252, acc: 50.06% | Val loss: 2.7595, acc: 57.36%
+
+Epoch 37/200 (world_size=1)
+[1103.9s] LR: 0.002134 | Train loss: 3.1184, acc: 50.30% | Val loss: 2.7956, acc: 56.52%
+
+Epoch 38/200 (world_size=1)
+[995.7s] LR: 0.002199 | Train loss: 3.1097, acc: 50.44% | Val loss: 2.7581, acc: 57.20%
+
+Epoch 39/200 (world_size=1)
+[2395.4s] LR: 0.002263 | Train loss: 3.1009, acc: 50.61% | Val loss: 2.7387, acc: 57.72%
+
+Epoch 40/200 (world_size=1)
+[1036.1s] LR: 0.002325 | Train loss: 3.0950, acc: 50.79% | Val loss: 2.7422, acc: 57.62%
+
+Epoch 41/200 (world_size=1)
+[933.1s] LR: 0.002385 | Train loss: 3.0869, acc: 50.94% | Val loss: 2.7887, acc: 56.57%
+
+Epoch 42/200 (world_size=1)
+[782.0s] LR: 0.002444 | Train loss: 3.0809, acc: 51.07% | Val loss: 2.7268, acc: 58.16%
+
+Epoch 43/200 (world_size=1)
+[1573.5s] LR: 0.002500 | Train loss: 3.0731, acc: 51.22% | Val loss: 2.7442, acc: 57.81%
+
+Epoch 44/200 (world_size=1)
+[1224.6s] LR: 0.002553 | Train loss: 3.0639, acc: 51.48% | Val loss: 2.7132, acc: 58.15%
+
+Epoch 45/200 (world_size=1)
+[998.6s] LR: 0.002605 | Train loss: 3.0604, acc: 51.51% | Val loss: 2.7639, acc: 57.09%
+
+Epoch 46/200 (world_size=1)
+[1333.2s] LR: 0.002653 | Train loss: 3.0544, acc: 51.65% | Val loss: 2.7106, acc: 58.32%
+
+Epoch 47/200 (world_size=1)
+[651.9s] LR: 0.002699 | Train loss: 3.0462, acc: 51.75% | Val loss: 2.6914, acc: 58.80%
+
+Epoch 48/200 (world_size=1)

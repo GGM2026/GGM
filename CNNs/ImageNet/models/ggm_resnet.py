@@ -17,11 +17,18 @@ except ImportError:
     from custom_resnet import create_resnet20
 
 
+
+# -------------------------
+# Replace layers with GGM
+# -------------------------
 def customize_model(
     model: nn.Module,
     N_factor: float,
 ) -> None:
-    
+    """
+    Replace Conv2d/Linear layers with Conv2dGGM/LinearGGM.
+    Customizes everything except the top-level stem and head.
+    """
     skip_top = {"conv1", "bn1", "act1", "maxpool", "fc", "head", "stem"}
 
     for name, module in model.named_children():
@@ -44,6 +51,7 @@ def replace_layers_recursive(
     for name, module in parent_module.named_children():
         full_name = f"{current_path}.{name}"
 
+        # Keep ResNet projection/downsampling path full precision
         if keep_downsample_fp and (
             ".downsample" in full_name or full_name.endswith("downsample")
         ):
@@ -96,17 +104,31 @@ def replace_layers_recursive(
 
 
 def disable_inplace_activations(model: nn.Module) -> None:
-
+    """
+    ResNet uses inplace=True ReLU by default (timm).
+    Ensure inplace=False to avoid issues in some custom layers/backward passes.
+    """
     for m in model.modules():
         if hasattr(m, "inplace"):
             m.inplace = False
 
 
+# -------------------------
+# PReLU swapping (timm ResNet)
+# -------------------------
 def set_resnet_prelu(model: nn.Module, init: float = 0.25) -> None:
+    """
+    Replace timm ResNet activations (stem act1 + block act{1,2,3})
+    with channel-wise PReLU using the corresponding BatchNorm num_features.
+
+    Works for BasicBlock (bn1->act1, bn2->act2) and Bottleneck (bn3->act3).
+    """
+    # Stem: bn1 -> act1
     if hasattr(model, "bn1") and hasattr(model, "act1"):
         if isinstance(model.bn1, nn.BatchNorm2d) and isinstance(model.act1, nn.Module):
             model.act1 = nn.PReLU(num_parameters=model.bn1.num_features, init=init)
 
+    # Blocks: bn1->act1, bn2->act2, (bn3->act3 for bottleneck)
     for m in model.modules():
         if hasattr(m, "bn1") and hasattr(m, "act1") and isinstance(m.bn1, nn.BatchNorm2d):
             m.act1 = nn.PReLU(num_parameters=m.bn1.num_features, init=init)
@@ -116,10 +138,18 @@ def set_resnet_prelu(model: nn.Module, init: float = 0.25) -> None:
             m.act3 = nn.PReLU(num_parameters=m.bn3.num_features, init=init)
 
 
+# -------------------------
+# Dataset stem patching
+# -------------------------
 SMALL_IMAGE_DATASETS = {"cifar10", "cifar100", "fashionmnist"}
 
 
 def patch_resnet_stem_for_dataset(model: nn.Module, dataset_name: str, in_chans: int) -> None:
+    """
+    For timm ResNets: swap 7x7/stride2 stem -> 3x3/stride1 and remove maxpool on small-image datasets.
+
+    For custom ResNet20: it already uses a 3x3 stem and Identity maxpool, so this is effectively harmless.
+    """
     d = dataset_name.lower()
     if d not in SMALL_IMAGE_DATASETS:
         return
@@ -143,36 +173,57 @@ def patch_resnet_stem_for_dataset(model: nn.Module, dataset_name: str, in_chans:
 
 
 def _patch_classifier_dropout(model: nn.Module, drop_rate: float) -> None:
+    """
+    Ensure we have a dropout right before the final classifier, even if the
+    backbone doesn't expose a built-in drop layer.
+    Works for typical timm ResNet-style models that have model.fc.
+    """
     if drop_rate <= 0:
         return
 
+    # If timm already has a classifier drop module, prefer using it.
+    # Many timm models have `drop_rate` and create `model.drop` internally.
     if hasattr(model, "drop") and isinstance(model.drop, nn.Module) and not isinstance(model.drop, nn.Identity):
         return
 
     model.drop = nn.Dropout(p=drop_rate)
 
 
+# -------------------------
+# Build
+# -------------------------
 def build_model(
     model_name: str = "resnet18",
     num_classes: int = 1000,
     N_factor: float = 1.0,
     requires_grad: bool = True,
     device: Optional[Union[str, torch.device]] = None,
-    img_size: Optional[int] = None,  
+    img_size: Optional[int] = None,  # accepted for compatibility; unused for ResNet
     in_chans: int = 3,
     dataset_name: Optional[str] = None,
-    use_prelu: bool = False,      
-    prelu_init: float = 0.25,    
+    use_prelu: bool = False,      # NEW: swap all activations to PReLU
+    prelu_init: float = 0.25,     # NEW: PReLU init value
 ) -> nn.Module:
+    """
+    Factory to build and customize ResNet with Conv/Linear swapped to GGM.
 
+    model_name:
+      - "resnet18", "resnet34", "resnet50", -----> timm.create_model
+      - "resnet20" ------------------------------> custom CIFAR-style ResNet-20
+
+    use_prelu:
+      - False: keep timm defaults (ReLU)
+      - True: replace stem + block activations with channel-wise PReLU
+    """
     mn = model_name.lower().strip()
 
+    # Backbone construction
     if mn == "resnet20":
         model = create_resnet20(num_classes=num_classes, in_chans=in_chans)
     else:
         model = timm.create_model(
             model_name,
-            pretrained=False, 
+            pretrained=False,  # hard-disabled
             num_classes=num_classes,
             in_chans=in_chans,
         )
@@ -185,7 +236,7 @@ def build_model(
     if dataset_name is not None:
         patch_resnet_stem_for_dataset(model, dataset_name, in_chans=in_chans)
 
-    customize_model(model, N_factor=N_factor, )
+    customize_model(model, N_factor=N_factor,)
 
     for p in model.parameters():
         p.requires_grad = requires_grad

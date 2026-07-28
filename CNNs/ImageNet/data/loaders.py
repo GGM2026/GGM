@@ -32,7 +32,7 @@ def _split_indices(n: int, val_fraction: float, seed: int) -> Tuple[list[int], l
 
     perm = torch.randperm(n, generator=g).tolist()
     val_len = int(round(n * val_fraction))
-    val_len = max(1, min(val_len, n - 1))  
+    val_len = max(1, min(val_len, n - 1))  # keep both splits non-empty
 
     val_idx = perm[:val_len]
     train_idx = perm[val_len:]
@@ -47,20 +47,29 @@ def build_loaders(
     is_distributed: bool,
     img_size: int = 224,
     drop_last: bool = True,
-    val_fraction: float = 0.1, 
-    split_seed: int = 1337,     
+    val_fraction: float = 0.1,   # NEW
+    split_seed: int = 1337,      # NEW (must be same on all ranks)
 ):
-
+    """
+    Returns:
+      train_loader, val_loader, test_loader, train_sampler, val_sampler, test_sampler
+    """
     train_tf, val_tf = build_transforms(dataset, img_size)
     d = dataset.lower()
 
+    # --- Build datasets in a way that val uses val_tf but shares the same underlying examples ---
     if d == "imagenet":
-        
+        # Standard ImageNet protocol:
+        # - train on official ImageNet train split
+        # - validate/checkpoint/report on official ImageNet val split
+        # - no public labeled test set, so keep test_ds as official val only for API compatibility
         train_ds = build_dataset(d, root, train=True, transform=train_tf)
         val_ds   = build_dataset(d, root, train=False, transform=val_tf)
         test_ds  = build_dataset(d, root, train=False, transform=val_tf)
     
     elif d == "tinyimagenet":
+        # Keep your previous TinyImageNet behavior.
+        # Split TRAIN into train+val; use official VAL as TEST.
         train_base = build_dataset(d, root, train=True, transform=train_tf)
         val_base   = build_dataset(d, root, train=True, transform=val_tf)
         test_ds    = build_dataset(d, root, train=False, transform=val_tf)
@@ -74,6 +83,7 @@ def build_loaders(
         val_ds   = Subset(val_base, val_idx)
 
     else:
+        # CIFAR/FashionMNIST: split TRAIN into train+val; use official TEST as test.
         train_base = build_dataset(d, root, train=True, transform=train_tf)
         val_base   = build_dataset(d, root, train=True, transform=val_tf)
         test_ds    = build_dataset(d, root, train=False, transform=val_tf)
@@ -86,6 +96,7 @@ def build_loaders(
     val_sampler   = DistributedSampler(val_ds, shuffle=False) if is_distributed else None
     test_sampler  = None
 
+    # If num_workers==0, persistent_workers must be False
     persistent = (num_workers > 0)
 
     train_loader = DataLoader(

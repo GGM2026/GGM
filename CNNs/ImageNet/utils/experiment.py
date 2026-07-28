@@ -28,6 +28,7 @@ def resolve_arch_and_kwargs(
         timm_backbone = resolve_timm_backbone("resnet", size)
 
         if args.double_residual and size not in {"18", "34"}:
+            # warning printed in main only on rank0; keep logic there if you want
             pass
 
         arch = "ggm_resnet"
@@ -80,6 +81,9 @@ def get_run_dir(args, run_idx: int) -> Path:
 
 
 def become_single_process_for_eval(env, device: torch.device) -> None:
+    """
+    Ensures only rank0 continues, and destroys the process group so no collectives can occur.
+    """
     barrier(device)
 
     if env.is_distributed and env.rank != 0:

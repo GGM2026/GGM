@@ -18,6 +18,10 @@ class DDPEnv:
 
 
 def ddp_setup(backend: str | None = None) -> DDPEnv:
+    """
+    Initializes torch.distributed if launched with torchrun.
+    Returns a DDPEnv describing the distributed environment and chosen device.
+    """
     if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
         rank = int(os.environ["RANK"])
         world_size = int(os.environ["WORLD_SIZE"])
@@ -36,6 +40,7 @@ def ddp_setup(backend: str | None = None) -> DDPEnv:
 
         return DDPEnv(True, rank, world_size, local_rank, device)
 
+    # non-distributed fallback
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     return DDPEnv(False, 0, 1, 0, device)
 
@@ -46,6 +51,9 @@ def is_main_process(is_distributed: bool) -> bool:
 
 @torch.no_grad()
 def all_reduce_sum(value: float | int, device: torch.device) -> float:
+    """
+    All-reduce SUM for a scalar numeric value. Returns summed value on all ranks.
+    """
     if not (dist.is_available() and dist.is_initialized()):
         return float(value)
 

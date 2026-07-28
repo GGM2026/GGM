@@ -11,6 +11,12 @@ import torch
 import torch.nn as nn
 
 def _strip_state_dict_prefixes(sd: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Make checkpoints portable across:
+      - torch.compile: adds '_orig_mod.'
+      - DDP: adds 'module.'
+    Handles combined '_orig_mod.module.' too.
+    """
     out: Dict[str, Any] = {}
     for k, v in sd.items():
         if k.startswith("_orig_mod."):
@@ -22,8 +28,13 @@ def _strip_state_dict_prefixes(sd: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _unwrap_model_for_state_dict(model: nn.Module) -> nn.Module:
+    """
+    Unwrap common wrappers so we always save/load against the real module.
+    """
+    # DDP unwrap
     if isinstance(model, nn.parallel.DistributedDataParallel):
         model = model.module
+    # torch.compile unwrap (compiled modules often keep original at _orig_mod)
     if hasattr(model, "_orig_mod"):
         model = model._orig_mod
     return model
@@ -79,7 +90,7 @@ def save_last_checkpoint(
         "scaler": (scaler.state_dict() if scaler is not None else None),
     }
 
-    save_checkpoint(state, str(last_path)) 
+    save_checkpoint(state, str(last_path))  # uses your atomic writer
     return last_path
 
 def save_best_checkpoint(
@@ -94,7 +105,11 @@ def save_best_checkpoint(
     prev_best_path: Optional[Path],
     scaler: Optional[Any] = None,
 ) -> Path:
-    
+    """
+    Save only the current best checkpoint.
+    Writes the new best first (atomically), then deletes the previous best file (if any).
+    Saves as: best_epoch_XXX.pth
+    """
     run_dir.mkdir(parents=True, exist_ok=True)
 
     best_path = run_dir / f"best_epoch_{epoch+1:03d}.pth"
@@ -111,8 +126,10 @@ def save_best_checkpoint(
         "scaler": (scaler.state_dict() if scaler is not None else None),
     }
 
+    # 1) Save new best first (atomic)
     save_checkpoint(state, str(best_path))
 
+    # 2) Then delete previous best (if it exists and isn't the same path)
     if prev_best_path is not None and prev_best_path.exists() and prev_best_path != best_path:
         try:
             prev_best_path.unlink()
@@ -134,7 +151,11 @@ def save_best_acc_checkpoint(
     scaler: Optional[Any] = None,
     filename_prefix: str = "best_acc_epoch",
 ) -> Path:
-
+    """
+    Save only the current best-accuracy checkpoint.
+    Writes the new best first (atomically), then deletes the previous best file (if any).
+    Saves as: {filename_prefix}_XXX.pth
+    """
     run_dir.mkdir(parents=True, exist_ok=True)
 
     best_path = run_dir / f"{filename_prefix}_{epoch+1:03d}.pth"
@@ -175,11 +196,15 @@ def load_checkpoint(
 
     base_model = _unwrap_model_for_state_dict(model)
 
-    sd = ckpt.get("model", ckpt) 
+    sd = ckpt.get("model", ckpt)  # support either {"model": ...} or raw sd
     sd = _strip_state_dict_prefixes(sd)
 
+    # If you want it to hard-fail on real mismatches, keep strict=True.
+    # While debugging portability, strict=False can help:
     missing, unexpected = base_model.load_state_dict(sd, strict=strict)
 
+    # Optional: only rank0 prints in your caller; leaving silent here is fine.
+    # But this is very useful the first time:
     if (len(missing) or len(unexpected)) and strict:
         raise RuntimeError(
             f"State dict mismatch after prefix stripping. "
@@ -198,7 +223,16 @@ def load_checkpoint(
 
 
 def find_latest_checkpoint(run_dir: Path, device: Optional[torch.device] = None) -> Optional[Path]:
+    """
+    Preference order:
+      1) last*.pth, if present and loadable
+      2) highest-epoch checkpoint among:
+           - best_epoch_XXX.pth
+           - best_acc_epoch_XXX.pth
+      3) newest loadable .pth by mtime
 
+    If `device` is given, we also sanity-check that the checkpoint can be loaded.
+    """
     if not run_dir.exists():
         return None
 
@@ -215,6 +249,7 @@ def find_latest_checkpoint(run_dir: Path, device: Optional[torch.device] = None)
         except Exception:
             return False
 
+    # 1) Prefer last*.pth if it exists and is loadable
     last_ckpts = sorted(
         [p for p in pths if p.name.startswith("last")],
         key=lambda p: p.stat().st_mtime,
@@ -224,6 +259,7 @@ def find_latest_checkpoint(run_dir: Path, device: Optional[torch.device] = None)
         if is_loadable(p):
             return p
 
+    # 2) Otherwise choose the checkpoint with the highest epoch number
     epoch_re = re.compile(r"(best(?:_acc)?_epoch)_(\d+)\.pth$")
     ranked = []
     for p in pths:
@@ -235,6 +271,7 @@ def find_latest_checkpoint(run_dir: Path, device: Optional[torch.device] = None)
         ranked.sort(key=lambda t: t[0], reverse=True)
         return ranked[0][1]
 
+    # 3) Fallback: newest loadable .pth by mtime
     for p in sorted(pths, key=lambda p: p.stat().st_mtime, reverse=True):
         if is_loadable(p):
             return p
@@ -252,7 +289,13 @@ def evaluate_checkpoint(
     criterion: Optional[nn.Module] = None,
     strict: bool = True,
 ) -> Dict[str, float]:
+    """
+    Load a checkpoint into `model` and evaluate on `loader`.
 
+    Returns dict with:
+      - loss (if criterion provided)
+      - acc  (top-1 accuracy, percent)
+    """
     ckpt_path = Path(ckpt_path)
     ckpt = torch.load(str(ckpt_path), map_location=device, weights_only=False)
 
@@ -299,7 +342,14 @@ def evaluate_checkpoints_choose_best(
     strict: bool = True,
     verbose: bool = True,
 ) -> Tuple[Path, Dict[str, float], List[Tuple[Path, Dict[str, float]]]]:
-   
+    """
+    Evaluate multiple checkpoints and return:
+      - best_path (highest acc)
+      - best_metrics dict
+      - all_results list of (path, metrics)
+
+    This is useful for comparing best-by-loss vs best-by-acc checkpoints anytime.
+    """
     results: List[Tuple[Path, Dict[str, float]]] = []
 
     best_path: Optional[Path] = None
@@ -334,7 +384,14 @@ def evaluate_checkpoints_choose_best(
 
 
 def find_candidate_checkpoints(run_dir: Path) -> list[Path]:
-    
+    """
+    Return only the latest candidates:
+      - latest best_epoch_XXX.pth      (best-by-val-loss)
+      - latest best_acc_epoch_XXX.pth  (best-by-val-acc)
+      - last.pth (if present)
+
+    "Latest" for the epoch-tagged files means highest XXX number.
+    """
     run_dir = Path(run_dir)
 
     def latest_by_epoch(glob_pat: str, regex_pat: str) -> Optional[Path]:
@@ -369,6 +426,7 @@ def find_candidate_checkpoints(run_dir: Path) -> list[Path]:
 
     last = run_dir / "last.pth"
     if last.exists():
+        # avoid dup in case someone used "last.pth" name for a best ckpt
         if not any(p.resolve() == last.resolve() for p in cands):
             cands.append(last)
 

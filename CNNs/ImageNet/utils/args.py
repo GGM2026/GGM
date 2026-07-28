@@ -51,7 +51,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--size",
         type=str,
         default="",
-        help="Model size. ResNet: 18/34. VGG: 16.",
+        help="Model size. ResNet: 18/20/34. VGG: small/11/16.",
     )
 
     p.add_argument("--N_factor", type=float, default=1.0)
@@ -162,12 +162,23 @@ def build_parser() -> argparse.ArgumentParser:
 def parse_args(argv: list[str] | None = None):
     parser = build_parser()
 
+    # First pass: parse to find which args the user explicitly provided.
     args = parser.parse_args(argv)
 
+    # Detect which tunable keys were explicitly passed on the CLI by
+    # comparing parsed values against their argparse defaults.
     explicit_keys: set[str] = set()
     for dest in ("batch_size", "num_workers", "N_factor", "k_bits_x", "k_bits_w"):
         default_value = parser.get_default(dest)
         if getattr(args, dest, None) != default_value:
             explicit_keys.add(dest)
+
+    # Apply system_config.yaml defaults for anything not explicitly set.
+    # _apply_system_config(args, explicit_keys)
+
+    # # Final fallback defaults for anything still None (no CLI, no config file).
+    # for _yaml_key, (dest, fallback) in _TUNABLE_DEFAULTS.items():
+    #     if getattr(args, dest, None) is None:
+    #         setattr(args, dest, fallback)
 
     return args
