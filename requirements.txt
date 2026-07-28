@@ -1,0 +1,46 @@
+# GGM: Python dependencies for every experiment in this repository.
+#
+# PyTorch is deliberately NOT listed here. A pip requirement cannot select the
+# CUDA build your GPU needs, and the wrong build fails at runtime with
+# "no kernel image is available for execution on the device". Install torch and
+# torchvision FIRST from the PyTorch index that matches your hardware, then
+# install this file. See the Installation section of README.md.
+#
+#   Minimum versions required by this codebase: torch >= 2.4,
+#   torchvision >= 0.19, Python >= 3.10.
+#
+#   pip install -r requirements.txt
+
+# --- core numerics, used everywhere -----------------------------------------
+numpy>=1.24
+tqdm>=4.65
+
+# --- model definitions ------------------------------------------------------
+timm>=0.9                  # CNNs/Tinyimagenet, CNNs/ImageNet
+einops>=0.6                # ViTs/Imagenet/bhvit, Other Experiments/timeseries
+pillow>=9.0                # image loading in CNNs/ImageNet and the notebooks
+
+# --- configuration, logging, analysis, plotting -----------------------------
+pyyaml>=6.0                # CNNs/ImageNet/utils/args.py
+pandas>=2.0                # metric logging and result tables
+matplotlib>=3.7            # figures
+seaborn>=0.12              # ViTs evaluator, nlpggm
+scipy>=1.10                # metrics and time-series preprocessing
+scikit-learn>=1.2          # metrics for GLUE, ViTs, time series
+
+# --- dataset acquisition ----------------------------------------------------
+wget==3.2                  # CNNs/Tinyimagenet/scripts/prepare_tinyimagenet.py
+datasets>=2.14             # ViTs/Imagenet/vit_small ImageNet download
+huggingface-hub>=0.20      # provides the `hf` CLI used for `hf auth login`
+
+# --- time-series experiments (Other Experiments/timeseries) -----------------
+sktime>=0.24
+natsort>=8.4
+patool>=1.12
+wfdb>=4.1                  # PTB-XL signal preprocessing
+
+# --- GLUE experiments (Other Experiments/nlpggm) ----------------------------
+# transformer/file_utils.py imports these at module level.
+requests>=2.31
+boto3>=1.34
+botocore>=1.34
