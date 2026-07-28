@@ -56,21 +56,7 @@ def gelu(x):
     """
     return x * 0.5 * (1.0 + torch.erf(x / math.sqrt(2.0)))
 
-class SPReLU(nn.Module):
-    def __init__(self, in_channels, init_neg=0.25):
-        super().__init__()
-        self.alpha = nn.Parameter(torch.ones(in_channels))
-        self.beta = nn.Parameter(torch.ones(in_channels) * init_neg)
-
-    def forward(self, x):
-        shape = [1] * x.dim()
-        shape[-1] = x.shape[-1] 
-        alpha = self.alpha.view(*shape)
-        beta = self.beta.view(*shape)
-        return alpha * F.relu(x) - beta * (F.relu(-x))
-
 class BinaryNorm(nn.Module):
-    """Sign-based normalization — zero FLOPs, fully binarization-friendly."""
     def __init__(self, hidden_size, eps=1e-5):
         super().__init__()
         self.weight = nn.Parameter(torch.ones(hidden_size))
@@ -78,37 +64,10 @@ class BinaryNorm(nn.Module):
         self.eps = eps
 
     def forward(self, x):
-        # Mean-centering only, no variance scaling (cheap)
+        # Mean-centering only, no variance scaling 
         x = x - x.mean(dim=-1, keepdim=True)
         return self.weight * x + self.bias
 
-class RMSNorm(nn.Module):
-    """Root Mean Square Norm — drops mean subtraction, ~30% faster than LayerNorm."""
-    def __init__(self, hidden_size, eps=1e-8):
-        super().__init__()
-        self.weight = nn.Parameter(torch.ones(hidden_size))
-        self.eps = eps
-
-    def forward(self, x):
-        rms = x.pow(2).mean(-1, keepdim=True).add(self.eps).sqrt()
-        return self.weight * (x / rms)
-
-class PowerNorm(nn.Module):
-    """Replaces mean/var with running quadratic mean — better for quantized models."""
-    def __init__(self, hidden_size, eps=1e-5, alpha=0.1):
-        super().__init__()
-        self.weight = nn.Parameter(torch.ones(hidden_size))
-        self.running_phi = nn.Parameter(torch.ones(1), requires_grad=False)
-        self.eps = eps
-        self.alpha = alpha 
-
-    def forward(self, x):
-        if self.training:
-            phi = x.pow(2).mean()
-            self.running_phi.data = (1 - self.alpha) * self.running_phi + self.alpha * phi
-        else:
-            phi = self.running_phi
-        return self.weight * x / (phi + self.eps).sqrt()
 
 class BertEmbeddings(nn.Module):
     def __init__(self, config):
@@ -143,162 +102,57 @@ class BertEmbeddings(nn.Module):
         embeddings = self.dropout(embeddings)
         return embeddings
 
-class GGMAttentionScores(nn.Module):
-    def __init__(self, head_dim, N_factor=1.0, eps=1e-5, zero_to_one=False):
-        super().__init__()
-        self.head_dim = int(head_dim)
-        self.N_factor = float(N_factor)
-        self.N = max(1, int(round(self.N_factor * self.head_dim)))
-        self.eps = float(eps)
-        self.zero_to_one = bool(zero_to_one)
-
-        self.register_buffer("G", torch.randn(self.N, self.head_dim))
-
-    @torch.no_grad()
-    def resample_G(self):
-        self.G.copy_(torch.randn_like(self.G))
-
-    def _sign(self, x):
-        y = x.sign()
-        if self.zero_to_one:
-            y = torch.where(y == 0, torch.ones_like(y), y)
-        return y
-
-    def forward(self, q, k):
-        q32 = q.float()
-        k32 = k.float()
-        G32 = self.G.float()
-
-        qg = self._sign(torch.einsum("bhtd,nd->bhtn", q32, G32))
-        kg = self._sign(torch.einsum("bhsd,nd->bhsn", k32, G32))
-
-        y_bin = torch.einsum("bhtn,bhsn->bhts", qg, kg) / float(self.N)
-
-        qnorm = (q32.square().sum(dim=-1, keepdim=True) + self.eps).sqrt()
-        knorm = (k32.square().sum(dim=-1, keepdim=True) + self.eps).sqrt()
-
-        qhat = q32 / qnorm
-        khat = k32 / knorm
-
-        s = torch.einsum("bhtd,bhsd->bhts", qhat, khat)
-        y_surr = (2.0 / math.pi) * torch.asin(s)
-
-        y = y_bin.detach() + (y_surr - y_surr.detach())
-        return y.to(dtype=q.dtype)
-
-
-class GGMContextProduct(nn.Module):
-    def __init__(self, seq_len, N_factor=1.0, eps=1e-5, zero_to_one=False):
-        super().__init__()
-        self.seq_len = int(seq_len)
-        self.N_factor = float(N_factor)
-        self.N = max(1, int(round(self.N_factor * self.seq_len)))
-        self.eps = float(eps)
-        self.zero_to_one = bool(zero_to_one)
-
-        self.register_buffer("G", torch.randn(self.N, self.seq_len))
-
-    @torch.no_grad()
-    def resample_G(self):
-        self.G.copy_(torch.randn_like(self.G))
-
-    def _sign(self, x):
-        y = x.sign()
-        if self.zero_to_one:
-            y = torch.where(y == 0, torch.ones_like(y), y)
-        return y
-
-    def forward(self, A, V):
-        """
-        A: [B, H, T, S]
-        V: [B, H, S, D]
-        """
-        S = A.size(-1)
-        assert V.size(-2) == S, f"Expected V shared dim {S}, got {V.size(-2)}"
-        assert S <= self.seq_len, f"Sequence length {S} exceeds max G size {self.seq_len}"
-
-        A32 = A.float()
-        V32 = V.float()
-        G32 = self.G[:, :S].float()
-
-        AGt = self._sign(torch.einsum("bhts,ns->bhtn", A32, G32))
-        GV  = self._sign(torch.einsum("ns,bhsd->bhnd", G32, V32))
-        y_bin = torch.einsum("bhtn,bhnd->bhtd", AGt, GV) / float(self.N)
-
-        Anorm = (A32.square().sum(dim=-1, keepdim=True) + self.eps).sqrt()
-        Vnorm = (V32.square().sum(dim=-2, keepdim=True) + self.eps).sqrt()
-
-        Ahat = A32 / Anorm
-        Vhat = V32 / Vnorm
-
-        s = torch.einsum("bhts,bhsd->bhtd", Ahat, Vhat)
-        y_surr = (2.0 / math.pi) * torch.asin(s)
-
-        y = y_bin.detach() + (y_surr - y_surr.detach())
-        return y.to(dtype=A.dtype)
-
 
 class BertSelfAttention(nn.Module):
     def __init__(self, config):
         super(BertSelfAttention, self).__init__()
         if config.hidden_size % config.num_attention_heads != 0:
             raise ValueError(
-                "The hidden size (%d) is not a multiple of the number of attention "
-                "heads (%d)" %
-                (config.hidden_size, config.num_attention_heads))
+                "The hidden size (%d) is not a multiple of the number of attention heads (%d)"
+                % (config.hidden_size, config.num_attention_heads)
+            )
+
         self.num_attention_heads = config.num_attention_heads
-        self.attention_head_size = int(
-            config.hidden_size / config.num_attention_heads)
+        self.attention_head_size = int(config.hidden_size / config.num_attention_heads)
         self.all_head_size = self.num_attention_heads * self.attention_head_size
         self.quantize_act = config.quantize_act
-        self.query = QuantizeLinear(config.hidden_size,
-                                    self.all_head_size,
-                                    config=config)
-        self.key = QuantizeLinear(config.hidden_size,
-                                  self.all_head_size,
-                                  config=config)
-        self.value = QuantizeLinear(config.hidden_size,
-                                    self.all_head_size,
-                                    config=config)
-        prob_mean = None
+
+        self.query = QuantizeLinear(config.hidden_size, self.all_head_size, config=config)
+        self.key = QuantizeLinear(config.hidden_size, self.all_head_size, config=config)
+        self.value = QuantizeLinear(config.hidden_size, self.all_head_size, config=config)
+
         if self.quantize_act:
             self.input_bits = config.input_bits
-            if self.input_bits == 1:
-                self.act_quantizer = BinaryQuantizer
-            else:
-                self.act_quantizer = SymQuantizer
-            self.register_buffer(
-                'clip_query', torch.Tensor([-config.clip_val,
-                                            config.clip_val]))
-            self.register_buffer(
-                'clip_key', torch.Tensor([-config.clip_val, config.clip_val]))
-            self.register_buffer(
-                'clip_value', torch.Tensor([-config.clip_val,
-                                            config.clip_val]))
-            self.register_buffer(
-                'clip_attn', torch.Tensor([-config.clip_val, config.clip_val]))
+            self.act_quantizer = BinaryQuantizer if self.input_bits == 1 else SymQuantizer
+            self.register_buffer("clip_query", torch.Tensor([-config.clip_val, config.clip_val]))
+            self.register_buffer("clip_key", torch.Tensor([-config.clip_val, config.clip_val]))
+            self.register_buffer("clip_value", torch.Tensor([-config.clip_val, config.clip_val]))
+            self.register_buffer("clip_attn", torch.Tensor([-config.clip_val, config.clip_val]))
 
         self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
 
         self.use_ggm = getattr(config, "use_ggm", False)
+
         if self.use_ggm:
             self.attn_log_scale = nn.Parameter(torch.zeros(self.num_attention_heads, 1, 1))
-            self.scale = config.hidden_size * math.pi**2 / (4 * math.sqrt(self.attention_head_size))
-
+            self.attn_base_scale = getattr(
+                config,
+                "ggm_attn_base_scale",
+                1.0 / math.sqrt(self.attention_head_size),
+            )
+        else:
+            self.attn_base_scale = 1.0 / math.sqrt(self.attention_head_size)
 
     def transpose_for_scores(self, x):
-        new_x_shape = x.size()[:-1] + (self.num_attention_heads,
-                                       self.attention_head_size)
+        new_x_shape = x.size()[:-1] + (
+            self.num_attention_heads,
+            self.attention_head_size,
+        )
         x = x.view(*new_x_shape)
         return x.permute(0, 2, 1, 3)
 
-    def forward(self,
-                hidden_states,
-                attention_mask,
-                output_att=False,
-                layer_num=-1):
-
-        mixed_query_layer = self.query(hidden_states) 
+    def forward(self, hidden_states, attention_mask, output_att=False, layer_num=-1):
+        mixed_query_layer = self.query(hidden_states)
         mixed_key_layer = self.key(hidden_states)
         mixed_value_layer = self.value(hidden_states)
 
@@ -312,8 +166,12 @@ class BertSelfAttention(nn.Module):
         key_scores = torch.matmul(key_layer, key_layer.transpose(-1, -2))
         key_scores = key_scores / math.sqrt(self.attention_head_size)
 
+        attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
+
         if self.use_ggm:
-            attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2)) * self.attn_log_scale.exp() * self.scale
+            attention_scores = attention_scores * self.attn_log_scale.exp() * self.attn_base_scale
+        else:
+            attention_scores = attention_scores * self.attn_base_scale
 
         attention_scores = attention_scores + attention_mask
         attention_scores = F.softmax(attention_scores, dim=-1)
@@ -322,12 +180,12 @@ class BertSelfAttention(nn.Module):
         value_scores = torch.matmul(value_layer, value_layer.transpose(-1, -2))
         value_scores = value_scores / math.sqrt(self.attention_head_size)
 
-    
         context_layer = torch.matmul(attention_probs, value_layer)
         context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
-        new_context_layer_shape = context_layer.size()[:-2] + (
-            self.all_head_size, )
+
+        new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
         context_layer = context_layer.view(*new_context_layer_shape)
+
         return context_layer, attention_scores, value_scores, 0, query_scores, key_scores
 
 
@@ -348,42 +206,27 @@ class BertAttention(nn.Module):
 
 class BertSelfOutput(nn.Module):
     def __init__(self, config):
-        super(BertSelfOutput, self).__init__()
-        self.dense = QuantizeLinear(config.hidden_size,
-                                    config.hidden_size,
-                                    config=config)
-        self.use_ggm = getattr(config, "use_ggm", False)
-        if self.use_ggm:
-            self.dense_scale = nn.Parameter(torch.zeros(config.hidden_size))
+        super().__init__()
+        self.dense = QuantizeLinear(config.hidden_size, config.hidden_size, config=config)
         self.LayerNorm = BinaryNorm(config.hidden_size, eps=config.layer_norm_eps)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
 
     def forward(self, hidden_states, input_tensor, layer_num=0):
-        hidden_states = self.dense(hidden_states,
-                                   type="layer" + str(layer_num) + "_dense")
-        if self.use_ggm:
-            hidden_states = self.dense_scale.exp() * hidden_states
+        hidden_states = self.dense(hidden_states, type="layer" + str(layer_num) + "_dense")
         hidden_states = self.dropout(hidden_states)
         hidden_states = self.LayerNorm(hidden_states + input_tensor)
         return hidden_states
 
-
 class BertIntermediate(nn.Module):
     def __init__(self, config):
         super(BertIntermediate, self).__init__()
-        self.dense = QuantizeLinear(config.hidden_size,
-                                    config.intermediate_size,
-                                    config=config)
+        self.dense = QuantizeLinear(config.hidden_size, config.intermediate_size, config=config)
         self.use_ggm = getattr(config, "use_ggm", False)
 
-        if self.use_ggm:
-            self.act_scale = nn.Parameter(torch.zeros(config.intermediate_size))
-
     def forward(self, hidden_states, layer_num=0):
-        hidden_states = self.dense(hidden_states,
-                                   type="layer" + str(layer_num) + "_dense")
+        hidden_states = self.dense(hidden_states, type="layer" + str(layer_num) + "_dense")
         if self.use_ggm:
-            hidden_states = F.relu(hidden_states) * self.act_scale.exp()
+            hidden_states = F.relu(hidden_states)
         else:
             hidden_states = gelu(hidden_states)
         return hidden_states
@@ -392,22 +235,13 @@ class BertIntermediate(nn.Module):
 class BertOutput(nn.Module):
     def __init__(self, config):
         super(BertOutput, self).__init__()
-        self.dense = QuantizeLinear(config.intermediate_size,
-                                    config.hidden_size,
-                                    config=config)
-        self.LayerNorm = BinaryNorm(config.hidden_size,
-                                      eps=config.layer_norm_eps)
+        self.dense = QuantizeLinear(config.intermediate_size, config.hidden_size, config=config)
+        self.LayerNorm = BinaryNorm(config.hidden_size, eps=config.layer_norm_eps)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
-        self.register_parameter('gate', Parameter(torch.ones(1).squeeze()))
-        self.use_ggm = getattr(config, "use_ggm", False)
-        if self.use_ggm:
-            self.out_scale = nn.Parameter(torch.zeros(config.hidden_size))
+        self.register_parameter("gate", Parameter(torch.ones(1).squeeze()))
 
     def forward(self, hidden_states, input_tensor, layer_num=0):
-        hidden_states = self.dense(hidden_states,
-                                   type="layer" + str(layer_num) + "_dense")
-        if self.use_ggm:
-            hidden_states = hidden_states * self.out_scale.exp()
+        hidden_states = self.dense(hidden_states, type="layer" + str(layer_num) + "_dense")
         hidden_states = self.dropout(hidden_states)
         hidden_states = self.LayerNorm(hidden_states + input_tensor)
         return hidden_states
@@ -458,25 +292,20 @@ class BertEncoder(nn.Module):
 
         return all_encoder_layers, all_encoder_atts, all_value_atts, all_context_scores, all_query_scores, all_key_scores
 
+
 class BertPooler(nn.Module):
     def __init__(self, config, recurs=None):
         super(BertPooler, self).__init__()
-        self.dense = QuantizeLinear(config.hidden_size,
-                                    config.hidden_size,
-                                    config=config)
-        self.use_ggm = getattr(config, "use_ggm", False)
-        if self.use_ggm:
-            self.scale = nn.Parameter(torch.zeros(config.hidden_size))
+        self.dense = QuantizeLinear(config.hidden_size, config.hidden_size, config=config)
         self.activation = nn.ReLU()
         self.config = config
 
     def forward(self, hidden_states):
         pooled_output = hidden_states[-1][:, 0]
         pooled_output = self.dense(pooled_output, type="pooler")
-        if self.use_ggm:
-            pooled_output = self.scale.exp() * pooled_output
         pooled_output = self.activation(pooled_output)
         return pooled_output
+
 
 class BertPreTrainedModel(nn.Module):
     """ An abstract class to handle weights initialization and
@@ -490,6 +319,8 @@ class BertPreTrainedModel(nn.Module):
         """ Initialize the weights.
         """
         if isinstance(module, (nn.Linear, nn.Embedding)):
+            # Slightly different from the TF version which uses truncated_normal for initialization
+            # cf https://github.com/pytorch/pytorch/pull/5617
             module.weight.data.normal_(mean=0.0,
                                        std=self.config.initializer_range)
         elif isinstance(module, nn.LayerNorm):
@@ -517,11 +348,13 @@ class BertPreTrainedModel(nn.Module):
         config = kwargs.get('config', None)
         kwargs.pop('config', None)
         if config is None:
+            # Load config
             config_file = os.path.join(pretrained_model_name_or_path,
                                        CONFIG_NAME)
             config = BertConfig.from_json_file(config_file)
 
         logger.info("Model config {}".format(config))
+        # Instantiate model.
 
         model = cls(config, *inputs, **kwargs)
         if state_dict is None:

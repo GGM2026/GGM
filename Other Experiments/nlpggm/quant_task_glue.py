@@ -208,11 +208,15 @@ def main():
                         action='store_true',
                         help="Whether to use ground truth to supervise.")
 
-    parser.add_argument('--use_ggm', 
-                        action='store_true', 
-                        help='Use LinearGGM instead of BiBERT QuantizeLinear')
-    parser.add_argument('--ggm_n_factor', default=1.0, type=float)
-    parser.add_argument('--ggm_eps', default=1e-5, type=float)
+    # ggm-related arguments
+    parser.add_argument('--use_ggm',
+                        action='store_true',
+                        help='Whether to use gmm for binarization.')
+    parser.add_argument('--ggm_ratio', default=1.0, type=float)
+
+    parser.add_argument("--ggm_table_s0_x", default=1.0, type=float)
+    parser.add_argument("--ggm_table_s0_w", default=1.0, type=float)
+    parser.add_argument("--ggm_seed", default=None, type=int)
 
 
 
@@ -439,36 +443,39 @@ def main():
         input_bits=args.input_bits,
         clip_val=args.clip_val,
         use_ggm=args.use_ggm,
-        ggm_n_factor=args.ggm_n_factor,
-        ggm_eps=args.ggm_eps,
+        ggm_ratio=args.ggm_ratio,
+        ggm_table_s0_x=args.ggm_table_s0_x,
+        ggm_table_s0_w=args.ggm_table_s0_w,
+        ggm_seed=args.ggm_seed,
     )
+    
     student_model = QuantBertForSequenceClassification.from_pretrained(
         args.student_model, config=student_config, num_labels=num_labels)
     student_model.to(device)
-    
-    # keep pretrained embeddings
-    keep_word = student_model.bert.embeddings.word_embeddings.weight.data.clone()
-    
-    # optional: keep full embedding stack instead of only word embeddings
-    keep_pos = student_model.bert.embeddings.position_embeddings.weight.data.clone()
-    keep_tok = student_model.bert.embeddings.token_type_embeddings.weight.data.clone()
-    keep_ln_w = student_model.bert.embeddings.LayerNorm.weight.data.clone()
-    keep_ln_b = student_model.bert.embeddings.LayerNorm.bias.data.clone()
-    
-    # reinit everything except embeddings
-    student_model.bert.encoder.apply(student_model.init_bert_weights)
-    student_model.bert.pooler.apply(student_model.init_bert_weights)
-    student_model.classifier.apply(student_model.init_bert_weights)
-    
-    # restore only the embedding part you want pretrained
-    student_model.bert.embeddings.word_embeddings.weight.data.copy_(keep_word)
-    
-    # if you want the whole embedding block pretrained, also restore these:
-    student_model.bert.embeddings.position_embeddings.weight.data.copy_(keep_pos)
-    student_model.bert.embeddings.token_type_embeddings.weight.data.copy_(keep_tok)
-    student_model.bert.embeddings.LayerNorm.weight.data.copy_(keep_ln_w)
-    student_model.bert.embeddings.LayerNorm.bias.data.copy_(keep_ln_b)
-    
+
+    if not args.do_eval:
+        # keep pretrained embeddings
+        keep_word = student_model.bert.embeddings.word_embeddings.weight.data.clone()
+        
+        # optional: keep full embedding stack instead of only word embeddings
+        keep_pos = student_model.bert.embeddings.position_embeddings.weight.data.clone()
+        keep_tok = student_model.bert.embeddings.token_type_embeddings.weight.data.clone()
+        keep_ln_w = student_model.bert.embeddings.LayerNorm.weight.data.clone()
+        keep_ln_b = student_model.bert.embeddings.LayerNorm.bias.data.clone()
+        
+        # reinit everything except embeddings
+        student_model.bert.encoder.apply(student_model.init_bert_weights)
+        student_model.bert.pooler.apply(student_model.init_bert_weights)
+        student_model.classifier.apply(student_model.init_bert_weights)
+        
+        # restore only the embedding part you want pretrained
+        student_model.bert.embeddings.word_embeddings.weight.data.copy_(keep_word)
+        
+        # if you want the whole embedding block pretrained, also restore these:
+        student_model.bert.embeddings.position_embeddings.weight.data.copy_(keep_pos)
+        student_model.bert.embeddings.token_type_embeddings.weight.data.copy_(keep_tok)
+        student_model.bert.embeddings.LayerNorm.weight.data.copy_(keep_ln_w)
+        student_model.bert.embeddings.LayerNorm.bias.data.copy_(keep_ln_b)
 
     if args.do_eval:
         logger.info("***** Running evaluation *****")

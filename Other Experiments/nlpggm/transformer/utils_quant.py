@@ -7,9 +7,9 @@ import math
 from torch.nn import Parameter
 import torch.nn.functional as F
 import numpy as np
+import random
 
 from .linearggm import LinearGGM
-
 
 class BinaryQuantizer(torch.autograd.Function):
     @staticmethod
@@ -187,87 +187,69 @@ class TwnQuantizer(torch.autograd.Function):
         return grad_input, None, None, None, None
 
 
-class LinearGGM(nn.Module):
-    def __init__(self, in_features, out_features, N_factor=1.0, bias=True, eps=1e-5, std=0.02):
-        super().__init__()
-        self.in_features = int(in_features)
-        self.out_features = int(out_features)
-        self.weight = nn.Parameter(torch.randn(self.out_features, self.in_features))
-        self.bias = nn.Parameter(torch.zeros(self.out_features)) if bias else None
-
-        self.N_factor = float(N_factor)
-        self.N = int(self.N_factor * self.in_features)
-        self.register_buffer("G", torch.randn(self.N, self.in_features))
-        self.eps = float(eps)
-
-        nn.init.trunc_normal_(self.weight, std=std)
-
-    @torch.no_grad()
-    def resample_G(self):
-        self.G.copy_(torch.randn_like(self.G))
-
-    def forward(self, x):
-        W_b = (self.G @ self.weight.transpose(-1, -2)).sign()
-        x_b = (x @ self.G.transpose(-1, -2)).sign()
-        y_bin = (x_b @ W_b) / self.N
-
-        x32 = x.to(torch.float32)
-        W32 = self.weight.to(torch.float32)
-
-        xnorm = (x32.square() + self.eps).sum(dim=-1, keepdim=True).sqrt()
-        Wnorm = (W32.square() + self.eps).sum(dim=-1, keepdim=True).sqrt()
-
-        xhat = x32 / xnorm
-        What = W32 / Wnorm.transpose(-1, -2) if W32.dim() == 3 else W32 / Wnorm
-
-        s = xhat @ What.transpose(-1, -2)
-        y_surr = (2.0 / torch.pi) * torch.asin(s.clamp(-1 + 1e-6, 1 - 1e-6))
-        y_surr = y_surr.to(dtype=y_bin.dtype)
-
-        y = y_bin.detach() + (y_surr - y_surr.detach())
-
-        if self.bias is not None:
-            y = y + self.bias
-        return y
-
-
 class QuantizeLinear(nn.Linear):
-    def __init__(self, in_features, out_features, bias=True, config=None, type=None):
-        super().__init__(in_features, out_features, bias=bias)
-
-        self.use_ggm = getattr(config, "use_ggm", False)
-
+    def __init__(self,  in_features, out_features, bias=True, config=None, type=None):
+        super().__init__(in_features, out_features,bias=bias)
+        self.use_ggm = getattr(config, 'use_ggm', False)
         if self.use_ggm:
-            n_factor = getattr(config, "ggm_n_factor", 1.0)
-            eps = getattr(config, "ggm_eps", 1e-5)
+            # New clean LinearGGM API.
+            # Backward-compatible config aliases:
+            #   ggm_ratio -> N_factor
+            #   input_bits -> k_bits_x
+            #   weight_bits -> k_bits_w
+            ggm_input_bits = getattr(config, "ggm_input_bits", getattr(config, "input_bits", 1))
+            ggm_weight_bits = getattr(config, "ggm_weight_bits", getattr(config, "weight_bits", 1))
 
-            self.ggm = LinearGGM(
+            ggm_kwargs = dict(
                 in_features=in_features,
                 out_features=out_features,
-                N_factor=n_factor,
+                k_bits_x=ggm_input_bits,
+                k_bits_w=ggm_weight_bits,
+                rho_eps=getattr(config, "ggm_rho_eps", 0.0),
+                N_factor=getattr(config, "ggm_N_factor", getattr(config, "ggm_ratio", 1.0)),
+                gain_init=getattr(config, "ggm_gain_init", 1.0),
                 bias=bias,
-                eps=eps,
+                rho_cap=getattr(config, "ggm_rho_cap", 0.995),
+                soft_rho=getattr(config, "ggm_soft_rho", False),
+                table_grid_size=getattr(config, "ggm_table_grid_size", 2048),
+                table_bits_min=getattr(config, "ggm_table_bits_min", 2),
+                table_bits_max=getattr(config, "ggm_table_bits_max", 5),
+                table_s0_x=getattr(config, "ggm_table_s0_x", 1.0),
+                table_s0_w=getattr(config, "ggm_table_s0_w", 1.0),
+                use_centering=getattr(config, "ggm_use_centering", True),
+                use_std_norm=getattr(config, "ggm_use_std_norm", False),
+                scale_policy=getattr(config, "ggm_scale_policy", "learnable_mean"),
+                fixed_x_scale=getattr(config, "ggm_fixed_x_scale", 1.0),
+                fixed_w_scale=getattr(config, "ggm_fixed_w_scale", 1.0),
             )
 
-            # Reuse the weight/bias created by nn.Linear so checkpoint loading still works.
+            ggm_seed = getattr(config, "ggm_seed", None)
+            if ggm_seed is None:
+                self.ggm = LinearGGM(**ggm_kwargs)
+            else:
+                # New LinearGGM samples its own G_seed internally. Fork RNG so
+                # ggm_seed is reproducible without perturbing the caller RNG.
+                with torch.random.fork_rng(devices=[]):
+                    torch.manual_seed(int(ggm_seed))
+                    self.ggm = LinearGGM(**ggm_kwargs)
+
+            # Share the QuantizeLinear parameters with LinearGGM so checkpoints
+            # and optimizer parameter groups keep seeing self.weight/self.bias.
             self.ggm.weight = self.weight
-            self.ggm.bias = self.bias
+            self.ggm.bias = self.bias if bias else None
 
         else:
             self.quantize_act = config.quantize_act
             self.weight_bits = config.weight_bits
+            self.quantize_act = config.quantize_act
             if self.weight_bits == 2:
                 self.weight_quantizer = TwnQuantizer
             elif self.weight_bits == 1:
                 self.weight_quantizer = BinaryQuantizer
             else:
                 self.weight_quantizer = SymQuantizer
-
-            self.register_buffer(
-                'weight_clip_val',
-                torch.tensor([-config.clip_val, config.clip_val])
-            )
-
+            self.register_buffer('weight_clip_val', torch.tensor([-config.clip_val, config.clip_val]))
+            
             if self.quantize_act:
                 self.input_bits = config.input_bits
                 if self.input_bits == 1:
@@ -276,14 +258,9 @@ class QuantizeLinear(nn.Linear):
                     self.act_quantizer = TwnQuantizer
                 else:
                     self.act_quantizer = SymQuantizer
-
-                self.register_buffer(
-                    'act_clip_val',
-                    torch.tensor([-config.clip_val, config.clip_val])
-                )
-
+                self.register_buffer('act_clip_val', torch.tensor([-config.clip_val, config.clip_val]))
             self.register_parameter('scale', Parameter(torch.Tensor([0.0]).squeeze()))
-
+ 
     def reset_scale(self, input):
         if self.use_ggm:
             return
@@ -294,7 +271,6 @@ class QuantizeLinear(nn.Linear):
     def forward(self, input, type=None):
         if self.use_ggm:
             return self.ggm(input)
-
         if self.weight_bits == 1:
             scaling_factor = torch.mean(abs(self.weight), dim=1, keepdim=True)
             scaling_factor = scaling_factor.detach()
@@ -303,9 +279,7 @@ class QuantizeLinear(nn.Linear):
             cliped_weights = torch.clamp(real_weights, -1.0, 1.0)
             weight = binary_weights_no_grad.detach() - cliped_weights.detach() + cliped_weights
         else:
-            weight = self.weight_quantizer.apply(
-                self.weight, self.weight_clip_val, self.weight_bits, True
-            )
+            weight = self.weight_quantizer.apply(self.weight, self.weight_clip_val, self.weight_bits, True)
 
         if self.input_bits == 1:
             binary_input_no_grad = torch.sign(input)
@@ -313,11 +287,11 @@ class QuantizeLinear(nn.Linear):
             ba = binary_input_no_grad.detach() - cliped_input.detach() + cliped_input
         else:
             ba = self.act_quantizer.apply(input, self.act_clip_val, self.input_bits, True)
-
+        
         out = nn.functional.linear(ba, weight)
-
+        
         if self.bias is not None:
-            out += self.bias.view(1, -1).expand_as(out)
+            out += self.bias.view(1, -1).expand_as(out) 
 
         return out
 

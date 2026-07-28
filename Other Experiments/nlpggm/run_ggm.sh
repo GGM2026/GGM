@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TASK_DIR="./data"
+TASK_DIR="../data/"
 TASK_NAME="SST-2"
 
-TEACHER_MODEL="./dynabert/SST-2"
-STUDENT_MODEL="./dynabert/SST-2"
+TEACHER_MODEL="../dynabert/SST-2"
+STUDENT_MODEL="../dynabert/SST-2"
 
-OUTPUT_DIR="./results/BiBERT_GGM_eval"
-LOG_DIR="./results/BiBERT_GGM_eval/logs"
+RATIO=1.0
+
+OUTPUT_DIR="./outputs/"
+LOG_DIR="./logs/${TASK_NAME}/${RATIO}"
 
 mkdir -p "${OUTPUT_DIR}/${TASK_NAME}"
 mkdir -p "${LOG_DIR}"
 
-LOG_FILE="${LOG_DIR}/$(date '+%Y-%m-%d-%H-%M-%S')-${TASK_NAME}-ggm.log"
+LOG_FILE="${LOG_DIR}/$(date '+%Y-%m-%d-%H-%M-%S')-${TASK_NAME}-ggm-${RATIO}.log"
 
 CUDA_VISIBLE_DEVICES=0 python quant_task_glue.py \
   --data_dir "${TASK_DIR}" \
@@ -35,6 +37,5 @@ CUDA_VISIBLE_DEVICES=0 python quant_task_glue.py \
   --query_distill \
   --save_fp_model \
   --use_ggm \
-  --ggm_n_factor 5.0 \
-  --ggm_eps 1e-5 \
+  --ggm_ratio ${RATIO} \
   2>&1 | tee "${LOG_FILE}"
