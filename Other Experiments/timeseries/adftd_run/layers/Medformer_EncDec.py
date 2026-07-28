@@ -47,13 +47,13 @@ class EncoderLayer(nn.Module):
                 in_channels=d_model,
                 out_channels=d_ff,
                 kernel_size=1,
-                N_scale=5.0,
+                N_factor=1.0,
             )
             self.conv2 = Conv1dGGM(
                 in_channels=d_ff,
                 out_channels=d_model,
                 kernel_size=1,
-                N_scale=5.0,
+                N_factor=1.0,
             )
         elif use_xnor:
             self.conv1 = Conv1dXNORNet(

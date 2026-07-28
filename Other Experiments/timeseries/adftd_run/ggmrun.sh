@@ -14,7 +14,7 @@ python \
   --augmentations drop0.5 \
   --swa \
   --des 'Exp' \
-  --itr 5 \
+  --itr 1 \
   --learning_rate 0.0001 \
   --train_epochs 100 \
   --patience 10 \

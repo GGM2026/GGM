@@ -5,7 +5,7 @@ python -u run.py \
   --task_name classification \
   --is_training 1 \
   --root_path ./PTB-XL \
-  --model_id PTB-XL-Indep-fp \
+  --model_id PTB-XL-Indep-ggm \
   --model Medformer \
   --data PTB-XL \
   --seq_len 250 \

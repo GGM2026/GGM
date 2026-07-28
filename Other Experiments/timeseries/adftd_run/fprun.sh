@@ -4,10 +4,10 @@ cd .
 python -u run.py \
   --task_name classification \
   --is_training 1 \
-  --root_path ./PTB-XL \
-  --model_id PTB-XL-Indep-fp \
+  --root_path ../ADFTD/ \
+  --model_id ADFTD-Indep-fp \
   --model Medformer \
-  --data PTB-XL \
+  --data ADFTD \
   --e_layers 6 \
   --batch_size 256 \
   --d_model 128 \

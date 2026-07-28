@@ -3,7 +3,7 @@ python \
   --task_name classification \
   --is_training 1 \
   --root_path ../ADFTD/ \
-  --model_id ADFTD-Indep-dorefa \
+  --model_id ADFTD-Indep-adabin \
   --model Medformer \
   --data ADFTD \
   --e_layers 6 \
