@@ -11,7 +11,7 @@ BASE_SEED=6
 
 mkdir -p "$CHECKPOINT_DIR" "$RESULTS_DIR" "$STDOUT_DIR"
 
-for N_SCALE in 5; do
+for N_SCALE in 1; do
   N_FMT=$(printf "%.1f" "$N_SCALE")
   N_TAG=${N_FMT/./p}
 

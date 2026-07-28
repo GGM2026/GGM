@@ -15,7 +15,7 @@ NPROC_PER_NODE="1" # Number of GPUS you want to allocate for this experiment.
 # Model config
 MODEL="resnet"
 SIZE="18"
-N_FACTOR="3.0"
+N_FACTOR="1.0"
 PRELU_FLAG="--prelu"
 
 # Data / split (optional: only used if your train.py supports these for imagenet)
@@ -50,7 +50,7 @@ FULL_PRECISION_FLAG=""  # set to "--full_precision" if you want to disable Conv2
 
 # Experiment naming / checkpoints
 # The checkpoints will be saved in "CKPT_DIR/RUN_NAME"
-RUN_NAME="test"
+RUN_NAME="resnet${SIZE}_ggm_nu${N_FACTOR}_base"
 CKPT_DIR="./checkpoints/imagenet"
 
 
