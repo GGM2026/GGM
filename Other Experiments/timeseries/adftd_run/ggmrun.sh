@@ -7,7 +7,7 @@ python \
   --model Medformer \
   --data ADFTD \
   --e_layers 6 \
-  --batch_size 128 \
+  --batch_size 256 \
   --d_model 128 \
   --d_ff 256 \
   --patch_len_list 2,4,8,8,16,16,16,16,32,32,32,32,32,32,32,32 \
@@ -16,6 +16,6 @@ python \
   --des 'Exp' \
   --itr 1 \
   --learning_rate 0.0001 \
-  --train_epochs 100 \
+  --train_epochs 20 \
   --patience 10 \
   --use_ggm 1

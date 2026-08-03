@@ -1,0 +1,17 @@
+# Install PyTorch first, matched to your CUDA version, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu118
+torch>=1.13
+
+# progress bars in model download and training scripts
+tqdm
+# used for downloading models over HTTP
+requests
+# S3 fallback in transformer/file_utils.py
+boto3
+botocore
+
+numpy
+scipy
+scikit-learn
+matplotlib
+seaborn

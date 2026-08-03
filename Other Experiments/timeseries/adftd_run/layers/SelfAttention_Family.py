@@ -77,10 +77,10 @@ class AttentionLayer(nn.Module):
             raise ValueError("Only one of use_ggm, use_xnor, use_dorefa or use_adabin can be True")
 
         if use_ggm:
-            self.query_projection = LinearGGM(d_model, d_keys * n_heads, ratio=5.0)
-            self.key_projection = LinearGGM(d_model, d_keys * n_heads, ratio=5.0)
-            self.value_projection = LinearGGM(d_model, d_values * n_heads, ratio=5.0)
-            self.out_projection = LinearGGM(d_values * n_heads, d_model, ratio=5.0)
+            self.query_projection = LinearGGM(d_model, d_keys * n_heads, ratio=1.0)
+            self.key_projection = LinearGGM(d_model, d_keys * n_heads, ratio=1.0)
+            self.value_projection = LinearGGM(d_model, d_values * n_heads, ratio=1.0)
+            self.out_projection = LinearGGM(d_values * n_heads, d_model, ratio=1.0)
         elif use_xnor:
             self.query_projection = LinearXNORNet(d_model, d_keys * n_heads)
             self.key_projection = LinearXNORNet(d_model, d_keys * n_heads)

@@ -48,3 +48,23 @@ Validation results --- Loss: 1.27227, Accuracy: 0.50600, Precision: 0.52234, Rec
 Test results --- Loss: 1.29676, Accuracy: 0.53721, Precision: 0.49366, Recall: 0.45321, F1: 0.42594, AUROC: 0.65437, AUPRC: 0.47327
 
 
+classification_ADFTD-Indep-ggm_Medformer_ADFTD_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed42  
+Validation results --- Loss: 1.17280, Accuracy: 0.50600, Precision: 0.54809, Recall: 0.46972, F1: 0.41323, AUROC: 0.70170, AUPRC: 0.53588
+Test results --- Loss: 1.10284, Accuracy: 0.53256, Precision: 0.54978, Recall: 0.44782, F1: 0.41890, AUROC: 0.64403, AUPRC: 0.48812
+
+
+classification_ADFTD-Indep-ggm_Medformer_ADFTD_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed43  
+Validation results --- Loss: 1.19323, Accuracy: 0.50423, Precision: 0.55129, Recall: 0.46974, F1: 0.42389, AUROC: 0.70009, AUPRC: 0.53836
+Test results --- Loss: 1.16610, Accuracy: 0.53748, Precision: 0.53813, Recall: 0.45437, F1: 0.42845, AUROC: 0.64829, AUPRC: 0.48523
+
+
+classification_ADFTD-Indep-ggm_Medformer_ADFTD_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed44  
+Validation results --- Loss: 1.13827, Accuracy: 0.51139, Precision: 0.53634, Recall: 0.47989, F1: 0.44711, AUROC: 0.70521, AUPRC: 0.54485
+Test results --- Loss: 1.12534, Accuracy: 0.52587, Precision: 0.48129, Recall: 0.44732, F1: 0.42701, AUROC: 0.64730, AUPRC: 0.48062
+
+
+classification_ADFTD-Indep-ggm_Medformer_ADFTD_ftM_sl96_ll48_pl96_dm128_nh8_el6_dl1_df256_fc1_ebtimeF_dtTrue_Exp_seed52  
+Validation results --- Loss: 1.17847, Accuracy: 0.50484, Precision: 0.51975, Recall: 0.46853, F1: 0.41107, AUROC: 0.69942, AUPRC: 0.52961
+Test results --- Loss: 1.10997, Accuracy: 0.53202, Precision: 0.52792, Recall: 0.44748, F1: 0.41690, AUROC: 0.65162, AUPRC: 0.48458
+
+

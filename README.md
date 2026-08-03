@@ -25,8 +25,8 @@ jump to the section for full options and the complete comparison table.
 | [3.1](#31-cifar-10-original-research-pipeline) | CIFAR-10 ViT | `ViTs/Cifar10` | `bash run_cifar10.sh` | 86.51 |
 | [3.2](#32-imagenet-1k-vit-small) | ImageNet ViT-Small | `ViTs/Imagenet/vit_small` | `bash run.sh` | 56.18 |
 | [3.3](#33-imagenet-1k-bhvit) | ImageNet BHViT | `ViTs/Imagenet/bhvit` | `python train_bhvit_imagenet.py` | 65.34 |
-| [5.1](#51-glue-with-a-binarized-bert) | GLUE, binarized BERT | `Other Experiments/nlpggm` | `bash run_ggm.sh` | 89.56 |
-| [5.2](#52-time-series-classification) | Time series | `Other Experiments/timeseries/adftd_run` | `bash setup_data.sh && bash ggmrun.sh` | 53.72 |
+| [5.1](#51-glue-with-a-binarized-bert) | GLUE, binarized BERT | `Other Experiments/nlpggm/BiBERT` | `bash run_ggm.sh` | 89.56 |
+| [5.2](#52-time-series-classification) | Time series | `Other Experiments/timeseries/adftd_run` | `bash ggmrun.sh` | 53.72 |
 
 Ablations are in [Section 4](#4-ablations): projection distribution and
 expansion ratio, resampling, model size, and weight perturbation.
@@ -546,10 +546,12 @@ Each notebook is self-contained and includes its own layer definitions.
 
 Requires two external resources that are not distributed with this repository:
 the GLUE task data and the fine-tuned DynaBERT teacher and student checkpoints.
-Place them so the paths at the top of `run_ggm.sh` resolve, then:
+Place them as `Other Experiments/nlpggm/data` and
+`Other Experiments/nlpggm/dynabert`, which is where the relative paths at the
+top of `run_ggm.sh` point, then:
 
 ```bash
-cd "Other Experiments/nlpggm"
+cd "Other Experiments/nlpggm/BiBERT"
 bash run_ggm.sh
 ```
 
@@ -593,9 +595,9 @@ keeps the attention products QK^T and AV full precision.
 
 ### 5.2 Time-series classification
 
-Two independent experiments, one directory each. Every directory carries its own
-`setup_data.sh`, its own preprocessing, and its own run scripts, so the two never
-share files or paths.
+Two independent experiments, one directory each, with their own run scripts, so
+the two never share files or paths. PTB-XL ships a `setup_data.sh` that prepares
+the dataset end to end; ADFTD expects the prepared arrays to be in place already.
 
 | Directory | Dataset | Source | Task |
 |---|---|---|---|
@@ -618,14 +620,20 @@ bash adabinrun.sh        # AdaBin
 bash dorefarun.sh        # DoReFa
 ```
 
-**ADFTD.** `setup_data.sh` downloads the raw EEG for all 88 subjects into
-`../ADFTD_raw` and prepares `../ADFTD/Feature` and `../ADFTD/Label/label.npy`,
-where the run scripts point. Labels are 0 = control, 1 = frontotemporal
-dementia, 2 = Alzheimer's.
+**ADFTD.** The run scripts assume the dataset is already downloaded and
+preprocessed into the layout they read via `--root_path ../ADFTD/`:
+
+```
+../ADFTD/Feature/*.npy      one array per subject
+../ADFTD/Label/label.npy    columns [class, subject_id]
+```
+
+Labels are 0 = control, 1 = frontotemporal dementia, 2 = Alzheimer's, which maps
+from the `Group` column of the OpenNeuro `ds004504` `participants.tsv` as
+C = 0, F = 1, A = 2. With those arrays in place:
 
 ```bash
 cd "Other Experiments/timeseries/adftd_run"
-bash setup_data.sh       # download + preprocess
 bash ggmrun.sh
 bash fprun.sh
 bash xnorrun.sh
@@ -633,10 +641,10 @@ bash adabinrun.sh
 bash dorefarun.sh
 ```
 
-Both setup scripts are idempotent, skip work already done, and finish by printing
-whether each expected path exists. If a dataset is already prepared, point the
-run scripts at it instead: ADFTD reads `--root_path ../ADFTD/` and PTB-XL reads
-`--root_path ./PTB-XL`.
+The PTB-XL setup script is idempotent, skips work already done, and finishes by
+printing whether each expected path exists. If a dataset is already prepared,
+point the run scripts at it instead: ADFTD reads `--root_path ../ADFTD/` and
+PTB-XL reads `--root_path ./PTB-XL`.
 
 Both experiments use the Medformer backbone with six encoder layers and identical
 patch lengths across methods, so the binarization method is the only variable.

@@ -265,7 +265,7 @@ if __name__ == "__main__":
 
     if args.is_training:
         for ii in range(args.itr):
-            seed = 45 + ii
+            seed = 52 + ii
             random.seed(seed)
             os.environ["PYTHONHASHSEED"] = str(seed)
             np.random.seed(seed)
@@ -315,7 +315,7 @@ if __name__ == "__main__":
             torch.cuda.empty_cache()
     else:
         for ii in range(args.itr):
-            seed = 41 + ii
+            seed = args.seed + ii
             random.seed(seed)
             os.environ["PYTHONHASHSEED"] = str(seed)
             np.random.seed(seed)

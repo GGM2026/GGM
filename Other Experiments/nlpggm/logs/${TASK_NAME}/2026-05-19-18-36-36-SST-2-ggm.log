@@ -1,6 +1,0 @@
-usage: quant_task_glue.py [-h] [--data_dir DATA_DIR] [--model_dir MODEL_DIR] [--teacher_model TEACHER_MODEL] [--student_model STUDENT_MODEL] [--task_name TASK_NAME] [--output_dir OUTPUT_DIR] [--learning_rate LEARNING_RATE]
-                          [--num_train_epochs NUM_TRAIN_EPOCHS] [--batch_size BATCH_SIZE] [--seed SEED] [--aug_train] [--pred_distill] [--intermediate_distill] [--value_distill] [--context_distill] [--att_distill]
-                          [--query_distill] [--key_distill] [--save_fp_model] [--save_quantized_model] [--weight_bits WEIGHT_BITS] [--embedding_bits EMBEDDING_BITS] [--input_bits INPUT_BITS] [--clip_val CLIP_VAL] [--do_eval]
-                          [--omega OMEGA] [--ground_truth] [--use_ggm]
-                          ggm_ratio
-quant_task_glue.py: error: unrecognized arguments: --ggm_ratio
